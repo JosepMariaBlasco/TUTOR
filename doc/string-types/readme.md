@@ -27,14 +27,14 @@ For example, if we assume an ASCII encoding, then ``"a"``, ``"61"X`` and ``"0110
 
 Assume that you have a label ``"a"``:
 
-```rexx
+```rexx {unicode}
 "a": /* do something */
 ```
 
 You can then use that label (with a function call, a ``CALL`` or ``SIGNAL`` statement, etc.) by referring to it as ``"61"X``, or
 as ``"0110 0001"B``:
 
-```rexx
+```rexx {unicode}
 Call ("61"X)          -- Identical to 'Call ("a")' -- Parentheses are needed for internal function calls
 Signal "0110 0001"B   -- Identical to 'Signal "a"'
 ```
@@ -139,7 +139,7 @@ of these suffixes will be discussed below, when some further questions about Uni
 
 To satisfy (2), we will be introducing a new BIF called STRINGTYPE.
 
-![Diagram for the STRINGTYPE BIF](img/BIF_STRINGTYPE.svg)
+![Diagram for the STRINGTYPE BIF](../img/BIF_STRINGTYPE.svg)
 
 ``STRINGTYPE(string)`` will return different values depending
 on the type of the string; these values will be specified later.
@@ -204,7 +204,7 @@ We will also need a _name_ and a _notation_ for to denote Classic Rexx strings, 
 Let's start with the _name_ first: we will say that these strings are BYTES strings: a string will now be either a BYTES string,
 or a CODEPOINTS string, or a GRAPHEMES string, or a TEXT string, and there are no more possibilities. As we mentioned before, We will also introduce a new BIF,
 called STRINGTYPE. ``STRINGTYPE(string)`` will return precisely __BYTES__, __CODEPOINTS__, __GRAPHEMES__ or __TEXT__,
-depending on the type of _string_ (please refer to [_New built-in functions_](new-functions.md) for more details about the STRINGTYPE BIF).
+depending on the type of _string_ (please refer to [_New built-in functions_](../new-functions/) for more details about the STRINGTYPE BIF).
 
 We also need a _notation_ for BYTES strings. We will use the "Y" suffix for that. "Y" comes from "bYtes": it would be nice to be able
 to use "B", but it was already taken (for "Binary" strings).
@@ -215,7 +215,7 @@ The names BYTES, CODEPOINTS, GRAPHEMES and TEXT are also names of built-in funct
 the type hierarchy. A BYTES string can be _promoted_ to CODEPOINTS, GRAPHEMES or to TEXT, if it contains well-formed UTF-8; a CODEPOINTS
 string can be _demoted_ to BYTES, or _promoted_ to GRAPHEMES or to TEXT; a GRAPHEMES string can be _demoted_ to BYTES or to CODEPOINTS, or _promoted_
 to TEXT; a TEXT string can be _demoted_ to BYTES, to CODEPOINTS, or to GRAPHEMES (please
-refer to [_New built-in functions_](new-functions.md) for more details abouy these functions).
+refer to [_New built-in functions_](../new-functions/) for more details abouy these functions).
 
 Suffix notation, like ``"string"T`` or ``"string"Y``, is appropiate when you are specifying string literals; BIF notation, like
 ``BYTES(var)`` or ``TEXT(expression)``, should be used when you want to promote or demote the value of a variable or the
@@ -231,7 +231,7 @@ a classic rexx string, i.e., to a BYTES string.
 
 TUTOR does not force you to choose. It implements an experimental OPTIONS instruction,
 
-```
+```rexx {unicode}
 OPTIONS DEFAULTSTRING default
 ```
 
@@ -267,7 +267,7 @@ as defined by the Unicode standard.
 
 __Examples:__
 
-```rexx
+```rexx {unicode}
 "(LATIN CAPITAL LETTER A)"U == "A"  -- "LATIN CAPITAL LETTER A" is the value of the "Name" property for "A"
 "41"U == "41"X == "A"               -- ASCII "A" is "41"X
 "0041"U == "A"                      -- Leading zeros are optional
@@ -290,7 +290,7 @@ Please note that U strings are first-class strings: ``"(Bell)"U`` and ``"0001F51
 is equivalent to ``"F0 9F 94 94"X``, its UTF-8 representation. All of them can be used, interchangeably, as labels and as targets
 of the CALL and SIGNAL instructions. The following code, for example, is perfectly legitimate:
 
-```rexx
+```rexx {unicode}
 Call ("F0 9F 94 94"X)                -- Parentheses are required since this is an internal call
 ...
 "🔔": /* Do something */
@@ -316,4 +316,4 @@ TUTOR implements, in addition to the classical Rexx strings,  the following addi
 Additionally, TUTOR also implements four new built-in functions: STRINGTYPE (returns __BYTES__, __CODEPOINTS__, __GRAPHEMES__ or __TEXT__, depending on the string type),
 BYTES (transforms to the BYTES type), CODEPOINTS (transforms to the CODEPOINTS type), GRAPHEMES (transforms to the GRAPHEMES type) and TEXT (transforms to the TEXT type).
 
-For more details about these built-in functions, please refer to the accompanying document, [_New built-in functions_](new-functions.md).
+For more details about these built-in functions, please refer to the accompanying document, [_New built-in functions_](../new-functions/).

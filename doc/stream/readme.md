@@ -12,7 +12,7 @@
 
 Several of the stream built-in functions have been rewritten to implement a basic level of Unicode support.
 
-Unicode support for the built-in functions is implemented by the [``stream.cls``](../components/stream.cls) package. It contains a set of
+Unicode support for the built-in functions is implemented by the [``stream.cls``](../../components/stream.cls) package. It contains a set of
 helper routines implementing Unicode-enabled streams.
 
 ### Backwards compatibility
@@ -24,7 +24,7 @@ This allows existing programs to continue to run unchanged.
 
 A stream is said to be **Unicode-enabled** when an ``ENCODING`` is specified in the ``STREAM`` ``OPEN`` command:
 
-```rexx
+```rexx {unicode}
   Call Stream filename, "Command", "Open read ENCODING UTF-8"
 ```
 
@@ -35,7 +35,7 @@ If the encoding can be found, the stream is open, in the mode specified by the o
 and the encoding information gets associated with the stream until the stream is closed.
 The official name of the encoding can be retrieved by using the ``QUERY ENCODING NAME`` command:
 
-```
+```rexx {unicode}
 Call Stream filename, "Command", "Open Read ENCODING IBM-1047"     -- IBM-1047 is an alias for the encoding
 Say  Stream filename, "Command", "QUERY ENCODING NAME"             -- IBM1047 (maybe): the official name of the encoding is returned
 ```
@@ -63,20 +63,20 @@ When using a Unicode-enabled stream, encoding and decoding errors can occur. By 
 Replacement Character (``U+FFFd``). You can explicitly request this behaviour by specifying the __REPLACE__ option in the ``ENCODING``
 of your stream:
 
-```rexx
+```rexx {unicode}
    Call Stream filename, "Command", "Open read ENCODING UTF-8 REPLACE"
 ```
 
 __REPLACE__ is the default option for error handling. You can also specify __SYNTAX__ as an error handling option,
 
-```rexx
+```rexx {unicode}
    Call Stream filename, "Command", "Open read ENCODING UTF-8 SYNTAX"
 ```
 
 finding ill-formed character sequences will then raise a syntax error. If the syntax condition is trapped, you will be able to access the
 undecoded or unencoded offending line or character sequence by using the __QUERY ENCODING LASTERROR__ ``STREAM`` command:
 
-```rexx
+```rexx {unicode}
    Call Stream filename, "Command", "Open read ENCODING UTF-8 SYNTAX"
    ...
    Signal On Syntax
@@ -101,7 +101,7 @@ You may prefer to manage Unicode string that are not automatically normalized; i
 In some other occasions, you may prefer to manage CODEPOINTS strings.
 You can specify the target type in the ``ENCODING`` section of your ``STREAM`` ``OPEN`` command:
 
-```rexx
+```rexx {unicode}
    Call Stream filename, "Command", "Open read ENCODING UTF-8 TEXT"
 ```
 
@@ -123,7 +123,7 @@ but __REPLACE SYNTAX__ will produce a syntax error.
 
 The ``STREAM`` BIF has been extended to support Unicode-enabled streams:
 
-```Rexx
+```rexx {unicode}
   Call Stream filename, "Command", "Open read ENCODING IMB1047 CODEPOINTS SYNTAX"    -- Now "filename" refers to a Unicode-enabled stream
   Say  Stream(filename, "Command", "Query Encoding Name")                            -- "IBM1047"
   Say  Stream(filename, "Command", "Query Encoding Target")                          -- "CODEPOINTS", the name of the target type
@@ -140,16 +140,16 @@ encoding and decoding operations. For maximum control, you can use the new BIFs,
 
 ``DECODE`` can be used as an *encoding validator*:
 
-```rexx
-   wellFormed = DECODE(string, encoding)
+```rexx {unicode}
+  wellFormed = DECODE(string, encoding)
 ```
 
 will return a boolean value indicating whether *string* can be decoded without errors by using the specified *encoded* (i.e., **1** when the decoding will succeed, and **0** otherwise).
 
 You can also use ``DECODE`` to decode a string, by specifying a target format (currently, only UTF-8 and UTF-32 are supported):
 
-```rexx
-   decoded = DECODE(string, encoding, "UTF-8")
+```rexx {unicode}
+  decoded = DECODE(string, encoding, "UTF-8")
 ```
 
 In this case, the function will return the null string if *string* cannot be decoded without errors with the specified *encoding*, and the decoded version of its first argument if no ill-formed character combinations are found.
@@ -161,8 +161,8 @@ more features for the returned strings, you can always promote the results to hi
 
 A fourth argument to the ``ENCODE`` BIF determines the way in which ill-formed character sequences are handled:
 
-```rexx
-   decoded = DECODE(string, encoding, "UTF-8", "REPLACE")
+```rexx {unicode}
+  decoded = DECODE(string, encoding, "UTF-8", "REPLACE")
 ```
 
 When the fourth argument is omitted, or is specified as ``""`` or ``"NULL"`` (the default), a null string is returned if any ill-formed sequence is found.

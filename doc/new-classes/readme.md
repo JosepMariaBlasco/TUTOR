@@ -43,7 +43,7 @@ Namely,
 
 __Examples:__
 
-```
+```rexx {unicode}
 string = "(Man)(Zero Width Joiner)(Woman)"U
 Say string                                       -- "👨‍👩"   (U strings are always BYTES strings)
 Say C2X(string)                                  -- "F09F91A8E2808DF09F91A9"
@@ -64,7 +64,7 @@ When a BIF has more than one string as an argument, there is always an argument 
 
 __Examples:__
 
-```
+```rexx {unicode}
 Pos("E9"U, "José"T)                               -- 1   (Same as Pos( Bytes("E9"U), "José") )
 Pos("80"X, "José"T)                               -- Syntax error
 ```
@@ -103,7 +103,7 @@ Arithmetic, logical and concatenation methods are reimplemented by the BYTES cla
 
 As an example, here is the code for the multiplication operator method, "*":
 
-```
+```rexx {unicode}
 ::Method "*"
   Use Strict Arg string
   class = self~coerceTo(string,"a multiplication")
@@ -117,7 +117,7 @@ Finally, the "*" method of the .String class is invoked, and the result is coerc
 
 ### c2u (Character to Unicode codepoints)
 
-![Diagram for the c2u BIM](img/bytes_c2u.svg)
+![Diagram for the c2u BIM](../img/bytes_c2u.svg)
 
 Returns a <code>BYTES</code> string such that if a <code>U</code> were appended to it
 and it was inserted as a literal in a Rexx source program it would have
@@ -135,7 +135,7 @@ Please note that <code>CODEPOINTS</code> and <code>TEXT</code> strings are alway
 
 __Examples:__
 
-```
+```rexx {unicode}
 "Sí"~C2U                                -- "0053 00ED" (and "0053 00ED"U = "53 C3AD"X = "Sí")
 "Sí"~C2U("U+")                          -- "U+0053 U+00ED"
 "Sí"~C2U("Na")                          -- "(LATIN CAPITAL LETTER S) (LATIN SMALL LETTER I WITH ACUTE)"
@@ -144,7 +144,7 @@ __Examples:__
 
 ### c2x (Character to Hexadecimal)
 
-![Diagram for the c2x BIM](img/bytes_c2x.svg)
+![Diagram for the c2x BIM](../img/bytes_c2x.svg)
 
 Returns a BYTES string that represents the receiving string converted to hexadecimal.
 
@@ -153,7 +153,7 @@ C2X also returns the same value.
 
 __Examples:__
 
-```
+```rexx {unicode}
 C2X("👨"T)                              -- "F09F91A8"
 C2X("👨"P)                              -- "F09F91A8"
 C2X("👨"B)                              -- "F09F91A8"
@@ -162,7 +162,7 @@ C2X("(Man)"U)                            -- "F09F91A8"
 
 ### center/centre
 
-![Diagram for the center BIM](img/bytes_center.svg)
+![Diagram for the center BIM](../img/bytes_center.svg)
 
 Returns a string of length _length_ with the receiving string centered in it. The _pad_ characters are added
 as necessary to make up _length_. The _length_ must be a positive whole number or zero. The default
@@ -174,7 +174,7 @@ This method works as the standard method does, but it operates on bytes, codepoi
 
 ### copies
 
-![Diagram for the copies BIM](img/bytes_copies.svg)
+![Diagram for the copies BIM](../img/bytes_copies.svg)
 
 Returns _n_ concatenated copies of the receiving string. The _n_ must be a positive whole number or zero.
 
@@ -182,7 +182,7 @@ This method works as the standard method does, but it operates on bytes, codepoi
 
 ### datatype
 
-![Diagram for the datatype BIM](img/bytes_datatype.svg)
+![Diagram for the datatype BIM](../img/bytes_datatype.svg)
 
 A new _type_ is admitted, __C__, for uni__C__ode. ``"String"~datatype("C")`` returns __1__ if and only if ``"String"`` follows the Unicode string format, namely, if it consists of a blank-separated series of:
 
@@ -193,7 +193,7 @@ A new _type_ is admitted, __C__, for uni__C__ode. ``"String"~datatype("C")`` ret
 
 __Examples:__
 
-```
+```rexx {unicode}
 'string'~datatype('C')                            -- 0
 "61"~datatype('C')                                -- 1
 'U61'~datatype('C')                               -- 0 (it's U+ or U+, not U)
@@ -207,19 +207,19 @@ __Examples:__
 
 ### left
 
-![Diagram for the left BIM](img/bytes_left.svg)
+![Diagram for the left BIM](../img/bytes_left.svg)
 
 Works as the standard method does, but it operates on bytes, codepoints or extended grapheme clusters depending of whether the receiving string is a BYTES string, a CODEPOINTS string, or a TEXT string, respectively. Before ensuring that the _pad_ character is one character in length, _pad_ is first converted, if necessary, to the type of the receiving string. If this conversion fails, a syntax error is raised.
 
 ### length
 
-![Diagram for the length BIM](img/bytes_length.svg)
+![Diagram for the length BIM](../img/bytes_length.svg)
 
 When the receiving string is a BYTES string, it returns the number of bytes in the string. When the receiving string is a CODEPOINTS string, it returns the number of codepoints in the string. When the receiving string is a TEXT string, it returns the number of extended grapheme clusters in the string.
 
 __Examples:__
 
-```
+```rexx {unicode}
 "a"Y~length                                       -- 1
 "á"Y~length                                       -- 2 ("á" is "C3 A1"X)
 "á"P~length                                       -- 1 ("á" is 1 codepoint)
@@ -230,7 +230,7 @@ __Examples:__
 
 ### lower
 
-![Diagram for the lower BIM](img/bytes_lower.svg)
+![Diagram for the lower BIM](../img/bytes_lower.svg)
 
 Works as the standard method does, but it operates on bytes, codepoints or extended grapheme clusters depending of whether the receiving string is a BYTES string, a CODEPOINTS string, or a TEXT string, respectively. When operating on CODEPOINTS or TEXT strings, it implements the ``toLowercase(X)`` definition, as defined in rule R2 of section "Default Case Conversion" of
 _(The Unicode Standard, Version 15.0 – Core Specification)[https://www.unicode.org/versions/Unicode15.0.0/UnicodeStandard-15.0.pdf]_:
@@ -242,7 +242,7 @@ Two exceptions to this mapping are defined in the ``SpecialCasing.txt`` file of 
 
 __Examples:__
 
-```
+```rexx {unicode}
 "THIS"~lower                                      -- "this"
 "MAMÁ"Y~lower                                     -- "mamÁ", since "MAMÁ"Y is a Classic Rexx string
 "MAMÁ"P~lower                                     -- "mamá"
@@ -254,13 +254,13 @@ __Examples:__
 
 ### pos
 
-![Diagram for the pos BIM](img/bytes_pos.svg)
+![Diagram for the pos BIM](../img/bytes_pos.svg)
 
 Works as the standard method does, but it operates on bytes, codepoints or extended grapheme clusters depending of whether the receiving string is a BYTES string, a CODEPOINTS string, or a TEXT string, respectively. If necessary, _needle_ is converted to the type of the receiving string. If this conversion fails, a syntax error is raised.
 
 __Examples:__
 
-```
+```rexx {unicode}
 'string'~pos('s')                                 -- 1
 needle = '👩'                                    -- A BYTES string
 haystack = '(Woman)(Zwj)(Man)'U                   -- Another BYTES string
@@ -276,13 +276,13 @@ haystack~pos('FF'X)                               -- Syntax error ("FF"X is ill-
 
 ### reverse
 
-![Diagram for the reverse BIM](img/bytes_reverse.svg)
+![Diagram for the reverse BIM](../img/bytes_reverse.svg)
 
 Works as the standard method does, but it operates on bytes, codepoints or extended grapheme clusters depending of whether the receiving string is a BYTES string, a CODEPOINTS string, or a TEXT string, respectively.
 
 __Examples:__
 
-```
+```rexx {unicode}
 string = '(Woman)(Zwj)(Man)'U
 Say string                                        -- ‍‍👩‍👨
 Say string~c2x                                    -- F09F91A9E2808DF09F91A8
@@ -295,13 +295,13 @@ Say string == string~reverse                      -- 1, since LENGTH(string) == 
 
 ### right
 
-![Diagram for the right BIM](img/bytes_right.svg)
+![Diagram for the right BIM](../img/bytes_right.svg)
 
 Works as the standard method does, but it operates on bytes, codepoints or extended grapheme clusters depending of whether the receiving string is a BYTES string, a CODEPOINTS string, or a TEXT string, respectively. Before ensuring that the _pad_ character is one character in length, _pad_ is first converted, if necessary, to the type of the receiving string. If this conversion fails, a syntax error is raised.
 
 ### stringtype
 
-![Diagram for the stringtype BIM](img/bytes_stringtype.svg)
+![Diagram for the stringtype BIM](../img/bytes_stringtype.svg)
 
 If you specify no argument, this method returns __BYTES__ when receiving string is a BYTES string,
 __CODEPOINTS__ when receiving string is a CODEPOINTS string,
@@ -313,13 +313,13 @@ __.true__ when the receiving string class matches _type_, and __.false__ otherwi
 
 ### substr
 
-![Diagram for the substr BIM](img/bytes_substr.svg)
+![Diagram for the substr BIM](../img/bytes_substr.svg)
 
 Works as the standard method does, but it operates on bytes, codepoints or extended grapheme clusters depending of whether the receiving string is a BYTES string, a CODEPOINTS string, or a TEXT string, respectively. Before ensuring that the _pad_ character is one character in length, _pad_ is first converted, if necessary, to the type of the receiving string. If this conversion fails, a syntax error is raised.
 
 ### upper
 
-![Diagram for the upper BIM](img/bytes_upper.svg)
+![Diagram for the upper BIM](../img/bytes_upper.svg)
 
 Works as the standard method does, but it operates on bytes, codepoints or extended grapheme clusters depending of whether the receiving string is a BYTES string, a CODEPOINTS string, or a TEXT string, respectively. When operating on CODEPOINTS or TEXT strings, it implements the ``toUppercase(X)`` definition, as defined in rule R1 of section "Default Case Conversion" of _(The Unicode Standard, Version 15.0 – Core Specification)[https://www.unicode.org/versions/Unicode15.0.0/UnicodeStandard-15.0.pdf]_:
 
@@ -329,7 +329,7 @@ Broadly speaking, ``Uppercase_Mapping(C)`` implements the ``Simple_Uppercase_Map
 
 __Examples:__
 
-```
+```rexx {unicode}
 "this"~upper                                      -- "THIS"
 "mamá"Y~upper                                     -- "MAMá", since "mamá"Y is a Classic Rexx string
 "mamá"P~upper                                     -- "MAMÁ"
@@ -340,7 +340,7 @@ __Examples:__
 
 ### u2c (Unicode codepoints to Character)
 
-![Diagram for the u2c BIM](img/bytes_u2c.svg)
+![Diagram for the u2c BIM](../img/bytes_u2c.svg)
 
 This method inspects the target string for validity (see below). If valid,
 it translates the corresponding codepoints to UTF8, and then returns the translated string.
@@ -366,7 +366,7 @@ A separating space is not necessary after a closing parentheses, or before an op
 
 __Examples:__
 
-```
+```rexx {unicode}
 "41"~U2C                                -- "A"
 "U+41"~U2C                              -- "A"
 "u+0041"~U2C                            -- "A"

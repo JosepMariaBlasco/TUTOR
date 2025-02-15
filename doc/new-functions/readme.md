@@ -10,11 +10,11 @@
  ******************************************************************************/
 ```
 
-The Rexx Preprocessor for Unicode implements a series of _new_ built-in functions (BIFs). Follow [this link](built-in.md) if you want to read about modifications to _existing_ BIFs.
+The Rexx Preprocessor for Unicode implements a series of _new_ built-in functions (BIFs). Follow [this link](../built-in/) if you want to read about modifications to _existing_ BIFs.
 
 ## BYTES
 
-![Diagram for the BYTES BIF](img/BIF_BYTES.svg)
+![Diagram for the BYTES BIF](../img/BIF_BYTES.svg)
 
 Returns the _string_ converted to the BYTES format.  BYTES strings are composed of 8-bit bytes, and every character in the string can be an arbitrary 8-bit value, including binary data.
 Rexx built-in-functions operate at the byte level, and no Unicode features are available (for example, LOWER operates only on the ranges ``"A".."Z"`` and ``"a".."z"``).
@@ -22,7 +22,7 @@ This is equivalent to Classic Rexx strings, but with some enhancements. See the 
 
 ## CODEPOINTS
 
-![Diagram for the CODEPOINTS BIF](img/BIF_CODEPOINTS.svg)
+![Diagram for the CODEPOINTS BIF](../img/BIF_CODEPOINTS.svg)
 
 Converts _string_ to a CODEPOINTS string and returns it. CODEPOINTS strings are composed of Unicode codepoints, and every character in the string can be an arbitrary Unicode codepoint.
 The argument _string_ has to contain well-formed UTF-8, or a Syntax error will be raised. When working with CODEPOINTS strings, Rexx built-in functions operate at the codepoint level,
@@ -32,7 +32,7 @@ Please note that CODEPOINTS, GRAPHEMES and TEXT strings are guaranteed to contai
 
 ## C2U (Character to Unicode)
 
-![Diagram for the C2U BIF](img/BIF_C2U.svg)
+![Diagram for the C2U BIF](../img/BIF_C2U.svg)
 
 Returns a string, in character format, that represents _string_ converted to Unicode codepoints.
 
@@ -47,7 +47,7 @@ By default, C2U returns a list of blank-separated hexadecimal representations of
 
 __Examples__ (assuming an ambient encoding of UTF-8):
 
-```
+```rexx {unicode}
  C2U("Sí")       = "0053 00ED"       -- And "0053 00ED"U == "53 C3AD"X == "Sí".
  C2U("Sí","U+")  = "U+0053 U+00ED"   -- Again, "U+0053 U+00ED"U == "53 C3AD"X == "Sí".
  C2U("Sí","Na")  = "(LATIN CAPITAL LETTER S) (LATIN SMALL LETTER I WITH ACUTE)"
@@ -57,7 +57,7 @@ __Examples__ (assuming an ambient encoding of UTF-8):
 
 ## DECODE
 
-![Diagram for the DECODE BIF](img/BIF_DECODE.svg)
+![Diagram for the DECODE BIF](../img/BIF_DECODE.svg)
 
 Tests whether a _string_ is encoded according to a certain _encoding_, and optionally decodes it to a certain _format_.
 
@@ -80,7 +80,7 @@ If it has the value __SYNTAX__, a syntax condition will be raised when a decodin
 
 __Examples:__
 
-```
+```rexx {unicode}
 DECODE(string, "UTF-16")                           -- Returns 1 if string contains proper UTF-16, and 0 otherwise
 var = DECODE(string, "UTF-16", "UTF-8")            -- Decodes string to the UTF-8 format. A null string is returned if string contains ill-formed UTF-16.
 DECODE(string, "UTF-16",,"SYNTAX")                 -- The fourth argument is checked for validity and then ignored.
@@ -91,7 +91,7 @@ var = DECODE(string, "UTF-16", "UTF-8", "SYNTAX")  -- Decodes string to the UTF-
 
 ## ENCODE
 
-![Diagram for the ENCODE BIF](img/BIF_ENCODE.svg)
+![Diagram for the ENCODE BIF](../img/BIF_ENCODE.svg)
 
 ENCODE first validates that _string_ contains well-formed UTF-8. Once the _string_ is validated, encoding is attempted using the specified _encoding_. ENCODE returns the encoded string,
   or a null string if validation or encoding failed. You can influence the behaviour of the function when an error is encountered by specifying the optional _error_handling_ argument.
@@ -100,14 +100,14 @@ ENCODE first validates that _string_ contains well-formed UTF-8. Once the _strin
 
 __Examples:__
 
-```
+```rexx {unicode}
 ENCODE(string, "IBM1047")                          -- The encoded string, or "" if string can not be encoded to IBM1047.
 ENCODE(string, "IBM1047","SYNTAX")                 -- The encoded string. If the encoding fails, a Syntax error is raised.
 ```
 
 ## GRAPHEMES
 
-![Diagram for the GRAPHEMES BIF](img/BIF_GRAPHEMES.svg)
+![Diagram for the GRAPHEMES BIF](../img/BIF_GRAPHEMES.svg)
 
 Converts _string_ to a GRAPHEMES string and returns it. GRAPHEMES strings are composed of extended grapheme clusters, and every character in a GRAPHEMES string can be an arbitrary extended grapheme cluster.
 The argument _string_ has to contain well-formed UTF-8, or a Syntax error is raised. When working with GRAPHEMES strings, Rexx built-in functions operate at the extended grapheme cluster level, and can produce much richer results than when operating with BYTES or CODEPOINTS strings.
@@ -116,7 +116,7 @@ Please note that CODEPOINTS, GRAPHEMES and TEXT strings are guaranteed to contai
 
 ## N2P (Name to codePoint)
 
-![Diagram for the N2P BIF](img/BIF_N2P.svg)
+![Diagram for the N2P BIF](../img/BIF_N2P.svg)
 
 Returns the hexadecimal Unicode codepoint corresponding to _name_, or the null string if _name_ does not correspond to a Unicode codepoint.
 
@@ -130,7 +130,7 @@ Returned codepoints will be _normalized_, i.e., they will have a minimum length 
 
 __Examples:__
 
-```
+```rexx {unicode}
 N2P("LATIN CAPITAL LETTER F") =  "0046"       -- Padded to four digits
 N2P("BELL")                   = "1F514"       -- Not "01F514"
 N2P("Potato")                 = "1F954"       -- Unicode has "Potato" (a vegetable emoticon)..
@@ -139,7 +139,7 @@ N2P("Potatoes")               = ""            -- ..but no "Potatoes".
 
 ## P2N (codePoint to Name)
 
-![Diagram for the P2N BIF](img/BIF_P2N.svg)
+![Diagram for the P2N BIF](../img/BIF_P2N.svg)
 
 Returns the name or label corresponding to the hexadecimal Unicode _codepoint_ argument, or the null string if the codepoint has no name or label.
 
@@ -156,7 +156,7 @@ __Note__. Labels are always enclosed between ``"<"`` and ``">"`` signs. This all
 
 __Examples:__
 
-```
+```rexx {unicode}
 P2N("46")      =  "LATIN CAPITAL LETTER F"    -- Normalized to "0046"
 P2N("0046")    =  "LATIN CAPITAL LETTER F"    -- Normalized to "0046"
 P2N("0000046") =  "LATIN CAPITAL LETTER F"    -- Normalized to "0046"
@@ -168,7 +168,7 @@ P2N("110000")  =  ""                          -- Out-of-range
 
 ## STRINGTYPE
 
-![Diagram for the STRINGTYPE BIF](img/BIF_STRINGTYPE.svg)
+![Diagram for the STRINGTYPE BIF](../img/BIF_STRINGTYPE.svg)
 
 If you specify only _string_, it returns __TEXT__ when _string_ is a TEXT string,
 __GRAPHEMES__ when _string_ is a GRAPHEMES string,
@@ -182,7 +182,7 @@ _string_ matches the _type_. Otherwise, it returns __0__. The following are vali
 
 ## TEXT
 
-![Diagram for the TEXT BIF](img/BIF_TEXT.svg)
+![Diagram for the TEXT BIF](../img/BIF_TEXT.svg)
 
 Converts _string_ to a TEXT string and returns it. TEXT strings are composed of extended grapheme clusters, and every character in a TEXT string can be an arbitrary extended grapheme cluster.
 The argument _string_ has to contain well-formed UTF-8, or a Syntax error is raised. When working with TEXT strings, Rexx built-in functions operate at the extended grapheme cluster level, and can produce much richer results than when operating with BYTES or CODEPOINTS strings.
@@ -191,7 +191,7 @@ Please note that CODEPOINTS, GRAPHEMES and TEXT strings are guaranteed to contai
 
 ## U2C (Unicode to Character)
 
-![Diagram for the U2C BIF](img/BIF_U2C.svg)
+![Diagram for the U2C BIF](../img/BIF_U2C.svg)
 
 Returns a string, in character format, that represents _u-string_ converted to characters. _U-string_ must be
 a blank-separated sequence of hexadecimal codepoints, or parenthesized code point names, alias or labels (separator
@@ -200,7 +200,7 @@ string would be syntactically correct, and produce a syntax error otherwise.
 
 ## UNICODE (Functional form)
 
-![Diagram for the functional form of the UNICODE BIF](img/BIF_UNICODE_FUNCTIONAL.svg)
+![Diagram for the functional form of the UNICODE BIF](../img/BIF_UNICODE_FUNCTIONAL.svg)
 
 _Function_ can be one of:
 
@@ -213,7 +213,7 @@ _Function_ can be one of:
 
 __Examples__:
 
-```
+```rexx {unicode}
 UNICODE("Café", toNFD)                            -- "Cafe" || "301"U
 UNICODE("Café","isNFD")                           -- 0 (Since "Café" normalizes to something else)
 UNICODE("Cafe" || "301"U,"isNFD")                 -- 1
@@ -223,7 +223,7 @@ UNICODE("ὈΔΥΣΣΕΎΣ"T,toLowercase)                  -- "ὀδυσσεύς
 
 ## UNICODE ("Property" form)
 
-![Diagram for the property form of the UNICODE BIF](img/BIF_UNICODE_PROPERTY.svg)
+![Diagram for the property form of the UNICODE BIF](../img/BIF_UNICODE_PROPERTY.svg)
 
 The first argument, _code_, must be either a UTF-32 codepoint (i.e., a four-byte BYTES string representing a 32-bit positive integer) or a hexadecimal codepoint (without the leading "U+").
 
@@ -281,7 +281,7 @@ The string _name_ must be one of:
 
 ### Examples
 
-```
+```rexx {unicode}
 UNICODE(AA, Property,Alphabetic)                            -- 1 ("ª", Feminine ordinal indicator)
 UNICODE(301, Property, Canonical_Combining_Class)           -- 230 ("301"U, Combining grave accent)
 UNICODE(C7, Property, Canonical_Decomposition_Mapping)      -- "0043 0327" ("Ç", Latin capital letter C with Cedilla)
@@ -312,7 +312,7 @@ UNICODE(102, Property, Uppercase)                           -- 1
 
 ## UTF8
 
-![Diagram for the UTF8 BIF](img/BIF_UTF8.svg)
+![Diagram for the UTF8 BIF](../img/BIF_UTF8.svg)
 
 __Note:__ Although this routine is part of TUTOR, The Unicode Tools Of Rexx, it can also be used separately, as it has no dependencies on the rest of components of TUTOR.
 
@@ -384,7 +384,7 @@ The optional _error_handling_ argument determines the behaviour of the function 
 
 __Specifying _format_ and _target_. Combination examples:__
 
-```
+```rexx {unicode}
 UTF8("00"X, utf8,  utf8)                           -- "00"X. Validate and return UTF-8
 UTF8("00"X, utf8,  wtf8)                           -- "00"X. Validate and return WTF-8
 UTF8("00"X, mutf8, utf8)                           -- Syntax error: MUTF-8 allows lone surrogates, but UTF-8 does not
@@ -395,7 +395,8 @@ UTF8("00"X, utf8,  utf8 wtf32)                     -- Syntax error: cannot speci
 ```
 
 __Validation examples:__
-```
+
+```rexx {unicode}
 UTF8("")                                          -- 1  (The null string always validates)
 UTF8("ascii")                                     -- 1  (Equivalent to UTF8("ascii", "UTF-8") )
 UTF8("José")                                      -- 1
@@ -414,7 +415,8 @@ UTF8("ED A0 BD ED B4 94"X,"CESU-8")               -- 1  ( ...it expects two thre
 ```
 
 __Error handling:__
-```
+
+```rexx {unicode}
                                                   -- "C080" is ill-formed utf8
 UTF8("C080"X,,utf8)                               -- "" (By default, UTF8 returns the null string when an error is found)
 UTF8("C080"X,,utf8, replace)                      -- "EFBFBD EFBFBD"X ("EFBFBD" is the Unicode Replacement character)
@@ -426,7 +428,7 @@ UTF8("C080"X,,utf8, syntax)                       -- Syntax error 23.900:
 
 __Conversion examples:__
 
-```
+```rexx {unicode}
 UTF8("José",,UTF32)                               -- "0000004A 0000006F 00000073 0000E9"X ("é" is "E9"U)
 UTF8("FF"X,,UTF32)                                -- "" (an error)
 UTF8("FF"X,,UTF32,REPLACE)                        -- "�" ("FFFD"X, the replacement character)

@@ -8,15 +8,15 @@
  * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
  * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
  ******************************************************************************/
-``` 
+```
 
 ## OPTIONS DEFAULTSTRING
 
-![Diagram for the OPTIONS DEFAULTSTRING instruction](img/options_defaultstring.svg)
+![Diagram for the OPTIONS DEFAULTSTRING instruction](../img/options_defaultstring.svg)
 
-``OPTIONS DEFAULTSTRING`` _default_, where _default_ can be one of __BYTES__, __CODEPOINTS__, __GRAPHEMES__, __TEXT__ or __NONE__. 
-This affects the semantics of numbers and unsuffixed strings, i.e., ``"string"``, without an explicit B, X, Y, P, T or U suffix. 
-If _default_ is NONE, numbers and strings are not converted (i.e., they are handled as default Rexx numbers and strings). 
+``OPTIONS DEFAULTSTRING`` _default_, where _default_ can be one of __BYTES__, __CODEPOINTS__, __GRAPHEMES__, __TEXT__ or __NONE__.
+This affects the semantics of numbers and unsuffixed strings, i.e., ``"string"``, without an explicit B, X, Y, P, T or U suffix.
+If _default_ is NONE, numbers and strings are not converted (i.e., they are handled as default Rexx numbers and strings).
 In the other cases, numbers and strings are transformed to the corresponding type. For example, if OPTIONS DEFAULTSTRING TEXT is in effect, ``"string"`` will automatically be a TEXT string,
 as if ``"string"T`` had been specified, i.e., ``"string"`` will be composed of extended grapheme clusters, and will be automatically normalized to the NFC Unicode normalization form if needed; if OPTIONS DEFAULTSTRING GRAPHEMES is in effect, ``"string"`` will automatically be a GRAPHEMES string, as if ``"string"G`` had been specified, i.e., ``"string"`` will be composed of extended grapheme clusters, with no automatical normalization; , and if OPTIONS DEFAULTSTRING CODEPOINTS is in effect, ``12.3`` will automatically
 be a CODEPOINTS string, as if ``CODEPOINTS(12.3)`` had been specified.
@@ -29,7 +29,7 @@ __Implementation restriction:__ This is currently a global option. You can chang
 
 __Examples.__
 
-```
+```rexx {unicode}
 Say Stringtype("string")                          -- BYTES (the default)
 Options Defaultstring CODEPOINTS
 Say Stringtype("string")                          -- CODEPOINTS
@@ -41,14 +41,16 @@ Say Stringtype("string"T)                         -- TEXT (Explicit suffix)
 __Implementation notes:__
 
 RXU translates an unsuffixed string ``"string"`` to the following expression:
-```
+
+```rexx {unicode}
 (!DS("string"))
 ```
+
 !DS is a helper routine defined in ``Unicode.cls``; DS stands for Default String. !DS implements the current OPTIONS DEFAULTSTRING setting.
 
 ## OPTIONS COERCIONS
 
-![Diagram for the OPTIONS COERCIONS instruction](img/options_coercions.svg)
+![Diagram for the OPTIONS COERCIONS instruction](../img/options_coercions.svg)
 
 ``OPTIONS COERCIONS`` _behaviour_, where _behaviour_ can be one of __PROMOTE__, __DEMOTE__, __LEFT__, __RIGHT__ or __NONE__. This instruction determines
 the behaviour of the language processor when a binary operation is attempted in which the operators are of different string types, for example,
@@ -62,7 +64,7 @@ when a BYTES string is contatenated to a TEXT string, or when a CODEPOINTS numbe
 * When _behaviour_ is __LEFT__, the result of the operation will have the type of the left operand.
 * When _behaviour_ is __RIGHT__, the result of the operation will have the type of the right operand.
 
-Currently, OPTIONS COERCIONS is implemented for concatenation, arithmentic and logical operators only. 
+Currently, OPTIONS COERCIONS is implemented for concatenation, arithmentic and logical operators only.
 
 By default, RXU works as if OPTIONS COERCIONS PROMOTE had been specified.
 
@@ -73,7 +75,7 @@ __Implementation restriction:__ This is a global option. You can change it insid
 
 __Examples.__
 
-```
+```rexx {unicode}
 Options Coercions Promote
 Say Stringtype( "Left"B || "Right"P )             -- CODEPOINTS
 Say Stringtype( "Left"B || "Right"T )             -- TEXT
@@ -94,11 +96,15 @@ Say Stringtype( "Left"B || "Right"P )             -- Syntax error
 ## Implementation notes
 
 The RXU Rexx Preprocessor for Unicode implements the OPTIONS instruction in the following way: when an OPTIONS instruction is encountered, say
-```
+
+```rexx {unicode}
 OPTIONS optiona optionb
 ```
+
 the preprocessor transforms it into
-```
+
+```rexx {unicode}
 Do; !Options = optiona optionb; Call !Options !Options; Options !Options; End
 ```
-``!OPTIONS`` is a routine defined in ``Unicode.cls``.
+
+`!OPTIONS` is a routine defined in `Unicode.cls`.

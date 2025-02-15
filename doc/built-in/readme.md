@@ -11,7 +11,7 @@
 ```
 
 This article concentrates on documenting enhancements and modifications to _existing_ built-in functions (BIFs). If you want to know about _new_ BIFs, please refer
-to the accompanying document [New built-in functions](new-functions.md).
+to the accompanying document [New built-in functions](../new-functions/).
 
 ## Introduction: What are the enhanced built-in functions and how are they implemented
 
@@ -23,8 +23,8 @@ program" for short) is a program written in a language based on standard (oo)Rex
 and enhanced with a set of Unicode specific _additions_ and _modifications_.
 
 As an example of _additions_, RXU programs allow for four new types of literal strings.
-These are described in an accompanying document, [_New types of strings_](string-types.md).
-There is also a set of [new built-in functions](new-functions.md), described in another document.
+These are described in an accompanying document, [_New types of strings_](../string-types/).
+There is also a set of [new built-in functions](../new-functions/), described in another document.
 
 _Modifications_ become necessary when the behaviour of already existing mechanisms of Rexx
 has to be altered. In our case, for instance, we will expect that RXU programs know
@@ -93,7 +93,7 @@ An alphabetic list of Unicode-enabled BIFs follows. This list will be updated wh
 
 ## C2X (Character to heXadecimal)
 
-![Diagram for the C2X BIF](img/BIF_C2X.svg)
+![Diagram for the C2X BIF](../img/BIF_C2X.svg)
 
 Returns a BYTES string that represents _string_ converted to hexadecimal.
 
@@ -104,13 +104,13 @@ So, for example, ``Text("(Man)"U) == "👨"T`` is a TEXT string. Its UTF-8 repre
 to BYTES, is the UTF-8 representation of the codepoint for the "Man" character, that is, "F0 9F 91 A8"X.
 And this will be, unsurprisingly, the value of ``C2X("👨"T)``:
 
-```
+```rexx {unicode}
 C2X("👨"T) = "F0 9F 91 A8"X
 ```
 
 ## CHARIN
 
-![Diagram for the CHARIN BIF](img/BIF_CHARIN.svg)
+![Diagram for the CHARIN BIF](../img/BIF_CHARIN.svg)
 
 The CHARIN BIF is enhanced by supporting the _encoding_ options specified in the STREAM OPEN command.
 * When an _encoding_ is not specified for a stream, the standard BIF is called.
@@ -128,11 +128,11 @@ Character positioning is precautionarily disabled in some circumstances:
 
 Character positioning at the start of the stream (that is, when _start_ is specified as __1__) will work unconditionally.
 
-Please refer to the accompanying document [_Stream functions for Unicode_](stream.md) for a comprehensive vision of the stream functions for Unicode-enabled streams.
+Please refer to the accompanying document [_Stream functions for Unicode_](../stream/) for a comprehensive vision of the stream functions for Unicode-enabled streams.
 
 ## CHAROUT
 
-![Diagram for the CHAROUT BIF](img/BIF_CHAROUT.svg)
+![Diagram for the CHAROUT BIF](../img/BIF_CHAROUT.svg)
 
 The CHAROUT BIF is enhanced by supporting the _encoding_ options specified in the STREAM OPEN command.
 * When an _encoding_ has not been specified for a stream, the standard BIF is called.
@@ -148,11 +148,11 @@ Character positioning is precautionarily disabled in some circumstances:
 
 Character positioning at the start of the stream (that is, when _start_ is specified as __1__) will work unconditionally.
 
-Please refer to the accompanying document [_Stream functions for Unicode_](stream.md) for a comprehensive vision of the stream functions for Unicode-enabled streams.
+Please refer to the accompanying document [_Stream functions for Unicode_](../stream/) for a comprehensive vision of the stream functions for Unicode-enabled streams.
 
 ## CHARS
 
-![Diagram for the CHARS BIF](img/BIF_CHARS.svg)
+![Diagram for the CHARS BIF](../img/BIF_CHARS.svg)
 
 The CHARS BIF is modified to support the _encoding_ options specified in the STREAM OPEN command.
 
@@ -163,11 +163,11 @@ The CHARS BIF is modified to support the _encoding_ options specified in the STR
       If this number is an exact multiple of the _encoding_ length, the result of dividing the number of bytes left by the number of bytes per character of the _encoding_ is returned.
     * In all other cases, 1 is returned.
 
-Please refer to the accompanying document [_Stream functions for Unicode_](stream.md) for a comprehensive vision of the stream functions for Unicode-enabled streams.
+Please refer to the accompanying document [_Stream functions for Unicode_](../stream/) for a comprehensive vision of the stream functions for Unicode-enabled streams.
 
 ## CENTER (or CENTRE)
 
-![Diagram for the CENTER BIF](img/BIF_CENTER.svg)
+![Diagram for the CENTER BIF](../img/BIF_CENTER.svg)
 
 Works as the standard BIF does, but it operates on bytes, codepoints or extended grapheme clusters depending of whether _string_ is a BYTES string,
 a CODEPOINTS string, or a GRAPHEMES or a TEXT string, respectively. Before ensuring that the _pad_ character is one character in length,
@@ -175,7 +175,7 @@ _pad_ is first converted, if necessary, to the type of _string_. If this convers
 
 __Examples.__
 
-```
+```rexx {unicode}
 ....+....1....+....2....+....3....+....4....+....5
 Center("Man"Y,5)                                  -- " Man "
 Center("Man"Y,5,"+")                              -- "+Man+"
@@ -188,14 +188,14 @@ Center("Man"T,5,"FF"X)                            -- Syntax error ("Invalid UTF-
 
 ## COPIES
 
-![Diagram for the COPIES BIF](img/BIF_COPIES.svg)
+![Diagram for the COPIES BIF](../img/BIF_COPIES.svg)
 
 Works as the standard BIF does, but it operates on bytes, codepoints or extended grapheme clusters depending of whether _string_ is a BYTES string,
 a CODEPOINTS string, or a GRAPHEMES or TEXT string, respectively.
 
 ## DATATYPE
 
-![Diagram for the DATATYPE BIF](img/BIF_DATATYPE.svg)
+![Diagram for the DATATYPE BIF](../img/BIF_DATATYPE.svg)
 
 A new _type_ is admitted, __C__, for __uniCode__.
 ``Datatype(string, "C")`` returns __1__ if and only if _string_
@@ -208,7 +208,7 @@ follows the Unicode string format, namely, if it consists of a blank-separated s
 
 __Examples.__
 
-```
+```rexx {unicode}
 DATATYPE('string','C')                            -- 0
 DATATYPE('61','C')                                -- 1
 DATATYPE('U61','C')                               -- 0 (it's U+ or U+, not U)
@@ -222,7 +222,7 @@ DATATYPE('(Man)(Zwj)(Woman)','C')                 -- 1
 
 ## LEFT
 
-![Diagram for the LEFT BIF](img/BIF_LEFT.svg)
+![Diagram for the LEFT BIF](../img/BIF_LEFT.svg)
 
 Works as the standard BIF does, but it operates on bytes, codepoints or extended grapheme clusters depending of whether _string_ is a BYTES string,
 a CODEPOINTS string, or a GRAPHEMES or a TEXT string, respectively. Before ensuring that the _pad_ character is one character in length,
@@ -230,14 +230,14 @@ _pad_ is first converted, if necessary, to the type of _string_. If this convers
 
 ## LENGTH
 
-![Diagram for the LENGTH BIF](img/BIF_LENGTH.svg)
+![Diagram for the LENGTH BIF](../img/BIF_LENGTH.svg)
 
 When _string_ is a BYTES string, it returns the number of bytes in _string_. When _string_ is a CODEPOINTS string, it returns the number of
 codepoints in _string_. When _string_ is a GRAPHEMES or a TEXT string, it returns the number of extended grapheme clusters in _string_.
 
 __Examples.__
 
-```
+```rexx {unicode}
 Length("a")                                       -- 1
 Length("á")                                       -- "á" is "C3 A1"X
 Length("á"P)                                      -- "á" is 1 codepoint
@@ -248,7 +248,7 @@ Length("👨‍👩"T)                                     -- 1 grapheme cluster
 
 ## LINEIN
 
-![Diagram for the LINEIN BIF](img/BIF_LINEIN.svg)
+![Diagram for the LINEIN BIF](../img/BIF_LINEIN.svg)
 
 The LINEIN BIF is enhanced by supporting the _encoding_ options specified in the STREAM OPEN command.
 
@@ -277,11 +277,11 @@ __Implementation restriction__. Line positioning when line > 1 is not implemente
 
 Some or all of these restrictions may be eliminated in a future release.
 
-Please refer to the accompanying document [_Stream functions for Unicode_](stream.md) for a comprehensive vision of the stream functions for Unicode-enabled streams.
+Please refer to the accompanying document [_Stream functions for Unicode_](../stream/) for a comprehensive vision of the stream functions for Unicode-enabled streams.
 
 ## LINEOUT
 
-![Diagram for the LINEOUT BIF](img/BIF_LINEOUT.svg)
+![Diagram for the LINEOUT BIF](../img/BIF_LINEOUT.svg)
 
 The LINEOUT BIF is enhanced by supporting the _encoding_ options specified in the STREAM OPEN command.
 * When an _encoding_ has not been specified for stream _name_, the standard BIF is called.
@@ -294,11 +294,11 @@ __Implementation restriction__. When line > 1, line positioning is not implement
 
 Some or all of these restrictions may be eliminated in a future release.
 
-Please refer to the accompanying document [_Stream functions for Unicode_](stream.md) for a comprehensive vision of the stream functions for Unicode-enabled streams.
+Please refer to the accompanying document [_Stream functions for Unicode_](../stream/) for a comprehensive vision of the stream functions for Unicode-enabled streams.
 
 ## LINES
 
-![Diagram for the LINES BIF](img/BIF_LINES.svg)
+![Diagram for the LINES BIF](../img/BIF_LINES.svg)
 
 The LINES BIF is modified to support the _encoding_ options specified in the STREAM OPEN command.
 
@@ -309,11 +309,11 @@ __Implementation restriction__. ``LINES(name,"Count")`` will fail with a Syntax 
 
 Some or all of these restrictions may be eliminated in a future release.
 
-Please refer to the accompanying document [_Stream functions for Unicode_](stream.md) for a comprehensive vision of the stream functions for Unicode-enabled streams.
+Please refer to the accompanying document [_Stream functions for Unicode_](../stream/) for a comprehensive vision of the stream functions for Unicode-enabled streams.
 
 ## LOWER
 
-![Diagram for the LOWER BIF](img/BIF_LOWER.svg)
+![Diagram for the LOWER BIF](../img/BIF_LOWER.svg)
 
 Works as the standard BIF does, but it operates on bytes, codepoints or extended grapheme clusters depending of whether _string_ is a BYTES string,
 a CODEPOINTS string, or a GRAPHEMES or a TEXT string, respectively. When operating on CODEPOINTS, GRAPHEMES or TEXT strings, it implements the ``toLowercase(X)`` definition,
@@ -329,7 +329,7 @@ to ``"03C2"U`` only in certain contexts (i.e., when it is not in a medial positi
 
 __Examples.__
 
-```
+```rexx {unicode}
 Lower("THIS")                                     -- "this"
 Lower("MAMÁ"Y)                                    -- "mamÁ", since "MAMÁ"Y is a Classic Rexx string
 Lower("MAMÁ"P)                                    -- "mamá"
@@ -341,7 +341,7 @@ Length(Lower('Aİ'))                               -- 3
 
 ## POS
 
-![Diagram for the POS BIF](img/BIF_POS.svg)
+![Diagram for the POS BIF](../img/BIF_POS.svg)
 
 Works as the standard BIF does, but it operates on bytes, codepoints or extended grapheme clusters depending of whether _haystack_ is a BYTES string,
 a CODEPOINTS string, or a GRAPHEMES or a TEXT string, respectively. If necessary, _needle_ is converted to the type of _haystack_.
@@ -349,7 +349,7 @@ If this conversion fails, a Syntax error is raised.
 
 __Examples:__
 
-```
+```rexx {unicode}
 Pos('s','string')                                 -- 1
 needle = '👩'                                    -- A BYTES string
 haystack = '(Woman)(Zwj)(Man)'U                   -- Another BYTES string
@@ -365,14 +365,14 @@ Pos('FF'X,haystack)                               -- Syntax error ("FF"X is ill-
 
 ## REVERSE
 
-![Diagram for the REVERSE BIF](img/BIF_REVERSE.svg)
+![Diagram for the REVERSE BIF](../img/BIF_REVERSE.svg)
 
 Works as the standard BIF does, but it operates on bytes, codepoints or extended grapheme clusters depending of whether _string_ is a BYTES string,
 a CODEPOINTS string, or a GRAPHEMES or a TEXT string, respectively.
 
 __Examples:__
 
-```
+```rexx {unicode}
 string = '(Woman)(Zwj)(Man)'U
 Say string                                        -- ‍‍👩‍👨
 Say string~c2x                                    -- F09F91A9E2808DF09F91A8
@@ -385,7 +385,7 @@ Say string == REVERSE(string)                     -- 1, since LENGTH(string) == 
 
 ## RIGHT
 
-![Diagram for the RIGHT BIF](img/BIF_RIGHT.svg)
+![Diagram for the RIGHT BIF](../img/BIF_RIGHT.svg)
 
 Works as the standard BIF does, but it operates on bytes, codepoints or extended grapheme clusters depending of whether _string_ is a BYTES string,
 a CODEPOINTS string, or a GRAPHEMES or a TEXT string, respectively. Before ensuring that the _pad_ character is one character in length,
@@ -400,11 +400,11 @@ In this version, ENCODING should be the last option specified, and it can not be
 
 A new ENCODING fragment is added to the STREAM OPEN COMMAND:
 
-![Diagram for the STREAM COMMAND OPEN BIF](img/BIF_STREAM_COMMAND_OPEN.svg)
+![Diagram for the STREAM COMMAND OPEN BIF](../img/BIF_STREAM_COMMAND_OPEN.svg)
 
 The format of the ENCODING fragment is the following:
 
-![Diagram for the ENCODING options of the STREAM COMMAND OPEN BIF](img/BIF_STREAM_COMMAND_OPEN_ENCODING.svg)
+![Diagram for the ENCODING options of the STREAM COMMAND OPEN BIF](../img/BIF_STREAM_COMMAND_OPEN_ENCODING.svg)
 
 The encoding options are as follows:
 
@@ -416,7 +416,7 @@ The encoding options are as follows:
 
 ### New QUERY ENCODING commands
 
-![Diagram for the QUERY ENCODING STREAM COMMAND BIF](img/BIF_STREAM_QUERY_ENCODING.svg)
+![Diagram for the QUERY ENCODING STREAM COMMAND BIF](../img/BIF_STREAM_QUERY_ENCODING.svg)
 
 * __QUERY ENCODING__ returns a string consisting of three words, or a null string if no _encoding_ was specified.
   If the returned string is not empty, it will contain the official _encoding_ name, the _encoding_ target (that is, __TEXT__, __GRAPHEMES__ or __CODEPOINTS__), and the encoding _error_handling_ (that is, __SYNTAX__ or __REPLACE__).
@@ -445,7 +445,7 @@ __Note.__ The source code for the enhanced stream operations can be found in the
 
 Please refer to the stream.rxu program in the samples subdirectory for examples.
 
-Please refer to the accompanying document [_Stream functions for Unicode_](stream.md) for a comprehensive vision of the stream functions for Unicode-enabled streams.
+Please refer to the accompanying document [_Stream functions for Unicode_](../stream/) for a comprehensive vision of the stream functions for Unicode-enabled streams.
 
 ## SUBSTR
 
@@ -463,7 +463,7 @@ _pad_ is first converted, if necessary, to the type of _string_. If this convers
 
 ## UPPER
 
-![Diagram for the UPPER BIF](img/BIF_UPPER.svg)
+![Diagram for the UPPER BIF](../img/BIF_UPPER.svg)
 
 Works as the standard BIF does, but it operates on bytes, codepoints or extended grapheme clusters depending of whether _string_ is a BYTES string,
 a CODEPOINTS string, or a GRAPHEMES or a TEXT string, respectively. When operating on CODEPOINTS, GRAPHEMES or TEXT strings, it implements the ``toUppercase(X)`` definition,
@@ -477,7 +477,7 @@ file of the UCD have to be applied. Additionally, the Iota-subscript, ``"0345"X`
 
 __Examples.__
 
-```
+```rexx {unicode}
 Upper("this")                                     -- "THIS"
 Upper("mamá"Y)                                    -- "MAMá", since "mamá"Y is a Classic Rexx string
 Upper("mamá"P)                                    -- "MAMÁ"

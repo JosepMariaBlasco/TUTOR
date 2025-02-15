@@ -43,13 +43,13 @@ Format of the binary file:
 
 ## load
 
-![Diagram for the PersistentStringTable load method](img/PersistentStringTable_load.svg)
+![Diagram for the PersistentStringTable load method](../img/PersistentStringTable_load.svg)
 
 Loads the PersistentStringTable contents from the _source_ file.
 
 ## save
 
-![Diagram for the PersistentStringTable save method](img/PersistentStringTable_save.svg)
+![Diagram for the PersistentStringTable save method](../img/PersistentStringTable_save.svg)
 
 Saves the PersistentStringTable contents to the _target_ file. Checks are made to ensure that
 

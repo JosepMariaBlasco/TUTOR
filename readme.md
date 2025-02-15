@@ -31,22 +31,21 @@ You can then navigate to the ``samples`` directory and try the samples by using 
 
 ## Documentation
 
-* [For The Unicode Tools Of Rexx (TUTOR, this file)](https://rexx.epbcn.com/tutor/readme.md).
-* [For RXU, the Rexx Preprocessor for Unicode](https://rexx.epbcn.com/tutor/doc/rxu.md)
-  * [New types of strings](https://rexx.epbcn.com/tutor/doc/string-types.md)
-  * [Revised built-in functions](https://rexx.epbcn.com/tutor/doc/built-in.md)
-    * [Stream functions for Unicode](https://rexx.epbcn.com/tutor/doc/stream.md)
-    * [The encoding/decoding model](https://rexx.epbcn.com/tutor/doc/encodings.md)
-  * [New built-in functions](https://rexx.epbcn.com/tutor/doc/new-functions.md)
-    * [The properties model](https://rexx.epbcn.com/tutor/doc/properties.md)
-      * [The Unicode.Normalization class](https://rexx.epbcn.com/tutor/doc/properties/Unicode.Normalization.md).
-  * [New classes](https://rexx.epbcn.com/tutor/doc/classes.md)
-  * [New values for the OPTIONS instruction](https://rexx.epbcn.com/tutor/doc/options.md)
+* [For The Unicode Tools Of Rexx (TUTOR, this file)](.).
+* [For RXU, the Rexx Preprocessor for Unicode](./doc/rxu/)
+  * [New types of strings](./doc/string-types/)
+  * [Revised built-in functions](./doc/built-in/)
+    * [Stream functions for Unicode](./doc/stream/)
+    * [The encoding/decoding model](./doc/encodings/)
+  * [New built-in functions](./doc/new-functions/)
+    * [The properties model](./doc/properties/)
+      * [The Unicode.Normalization class](./doc/properties/normalization/).
+  * [New classes](./doc/new-classes/)
+  * [New values for the OPTIONS instruction](./doc/options/)
   * Utility packages
-    * [The MultiStageTable class](https://rexx.epbcn.com/tutor/doc/multi-stage-table.md)
-    * [The PersistentStringTable class](https://rexx.epbcn.com/tutor/doc/persistent-string-table.md)
-* [For the Rexx Tokenizer](https://rexx.epbcn.com/tutor/parser/readme.md)
-* [Using TUTOR from Classic Rexx](https://rexx.epbcn.com/tutor/doc/using-tutor-from-classic-rexx.md)
+    * [The MultiStageTable class](./doc/multi-stage-table/)
+    * [The PersistentStringTable class](./doc/persistent-string-table/)
+* [Using TUTOR from Classic Rexx](./doc/using-tutor-from-classic-rexx/)
 
 ## Release notes for version 0.5, 20240307
 
@@ -59,7 +58,7 @@ New and changed features in the 0.5 release are:
 * InspectTokens: add options to select different dialects, specify default in the help display.
 * New ``rxutry.rex`` utility, a modification of ``rexxtry.rex`` with Unicode support.
 * ``Options DefaultString`` and ``Options Promote`` can be set by the caller. Make Options DefaultString TEXT the default.
-* Added [a new helpfile](doc/using-tutor-from-classic-rexx.md) detailing how to use some of the TUTOR-generated data files from Classic Rexx dialects like Regina.
+* Added [a new helpfile](doc/using-tutor-from-classic-rexx/) detailing how to use some of the TUTOR-generated data files from Classic Rexx dialects like Regina.
 
 Bugs fixed:
 
@@ -68,16 +67,16 @@ Bugs fixed:
 
 Documentation additions and enhancements:
 
-* Document [the Unicode.Normalization class](doc/properties/Unicode.Normalization.md).
+* Document [the Unicode.Normalization class](doc/properties/normalization/).
 * Document many of the properties currently implemented by the UNICODE BIF.
 * Move notes for old releases to separate files in the ``doc`` subdirectory.
-* Improve the docs for the PersistentStringTable class, and move them to [a separate helpfile](doc/persistent-string-table.md).
+* Improve the docs for the PersistentStringTable class, and move them to [a separate helpfile](doc/persistent-string-table/).
 
 ## Components of TUTOR which can be used independently
 
 There are currently two components of TUTOR which can be used independently of TUTOR, since they have no absolute dependencies on other TUTOR components.
 
-* [The Rexx Tokenizer](https://rexx.epbcn.com/tutor/parser/readme.md) can be used independently of TUTOR, but you will need TUTOR
+* [The Rexx Tokenizer](https://rexx.epbcn.com/tokenizer/) can be used independently of TUTOR, but you will need TUTOR
   when you use one of the Unicode subclasses.
 * [The UTF8](utf8.cls) routine can be used independently of TUTOR. UTF8 detects whether Unicode.cls has been loaded (by looking for the existence of a .Bytes class that subclasses .String), and returns .Bytes strings or standard ooRexx strings as appropriate.
 
