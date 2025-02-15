@@ -1,7 +1,7 @@
 /******************************************************************************
  * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
  * See https://rexx.epbcn.com/tutor/                                          *
- *     and https://github.com/JosepMariaBlasco/tutor                          *
+ *     and https://github.com/JosepMariaBlasco/TUTOR                          *
  * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
  * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
  ******************************************************************************/
@@ -9,9 +9,9 @@
 /*
   Sample prototype classic rexx implementation of the (extended) general_category property.
 
-  See https://github.com/JosepMariaBlasco/tutor/doc/multi-stage-table.md
+  See https://github.com/JosepMariaBlasco/TUTOR/doc/multi-stage-table.md
   for a description of the structure of the binary file,
-  and also https://github.com/JosepMariaBlasco/tutor/components/properties/gc.cls
+  and also https://github.com/JosepMariaBlasco/TUTOR/components/properties/gc.cls
   for the code of the complete TUTOR ooRexx GC property.
 
   New in the 0.5 release of TUTOR. Proof-of-concept, with no error checking.

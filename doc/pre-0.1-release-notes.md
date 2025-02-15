@@ -4,7 +4,7 @@
 /******************************************************************************
  * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
  * See https://rexx.epbcn.com/tutor/                                          *
- *     and https://github.com/JosepMariaBlasco/tutor                          *
+ *     and https://github.com/JosepMariaBlasco/TUTOR                          *
  * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
  * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
  ******************************************************************************/
@@ -64,4 +64,4 @@ I call this program a toy implementation because I've not spent much time to mak
 My intention is to produce, given time, a whole set of toy implementations.
 This will allow us to play with the concepts in practice, to do it in ooRexx, and to produce very quick prototypes, proof-of-concepts, et cetera.
 
-You can download the program and the accompanying files from https://rexx.epbcn.com/tutor/ and https://github.com/JosepMariaBlasco/tutor/.
+You can download the program and the accompanying files from https://rexx.epbcn.com/tutor/ and https://github.com/JosepMariaBlasco/TUTOR/.
