@@ -10,7 +10,7 @@
  ******************************************************************************/
 ```
 
-This directory contains the main encoding class, ``Encoding.cls``, and a growing set of particular encoding classes. The ['build'](.encoding/build/) subdirectory
+This directory contains the main encoding class, ``Encoding.cls``, and a growing set of particular encoding classes. The ['build'](./encoding/build/) subdirectory
 contains a set of utility routines to generate the translate tables used by some of the encoding classes.
 
 This file contains the documentation for the public Encoding class, contained in ``Encoding.cls``,
