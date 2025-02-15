@@ -1,14 +1,10 @@
-/****************************************************************************************************************
-
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
-
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
 /** <h3>The <code>UTF-16</code> encoding class</h3>
  *
@@ -17,8 +13,8 @@
  *    format.
  *
  *  <p><b>Note:</b> From <a href="https://en.wikipedia.org/wiki/Windows-1252">https://en.wikipedia.org/wiki/Windows-1252</a>:
- *    "According to the information on Microsoft's and the Unicode Consortium's websites, 
- *     positions 81, 8D, 8F, 90, and 9D are unused; however, the Windows API MultiByteToWideChar 
+ *    "According to the information on Microsoft's and the Unicode Consortium's websites,
+ *     positions 81, 8D, 8F, 90, and 9D are unused; however, the Windows API MultiByteToWideChar
  *     maps these to the corresponding C1 control codes. The 'best fit' mapping documents this behavior, too."
  *
  *  <p>This is a subclass of <a href="Encoding.cls.html">the Encoding class</a>.
@@ -30,11 +26,11 @@
  *  <table>
  *    <th><td><b>Ver.</b><td><b>Date</b><td>Aut.</td><td>Description
  *    <tr><td><b>1.0</b><td><b>20230817</b><td>RGF</td><td>Initial release.
- *    <tr><td><b>1.1</b><td><b>20230926</b><td>JMB</td><td>Change name to Windows-1252 as per IANA 
- *                                                         https://www.iana.org/assignments/character-sets/character-sets.xhtml 
+ *    <tr><td><b>1.1</b><td><b>20230926</b><td>JMB</td><td>Change name to Windows-1252 as per IANA
+ *                                                         https://www.iana.org/assignments/character-sets/character-sets.xhtml
  *  </table>
  *
- *  @author &copy; 2023, Josep Maria Blasco &lt;josep.maria.blasco@epbcn.com&gt;  
+ *  @author &copy; 2023, Josep Maria Blasco &lt;josep.maria.blasco@epbcn.com&gt;
  *    tables by Rony G. Flatscher &lt;rony.flatscher@wu.ac.at&lt;
  *  @see https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP1252.TXT
  *
@@ -139,7 +135,7 @@ StringIsGood:
   -- Validation only
   Return 1
 
-StringIsEmpty:  
+StringIsEmpty:
   If returnUTF8 , returnUTF32  Then Do
     -- Several targets. Return a stem.
     s. = .Stem~new()
@@ -149,7 +145,7 @@ StringIsEmpty:
   End
   If returnUTF8 | returnUTF32  Then Return ""
   -- Validation only
-  Return 1  
+  Return 1
 
 /**
  *  <p>The <code>activate</code> class method is automatically called at the end

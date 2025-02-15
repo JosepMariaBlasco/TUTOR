@@ -1,14 +1,10 @@
-/****************************************************************************************************************
-
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
-
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
 /*****************************************************************************/
 /*                                                                           */
@@ -34,7 +30,7 @@
 
 ::Class Unicode.Case Public SubClass Unicode.Property
 
-::Constant BinaryFile                           "case.bin"  
+::Constant BinaryFile                           "case.bin"
 
 ::Constant UnicodeData.Properties               "Simple_Lowercase_Mapping slc Simple_Uppercase_Mapping suc"
 
@@ -84,28 +80,28 @@
 --
 -- Activate is automatically called at the end of class initialization.
 --
- 
+
 ::Method Activate Class
   Expose mask. SpecialUpper. upperCase lowercase caseproperties
-      
+
   -- Build the MASK. stem
-  
+
   Do pair Over self~masks
     Call Value pair[1], pair[2]
   End
-      
+
   -- Inform the registry that we will be handling these properties, functions and aliases
-  
+
   super~registerFunctions(  "toLowercase", self )
   super~registerFunctions(  "toUppercase", self )
   super~registerProperties( self~UnicodeData.Properties,           self )
   super~registerProperties( self~DerivedCoreProperties.Properties, self )
   super~registerProperties( self~DerivedNormalizationProps.Export, self )
   super~registerProperties( self~PropList.Properties,              self )
-      
+
   If .Unicode.Buildtime \== 1 Then Do
-    super~loadPersistent( super~BinFile.Qualify( self~binaryFile ) ) 
-    
+    super~loadPersistent( super~BinFile.Qualify( self~binaryFile ) )
+
     offset         = super~getPersistent("Uppercase.Table1")
     chunks         = super~getPersistent("Uppercase.Table2")
     uppercase      = .MultiStageTable~new(offset, chunks)
@@ -118,9 +114,9 @@
     chunks         = super~getPersistent("CaseAndCaseMappingBitProperties.Table2")
     bigvalues      = super~getPersistent("CaseAndCaseMappingBitProperties.Table3")
     caseproperties = .MultiStageTable~new(offset, chunks, , , 4, bigvalues)
-  
+
     string         = super~getPersistent("SpecialUpper")
-    
+
     SpecialUpper. = ""
     Do special Over string~makeArray(";")
       Parse var special code":"codes
@@ -130,7 +126,7 @@
 
 ::Method Math Class
   Expose mask. caseproperties
-  Use Strict Arg code  
+  Use Strict Arg code
   If code[1] == "00"X, code~length == 4 Then code = C2X(code[2,3])
   Return BITAND(caseproperties[X2D(code)], mask.Math) == mask.Math
 
@@ -154,24 +150,24 @@
   Use Strict Arg code
   If code[1] == "00"X, code~length == 4 Then code = C2X(code[2,3])
   Return BITAND(caseproperties[X2D(code)], mask.Lowercase) == mask.Lowercase
-  
+
 ::Method Upper     Class
-  Forward Message "Uppercase"  
+  Forward Message "Uppercase"
 ::Method Uppercase Class
   Expose mask. caseproperties
   Use Strict Arg code
   If code[1] == "00"X, code~length == 4 Then code = C2X(code[2,3])
   Return BITAND(caseproperties[X2D(code)], mask.Uppercase) == mask.Uppercase
-  
-::Method Cased Class  
+
+::Method Cased Class
   Expose mask. caseproperties
   Use Strict Arg code
   If code[1] == "00"X, code~length == 4 Then code = C2X(code[2,3])
   Return BITAND(caseproperties[X2D(code)], mask.Cased) == mask.Cased
-  
-::Method CI             Class    
+
+::Method CI             Class
   Forward Message "Case_Ignorable"
-::Method Case_Ignorable Class  
+::Method Case_Ignorable Class
   Expose mask. caseproperties
   Use Strict Arg code
   If code[1] == "00"X, code~length == 4 Then code = C2X(code[2,3])
@@ -183,8 +179,8 @@
   If n >= X2D(E0020), n <= X2D(E007F) Then Return 1
   If n >= X2D(E0100), n <= X2D(E01EF) Then Return 1
   Return 0
-  
-::Method CWL                     Class  
+
+::Method CWL                     Class
   Forward Message "Changes_When_Lowercased"
 ::Method Changes_When_Lowercased Class
   Expose mask. caseproperties
@@ -192,7 +188,7 @@
   If code[1] == "00"X, code~length == 4 Then code = C2X(code[2,3])
   Return BITAND(caseproperties[X2D(code)], mask.Changes_When_Lowercased) == mask.Changes_When_Lowercased
 
-::Method CWU                     Class  
+::Method CWU                     Class
   Forward Message "Changes_When_Uppercased"
 ::Method Changes_When_Uppercased Class
   Expose mask. caseproperties
@@ -200,7 +196,7 @@
   If code[1] == "00"X, code~length == 4 Then code = C2X(code[2,3])
   Return BITAND(caseproperties[X2D(code)], mask.Changes_When_Uppercased) == mask.Changes_When_Uppercased
 
-::Method CWT                     Class  
+::Method CWT                     Class
   Forward Message "Changes_When_Titlecased"
 ::Method Changes_When_Titlecased Class
   Expose mask. caseproperties
@@ -320,7 +316,7 @@
   If n <  X2D("2F800") Then Return 0
   If n <= X2D("2FA1D") Then Return 1
   Return 0
-  
+
 ::Method NFKC_QC_M Class
   Expose mask. caseproperties
   Use Strict Arg code
@@ -378,7 +374,7 @@
   Expose uppercase
   Use Strict Arg code
   If code[1] == "00"X, code~length == 4 Then code = C2X(code[2,3])
-  
+
   n        = X2D(code)
   index    = X2D(C2X(uppercase[n]))
   If index == 0 Then Return code
@@ -398,7 +394,7 @@
   lower    = D2X( n + X2D(C2X(super~getPersistent("Lowercase.Differences")[index*4-3,4]),8) )
   If Length(lower) < 4 Then Return Right(lower, 4, 0)
   Return lower
-  
+
 -------------------------------------------------------------------------------
 -- End of property methods                                                   --
 -------------------------------------------------------------------------------
@@ -420,9 +416,9 @@
 
 ::Method toUppercase Class
   Expose mask. SpecialUpper.
-  
+
   Use Strict Arg string
-  
+
   codepoints = .Codepoints~new(string)
 
   res     = ""
@@ -431,18 +427,18 @@
   length  = Words(codes)
   Do i = 1 To length
     code = Word(codes,i)
-  
+
     If code == "0345" Then Call Iota_subscript
     If SpecialUpper() Then Iterate
-    
+
     upper = self~Simple_Uppercase_Mapping(code)
     If upper \== code Then changes = 1
     Else upper = code
     res     ||= UTF8(upper)
   End
-  
+
   If \changes Then Return string
-  
+
   Return res
 
 Iota_subscript:
@@ -460,7 +456,7 @@ Iota_subscript:
     code = code2
   End
   Return
- 
+
 SpecialUpper:
   UCodes = SpecialUpper.code
   If UCodes == "" Then Return 0
@@ -469,7 +465,7 @@ SpecialUpper:
   End
   changes = 1
   Return 1
- 
+
 ::Method toLowercase Class
   Expose mask.
 /*****************************************************************************/
@@ -490,7 +486,7 @@ SpecialUpper:
 /*                                                                           */
 /*****************************************************************************/
   Use Strict Arg string
-  
+
   codepoints = .Codepoints~new(string)
 
   res     = ""
@@ -498,27 +494,27 @@ SpecialUpper:
   codes   = codepoints~C2U
   length  = Words(codes)
   Do counter i code Over codes~makeArray(" ")
-  
-    -- Two non language-sensitive special cases 
+
+    -- Two non language-sensitive special cases
     If code == "0130", CapitalIWithDotAbove() Then Iterate -- Not one-to-one: 0130 --> 0069 0307
     If code == "03A3", FinalSigma()           Then Iterate -- Context dependent
-    
+
     lower = self~Simple_Lowercase_Mapping(code)
     If lower \== code Then changes = 1
     Else lower = code
     res     ||= UTF8(lower)
-    
+
   End
-  
+
   If \changes Then Return string
-  
+
   Return string~class~new(res)
- 
+
 CapitalIWithDotAbove: -- 0130 --> 0069 0307
   res   ||= "69CC87"X
   changes = 1
 Return 1
- 
+
 FinalSigma:
   Do n = i - 1 While n >= 1, self~Case_Ignorable(Word(codes,n)); End
   If n >= 1, \ self~Cased(Word(codes,n)) Then Return 0
@@ -528,7 +524,7 @@ FinalSigma:
   res ||= "CF82"X
   changes = 1
 Return 1
-  
+
 ::Routine UTF8
   Use Arg code
   If code~length < 4 Then code = Right(code,4,0)

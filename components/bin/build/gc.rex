@@ -1,31 +1,28 @@
-/****************************************************************************************************************
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023, 2024 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                     │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
-
-/*****************************************************************************/
-/*                                                                           */
-/*  The gc.rex build program                                                 */
-/*  ========================                                                 */
-/*                                                                           */
-/*  This program generates the binary data needed by properties/gc.cls.      */
-/*                                                                           */
-/*  See also tests/gc.rex.                                                   */
-/*                                                                           */
-/*  Version history                                                          */
-/*  ===============                                                          */
-/*                                                                           */
-/*  Vers. Aut Date     Comments                                              */
-/*  ----- --- -------- ----------------------------------------------------- */
-/*  00.2  JMB 20230725 Moved from properties/gc.cls                          */
-/*                                                                           */
-/*****************************************************************************/
+/******************************************************************************/
+/*                                                                            */
+/*  The gc.rex build program                                                  */
+/*  ========================                                                  */
+/*                                                                            */
+/*  This program generates the binary data needed by properties/gc.cls.       */
+/*                                                                            */
+/*  See also tests/gc.rex.                                                    */
+/*                                                                            */
+/*  Version history                                                           */
+/*  ===============                                                           */
+/*                                                                            */
+/*  Vers. Aut Date     Comments                                               */
+/*  ----- --- -------- -----------------------------------------------------  */
+/*  00.2  JMB 20230725 Moved from properties/gc.cls                           */
+/*                                                                            */
+/******************************************************************************/
 
 --
 -- The purpose of the following program is to parse UnicodeData.txt
@@ -44,19 +41,19 @@
 
   -- Inform our classes that we are building the .bin files, so that they don't
   -- complain that they are not there.
-  
+
   .local~Unicode.Buildtime = 1
 
   -- Call instead of ::Requires allows us to set the above variable first.
-  
+
   Call "Unicode.cls"
-  
+
   self = .Unicode.General_Category
-  
+
   super = self~superClass
-  
+
   variables = self~variables
-   
+
   nameOf. = "Cn"
   Do counter c variable over variables~makeArray( " " )
     char                           = x2c( d2x( c ) )
@@ -68,20 +65,20 @@
   Say "Generating binary values for the Unicode.General_Category class..."
 
   Call Time "R"
-  
+
   inFile = super~UCDFile.Qualify( self~UnicodeData )
-  
+
   Call Stream inFile, "c", "query exists"
-  
+
   If result == "" Then self~SyntaxError("File '"inFile"' not found. Aborting")
-  
+
   -- Default is "Cn" -- reserved (unassigned code point)
   --
   -- Properties for code points <= U+20000 are effectively stored in a two-stage table.
   --
   -- Properties for code points >  U+20000 are dynamically computed.
   --
-   
+
   buffer = .MutableBuffer~new( Copies( Cn, X2D( 20000 ) ) )
 
   --
@@ -104,8 +101,8 @@
   -- KHITAN SMALL SCRIPT-code         <=> gc == "Lo" & code in U+18B00..U+18CD5
   -- NUSHU CHARACTER-code             <=> gc == "Lo" & code in U+1B170..U+1B2FB
   -- CJK COMPATIBILITY IDEOGRAPH-code <=> gc == "Lo" & code in  U+F900.. U+FAD9 UNION U+2F800..U+2FA1D
-  -- CJK UNIFIED IDEOGRAPH-code       <=> gc == "Lo" & code in  U+3400.. U+4DBF 
-  --                                                     UNION  U+4E00.. U+9FFF 
+  -- CJK UNIFIED IDEOGRAPH-code       <=> gc == "Lo" & code in  U+3400.. U+4DBF
+  --                                                     UNION  U+4E00.. U+9FFF
   --                                                     UNION U+20000..U+2A6DF
   --                                                     UNION U+2A700..U+2B739
   --                                                     UNION U+2B740..U+2B81D
@@ -115,12 +112,12 @@
   --                                                     UNION U+31350..U+323AF
   --
   -- "Twelve of the CJK ideographs in the starred range in Table 4-8, in the CJK Compatibility
-  -- Ideographs block, are actually CJK unified ideographs. Nonetheless, their names are constructed 
+  -- Ideographs block, are actually CJK unified ideographs. Nonetheless, their names are constructed
   -- with the “cjk compatibility ideograph-” prefix shared by all other code points
   -- in that block. The status of a CJK ideograph as a unified ideograph cannot be deduced
   -- from the Name property value for that ideograph; instead, the dedicated binary property
-  -- Unified_Ideograph should be used to determine that status. See “CJK Compatibility Ideographs” 
-  -- in Section 18.1, Han, and Section 4.4, “Listing of Characters Covered by the Unihan Database” 
+  -- Unified_Ideograph should be used to determine that status. See “CJK Compatibility Ideographs”
+  -- in Section 18.1, Han, and Section 4.4, “Listing of Characters Covered by the Unihan Database”
   -- in Unicode Standard Annex #38, “Unihan Database,” for more details about
   -- these exceptional twelve CJK ideographs." (Ibid., p. 184).
   --
@@ -128,8 +125,8 @@
   -- "Listing of Characters Covered by the Unihan Database".
   --
   -- † Note: 12 code points in the CJK Compatibility Ideographs block (
-  -- U+FA0E, U+FA0F, U+FA11, U+FA13, U+FA14, U+FA1F, U+FA21, U+FA23, U+FA24, U+FA27, U+FA28, and U+FA29) 
-  -- lack a canonical Decomposition_Mapping value in UnicodeData.txt, and so are not actually CJK compatibility ideographs. 
+  -- U+FA0E, U+FA0F, U+FA11, U+FA13, U+FA14, U+FA1F, U+FA21, U+FA23, U+FA24, U+FA27, U+FA28, and U+FA29)
+  -- lack a canonical Decomposition_Mapping value in UnicodeData.txt, and so are not actually CJK compatibility ideographs.
   -- These twelve characters are CJK unified ideographs.
   --
 
@@ -144,7 +141,7 @@
       Select
         When name~startsWith("CJK COMPATIBILITY IDEOGRAPH-")   Then
         /* Nobody seems to really implement that
-          If WordPos(code,"FA0E FA0F FA11 FA13 FA14 FA1F FA21 FA23 FA24 FA27 FA28 U+FA29") > 0 Then 
+          If WordPos(code,"FA0E FA0F FA11 FA13 FA14 FA1F FA21 FA23 FA24 FA27 FA28 U+FA29") > 0 Then
                                                                     thisGC = "LO_CJK_UNIFIED_IDEOGRAPH"
           Else */                                                     thisGC = "LO_CJK_COMPATIBILITY_IDEOGRAPH"
         When name~startsWith("<CJK Ideograph")                 Then thisGC = "LO_CJK_UNIFIED_IDEOGRAPH"
@@ -167,11 +164,11 @@
   End
 
   array = .MultiStageTable~Compress(buffer)
-  
+
   super~setPersistent("UnicodeData.gc.Table1", array[1])
   super~setPersistent("UnicodeData.gc.Table2", array[2])
 
   super~SavePersistent( super~BinFile.Qualify( self~binaryFile ) )
-  
+
   elapsed = Time("E")
   Say "Done, took" elapsed "seconds."

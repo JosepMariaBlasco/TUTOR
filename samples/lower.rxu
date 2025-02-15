@@ -1,19 +1,16 @@
-/****************************************************************************************************************
-
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
 --------------------------------------------------------------------------------
 -- This program is part of the automated test suite. See tests/test.all.rex   --
--------------------------------------------------------------------------------- 
+--------------------------------------------------------------------------------
 
--- lower.rxu - Test some features of the LOWER BIF.                                 
+-- lower.rxu - Test some features of the LOWER BIF.
 
 Arg auto .
 auto = auto == "AUTO"
@@ -30,8 +27,8 @@ Call Test "ÁÉÍÓÚÝÀÈÌÒÙÄËÏÖÜÂÊÎÔÛÑÃÕÇ"T,"áéíóúýà�
 Call NextTest "Testing non-final and final sigma:"
 
 Say "Uppercase sigma ('Σ') gets lowercased to 'σ' or to 'ς'"
-Say "depending on whether 'Σ' was a medial or final letter." 
-Say 
+Say "depending on whether 'Σ' was a medial or final letter."
+Say
 
 Call Test "ὈΔΥΣΣΕΎΣ"P,"ὀδυσσεύς"
 
@@ -69,16 +66,16 @@ Test:
     Say "Test FAILED!"
     Say "Expected: '"Arg(2)"'."
     Exit 1
-  End  
-Return  
+  End
+Return
 
 NextTest:
   Use Arg title
   Say
   Say "(press ENTER to continue)"
-  Say 
+  Say
   If \auto Then Parse Pull
   Say title
   Say Copies("-",Length(title))
-  Say 
-Return  
+  Say
+Return

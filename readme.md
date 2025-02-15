@@ -3,21 +3,22 @@
 Version 0.5, 20240307.
 
 ```
-┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
-│ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
-│ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
-│ Copyright © 2023, 2024 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                     │
-│ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
-└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 ```
 
 ```
-┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
-│                 ═══> TUTOR is a prototype, not a finished product. Use at your own risk. <═══                 │
-│                                                                                                               │
-│                         Interfaces and specifications are proposals to be discussed,                          │  
-│                          and can be changed at any moment without previous notice.                            │  
-└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+/******************************************************************************
+ * => TUTOR is a prototype, not a finished product. Use at your own risk. <═  *
+ *                                                                            *
+ *      Interfaces and specifications are proposals to be discussed,          *
+ *       and can be changed at any moment without previous notice.            *
+ ******************************************************************************/
 ```
 
 ---
@@ -30,22 +31,22 @@ You can then navigate to the ``samples`` directory and try the samples by using 
 
 ## Documentation
 
-* [For The Unicode Tools Of Rexx (TUTOR, this file)](https://github.com/RexxLA/rexx-repository/blob/master/ARB/standards/work-in-progress/unicode/UnicodeTools/readme.md).
-* [For RXU, the Rexx Preprocessor for Unicode](https://github.com/RexxLA/rexx-repository/blob/master/ARB/standards/work-in-progress/unicode/UnicodeTools/doc/rxu.md)
-  * [New types of strings](https://github.com/RexxLA/rexx-repository/blob/master/ARB/standards/work-in-progress/unicode/UnicodeTools/doc/string-types.md)
-  * [Revised built-in functions](https://github.com/RexxLA/rexx-repository/blob/master/ARB/standards/work-in-progress/unicode/UnicodeTools/doc/built-in.md)
-    * [Stream functions for Unicode](https://github.com/RexxLA/rexx-repository/blob/master/ARB/standards/work-in-progress/unicode/UnicodeTools/doc/stream.md)
-    * [The encoding/decoding model](https://github.com/RexxLA/rexx-repository/blob/master/ARB/standards/work-in-progress/unicode/UnicodeTools/doc/encodings.md)
-  * [New built-in functions](https://github.com/RexxLA/rexx-repository/blob/master/ARB/standards/work-in-progress/unicode/UnicodeTools/doc/new-functions.md)
-    * [The properties model](https://github.com/RexxLA/rexx-repository/blob/master/ARB/standards/work-in-progress/unicode/UnicodeTools/doc/properties.md)
-      * [The Unicode.Normalization class](doc/properties/Unicode.Normalization.md).
-  * [New classes](https://github.com/RexxLA/rexx-repository/blob/master/ARB/standards/work-in-progress/unicode/UnicodeTools/doc/classes.md)
-  * [New values for the OPTIONS instruction](https://github.com/RexxLA/rexx-repository/blob/master/ARB/standards/work-in-progress/unicode/UnicodeTools/doc/options.md)
+* [For The Unicode Tools Of Rexx (TUTOR, this file)](https://rexx.epbcn.com/tutor/readme.md).
+* [For RXU, the Rexx Preprocessor for Unicode](https://rexx.epbcn.com/tutor/doc/rxu.md)
+  * [New types of strings](https://rexx.epbcn.com/tutor/doc/string-types.md)
+  * [Revised built-in functions](https://rexx.epbcn.com/tutor/doc/built-in.md)
+    * [Stream functions for Unicode](https://rexx.epbcn.com/tutor/doc/stream.md)
+    * [The encoding/decoding model](https://rexx.epbcn.com/tutor/doc/encodings.md)
+  * [New built-in functions](https://rexx.epbcn.com/tutor/doc/new-functions.md)
+    * [The properties model](https://rexx.epbcn.com/tutor/doc/properties.md)
+      * [The Unicode.Normalization class](https://rexx.epbcn.com/tutor/doc/properties/Unicode.Normalization.md).
+  * [New classes](https://rexx.epbcn.com/tutor/doc/classes.md)
+  * [New values for the OPTIONS instruction](https://rexx.epbcn.com/tutor/doc/options.md)
   * Utility packages
-    * [The MultiStageTable class](doc/multi-stage-table.md)
-    * [The PersistentStringTable class](doc/persistent-string-table.md)
-* [For the Rexx Tokenizer](https://github.com/RexxLA/rexx-repository/blob/master/ARB/standards/work-in-progress/unicode/UnicodeTools/parser/readme.md)
-* [Using TUTOR from Classic Rexx](doc/using-tutor-from-classic-rexx.md)
+    * [The MultiStageTable class](https://rexx.epbcn.com/tutor/doc/multi-stage-table.md)
+    * [The PersistentStringTable class](https://rexx.epbcn.com/tutor/doc/persistent-string-table.md)
+* [For the Rexx Tokenizer](https://rexx.epbcn.com/tutor/parser/readme.md)
+* [Using TUTOR from Classic Rexx](https://rexx.epbcn.com/tutor/doc/using-tutor-from-classic-rexx.md)
 
 ## Release notes for version 0.5, 20240307
 
@@ -76,7 +77,7 @@ Documentation additions and enhancements:
 
 There are currently two components of TUTOR which can be used independently of TUTOR, since they have no absolute dependencies on other TUTOR components.
 
-* [The Rexx Tokenizer](https://github.com/RexxLA/rexx-repository/blob/master/ARB/standards/work-in-progress/unicode/UnicodeTools/parser/readme.md) can be used independently of TUTOR, but you will need TUTOR
+* [The Rexx Tokenizer](https://rexx.epbcn.com/tutor/parser/readme.md) can be used independently of TUTOR, but you will need TUTOR
   when you use one of the Unicode subclasses.
 * [The UTF8](utf8.cls) routine can be used independently of TUTOR. UTF8 detects whether Unicode.cls has been loaded (by looking for the existence of a .Bytes class that subclasses .String), and returns .Bytes strings or standard ooRexx strings as appropriate.
 
@@ -89,7 +90,7 @@ There are currently two components of TUTOR which can be used independently of T
 * 20240325 &mdash; Start working on new railroad diagrams, using the same tools as in rexxref. First document migrated: new BIFS
 * 20240323 &mdash; Fix https://github.com/RexxLA/rexx-repository/issues/7
 * 20240323 &mdash; Implement the STRINGTYPE BIM, fixing https://github.com/RexxLA/rexx-repository/issues/9
-* 20240323 &mdash; U2C was left undocumented in 0.5. 
+* 20240323 &mdash; U2C was left undocumented in 0.5.
 * 20240323 &mdash; Create the [publications](publications) subdirectory.
 * 20240323 &mdash; Create [0.5-release-notes.md](doc/0.5-release-notes.md).
 * 20240323 &mdash; Tokenizer: SPECIAL --> COMMA (all other special characters already handled separately).

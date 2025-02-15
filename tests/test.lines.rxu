@@ -1,13 +1,10 @@
-/****************************************************************************************************************
-
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
 --------------------------------------------------------------------------------
 -- This program is part of the automated test suite. See tests/test.all.rex   --
@@ -17,8 +14,8 @@
 
 Arg auto .
 
-auto = auto == "AUTO" 
- 
+auto = auto == "AUTO"
+
 tmpfile = SysTempFileName("????.file")
 
 If tmpFile == "" Then Do
@@ -103,8 +100,8 @@ UTF8:
 Say "PASSED!"
 Say
 
-Call Exit 0  
-   
+Call Exit 0
+
 Exit:
   Call Stream tmpfile,"C","CLOSE"
   Call SysFileDelete tmpfile
@@ -129,10 +126,9 @@ CreateFile: Procedure Expose tmpFile
   Use Strict Arg lines, eol
   Do counter c line Over lines
     Call CharOut tmpFile, line
-    -- No line-end after last line    
+    -- No line-end after last line
     If c < lines~items Then Call CharOut tmpFile, eol
   End
   Call Stream tmpFile,"C","CLOSE"
-Return  
-  
-  
+Return
+

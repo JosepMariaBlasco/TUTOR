@@ -1,13 +1,10 @@
-/****************************************************************************************************************
-
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
 -- Tough tests. Will take a some few minutes
 
@@ -16,7 +13,7 @@ myName = "UTF-16"
 utf16 = .Encoding[myName]
 utf32 = .Encoding["utf-32"]
 
-count  = 0 
+count  = 0
 failed = 0
 FAIL   = 0
 PASS   = 1
@@ -97,7 +94,7 @@ Call Tick "Validation. Lone high surrogates, or not followed by low surrogate."
 -- High surrogate alone, or followed by something else (not a low surrogate)
 Do i = X2D("D800") To X2D("DBFF")
   c = X2C(Right(D2X(i),4,0))
-  Call TestDecode c,    FAIL  -- High surrogate alone  
+  Call TestDecode c,    FAIL  -- High surrogate alone
   Call TestDecode c"*", FAIL  -- High surrogate alone + "*"
   Call TestDecode c"**",FAIL  -- High surrogate alone + "**" (i.e., not a low surrogate)
 End
@@ -129,33 +126,33 @@ Call Tick ""
 If failed == 0 Then Do
   Call Tick "All" count "tests PASSED!"
   Say ""
-End  
+End
 Else Do
   Call Tick failed "of the" count "tests FAILED"
   Exit 1
-End  
+End
 
 Exit 0
 
 Tick:
   Parse Value Time("E") WIth l"."r
-  If r == "" Then t = "0.000"  
+  If r == "" Then t = "0.000"
   Else            t = l"."Left(r,3)
   Say Right(t,10) myName Arg(1)
-Return  
+Return
 
 TestEncode:
   count += 1
   If utf16~encode(Arg(2)) == Arg(3) Then Return
   Say "Encoding of '"C2X(Arg(1))"' failed."
   failed += 1
-Return  
+Return
 
 TestDecode:
   count += 1
   If utf16~decode(Arg(1)) == Arg(2) Then Return
   Say "Decoding of '"C2X(Arg(1))"' failed."
   failed += 1
-Return  
+Return
 
 ::Requires "Unicode.cls"

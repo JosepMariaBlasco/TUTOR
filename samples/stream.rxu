@@ -1,20 +1,17 @@
-/****************************************************************************************************************
-
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
 --------------------------------------------------------------------------------
 -- This program is part of the automated test suite. See tests/test.all.rex   --
---------------------------------------------------------------------------------  
+--------------------------------------------------------------------------------
 
 -- stream.rxu - Test the enhanced STREAM BIF
-  
+
 fn = "stream.rxu"
 
 Say "Testing existing behaviour"
@@ -56,7 +53,7 @@ Test:
   End
   Say "!!! FAILED, Syntax error expected."
   Exit 1
-  
+
 Syntax:
   If Arg(4) Then Do
     Say "FAILED!"
@@ -68,6 +65,6 @@ Syntax:
     Say Condition("O")~Message
     Call Exit 1
     End
-  Else 
+  Else
     Say "==> Syntax error ("Condition("O")~code"):" Condition("A")
 return

@@ -1,22 +1,23 @@
 ## The MultiStageTable class
 
 ```
-┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
-│ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
-│ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
-│ Copyright © 2023, 2024 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                     │
-│ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
-└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 ```
 
 This class, defined in the ``/components/utilities/MultiStageTable.cls`` package, specializes in producing two-stage tables, three-stage tables, or, in general multi-stage tables.
 
-Multi-stage tables are recommended in [_The Unicode Standard 15.0_](https://www.unicode.org/versions/Unicode15.0.0/UnicodeStandard-15.0.pdf), section 5.1, 
+Multi-stage tables are recommended in [_The Unicode Standard 15.0_](https://www.unicode.org/versions/Unicode15.0.0/UnicodeStandard-15.0.pdf), section 5.1,
 _Data Structures for Character Conversion_, "Multistage Tables", pp. 196–7.
 
 This is not a general implementation of multi-stage tables, but a custom, tailored one, specific to Unicode.
 
-The indexes for these tables run from 0 to the size of the buffer. Negative values will raise a syntax error, and indexes greater than the size of the buffer will return 
+The indexes for these tables run from 0 to the size of the buffer. Negative values will raise a syntax error, and indexes greater than the size of the buffer will return
 _width_ copies of "00"X.
 
 ### compress (Class method)
@@ -29,8 +30,8 @@ the buffer; _chunk_size_ defaults to 256.
 _Buffer_ is a _n_-byte string, where _n_ is a multiple of _chunk_size_.
 
 The compression technique works as follows: the _buffer_ source string is supposed to be compressible, i.e., it is supposed to contain different segments which are identical
-(for example, because they are copies of ``"00"X``). The _buffer_ string will be broken in a series of substrings of size _chunk_size_, and, 
-instead of storing the substring itself, we will store a reference to the substring. Thus, when two identical substrings of _buffer_ are found, 
+(for example, because they are copies of ``"00"X``). The _buffer_ string will be broken in a series of substrings of size _chunk_size_, and,
+instead of storing the substring itself, we will store a reference to the substring. Thus, when two identical substrings of _buffer_ are found,
 the first copy is stored, only once, in an indexed "chunks" table, and its offset (divided by _chunk_size_) is stored
 in a separate "offsets" table. A reference is supposed to be much smaller than the subarray itself, and this makes for the desired compression.
 
@@ -40,14 +41,14 @@ __Note:__ To allow for maximum compression, we are supposing that the quantity o
 
 ![Diagram for the MultiStageTable [] method](img/MultiStageTable_index.svg)
 
-Returns the _n_-th element of the multi-stage table, when 0 < _n_ <= _table_size_, or a string containing _width_ copies of ``"00"X``, when _n_ > _table_size_. 
+Returns the _n_-th element of the multi-stage table, when 0 < _n_ <= _table_size_, or a string containing _width_ copies of ``"00"X``, when _n_ > _table_size_.
 Negative or non-numeric values of _n_ will raise a Syntax error.
 
 ### new
 
 ![Diagram for the MultiStageTable new class method](img/MultiStageTable_class_new.svg)
 
-Creates a new multi-stage table. This will be a two-stage table when _big_values_ is not specified or has the ``.Nil`` value (the default), 
+Creates a new multi-stage table. This will be a two-stage table when _big_values_ is not specified or has the ``.Nil`` value (the default),
 and a three-stage table when _big_values_ is specified as a non-nil value.
 
 The _offset_ and _chunks_ tables should have been created by the _compress_ class method; _chunk_size_, when specified, should be the same value

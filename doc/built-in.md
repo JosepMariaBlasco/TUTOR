@@ -1,13 +1,14 @@
 # Rexx built-in functions for Unicode: enhancements and modifications
 
 ```
-┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
-│ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
-│ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
-│ Copyright © 2023, 2024 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                     │
-│ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
-└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-``` 
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
+```
 
 This article concentrates on documenting enhancements and modifications to _existing_ built-in functions (BIFs). If you want to know about _new_ BIFs, please refer
 to the accompanying document [New built-in functions](new-functions.md).
@@ -26,9 +27,9 @@ These are described in an accompanying document, [_New types of strings_](string
 There is also a set of [new built-in functions](new-functions.md), described in another document.
 
 _Modifications_ become necessary when the behaviour of already existing mechanisms of Rexx
-has to be altered. In our case, for instance, we will expect that RXU programs know 
-how to manage Unicode strings, and thus bring the rich set of features of Rexx to the Unicode world. 
-But this will mean that _existing_ BIFs will have to operate with _new_ entities (i.e., Unicode strings) 
+has to be altered. In our case, for instance, we will expect that RXU programs know
+how to manage Unicode strings, and thus bring the rich set of features of Rexx to the Unicode world.
+But this will mean that _existing_ BIFs will have to operate with _new_ entities (i.e., Unicode strings)
 and, of course, they will most probably have to produce _new and different_ results when processing these new entities.
 
 We are then confronted to the task of enhancing, and in this sense _redefining_, existing BIFs.
@@ -75,9 +76,9 @@ to ``!Length(var)``.
 
 The _basic idea_ of such a substitution is very easy to explain, but, as it often happens with basic ideas, its concrete realization is nothing
 but trivial. You cannot simply pick every occurence of, say, ``"LENGTH"`` and blindly substitute it with ``"!LENGTH"``:
-that would unintendedly transform _method calls_, like ``n = var~length``, for example. 
+that would unintendedly transform _method calls_, like ``n = var~length``, for example.
 
-Ok, you could say: let's reduce ourselves to the case where a BIF name is followed by a left parentheses. 
+Ok, you could say: let's reduce ourselves to the case where a BIF name is followed by a left parentheses.
 But this leaves out ``CALL`` statements, and there are methods that have arguments anyway...
 
 The RXU Rexx Preprocessor for Unicode handles all these complexities, and many more, except one: if there is an internal routine
@@ -107,7 +108,7 @@ And this will be, unsurprisingly, the value of ``C2X("👨"T)``:
 C2X("👨"T) = "F0 9F 91 A8"X
 ```
 
-## CHARIN 
+## CHARIN
 
 ![Diagram for the CHARIN BIF](img/BIF_CHARIN.svg)
 
@@ -120,7 +121,7 @@ The CHARIN BIF is enhanced by supporting the _encoding_ options specified in the
 * The handling of ill-formed Unicode sequences depends on the value of the encoding _error_handling_.
     * When _error_handling_ is set to __REPLACE__ (the default), any ill-formed character will be replaced by the Unicode Replacement Character (U+FFFD).
     * When _error_handling_ is set to __SYNTAX__, a Syntax condition will be raised.
- 
+
 Character positioning is precautionarily disabled in some circumstances:
 * When the _encoding_ is a variable-length encoding.
 * When the _encoding_ is a fixed-length encoding, but a _target_ of __TEXT__ or __GRAPHEMES__ has been requested.
@@ -140,16 +141,16 @@ The CHAROUT BIF is enhanced by supporting the _encoding_ options specified in th
 * In both cases, the resulting string is then encoded using the _encoding_ specified in the STREAM OPEN command.
     * When __SYNTAX__ was specified as the stream _error_handling_ option, a Syntax error is raised in case an encoding error is found, or if the argument _string_ contains ill-formed UTF-8.
     * When __REPLACE__ was specified as the stream _error_handling_ option, ill-formed characters will be replaced by the Unicode Replacement Character (``U+FFFD``).
-      
+
 Character positioning is precautionarily disabled in some circumstances:
 * When the _encoding_ is a variable-length encoding.
 * When the _encoding_ is a fixed-length encoding, but a _target_ of __TEXT__ or __GRAPHEMES__ has been requested.
-  
+
 Character positioning at the start of the stream (that is, when _start_ is specified as __1__) will work unconditionally.
 
 Please refer to the accompanying document [_Stream functions for Unicode_](stream.md) for a comprehensive vision of the stream functions for Unicode-enabled streams.
 
-## CHARS 
+## CHARS
 
 ![Diagram for the CHARS BIF](img/BIF_CHARS.svg)
 
@@ -196,15 +197,15 @@ a CODEPOINTS string, or a GRAPHEMES or TEXT string, respectively.
 
 ![Diagram for the DATATYPE BIF](img/BIF_DATATYPE.svg)
 
-A new _type_ is admitted, __C__, for __uniCode__. 
+A new _type_ is admitted, __C__, for __uniCode__.
 ``Datatype(string, "C")`` returns __1__ if and only if _string_
 follows the Unicode string format, namely, if it consists of a blank-separated series of:
- 
+
 * Valid hexadecimal Unicode codepoints, like __61__, or __200D__, or __1F514__.
 * Valid hexadecimal Unicode codepoints prefixed with __U+__ or __u+__, like __u+61__, or __U+200D__, or __u+1F514__.
 * Names, alias or labels that designate a Unicode codepoint, enclosed between parentheses, like __(Latin small letter A)__,
   __(ZWJ)__, __(Bell)__, or __(&lt;Control-001d&gt;)__. Items enclosed between parentheses do not need to be separated by blanks.
- 
+
 __Examples.__
 
 ```
@@ -245,7 +246,7 @@ Length("👨‍👩"P)                                     -- 3 codepoints (Man 
 Length("👨‍👩"T)                                     -- 1 grapheme cluster
 ```
 
-## LINEIN 
+## LINEIN
 
 ![Diagram for the LINEIN BIF](img/BIF_LINEIN.svg)
 
@@ -256,14 +257,14 @@ The LINEIN BIF is enhanced by supporting the _encoding_ options specified in the
 * If an error is found in the decoding process, the behaviour of the LINEIN BIF is determined by the _error_handling_ method specified as an _encoding_ option of the STREAM OPEN command.
     * When __SYNTAX__ has been specified, a Syntax error is raised.
     * When __REPLACE__ has been specified, any character that cannot be decoded will be replaced with the Unicode Replacement character (``U+FFFD``).
- 
+
 ### Line-end handling
 
-_Preliminary note_. Rexx honors Windows line-end sequences (``"0D0A"X``) and Unix-like line-end characters (``"0A"X``), and it does so both in Windows and in Unix-like systems. 
+_Preliminary note_. Rexx honors Windows line-end sequences (``"0D0A"X``) and Unix-like line-end characters (``"0A"X``), and it does so both in Windows and in Unix-like systems.
 You can try it for yourself by creating a file that contains ``"31610d0a32610d33610a34610a0d3563"X`` and reading it line-by line both on Windows and on Linux.
 
-What happens when we are using a multi-byte encoding like UTF-16 or UTF-32? On the one hand, we will be getting false positives: ``"000A"X`` is a line end, 
-but ``"0Ahh"X`` is not, irrespective of the value of ``hh``. On the other hand, we will be getting lost sequences: a ``"000D"X`` that immediately preceeds a 
+What happens when we are using a multi-byte encoding like UTF-16 or UTF-32? On the one hand, we will be getting false positives: ``"000A"X`` is a line end,
+but ``"0Ahh"X`` is not, irrespective of the value of ``hh``. On the other hand, we will be getting lost sequences: a ``"000D"X`` that immediately preceeds a
 ``"000A"X`` should be removed by Rexx, but the current versions do not remove it.
 
 All these details have to be taken into account by this routine.
@@ -285,13 +286,13 @@ Please refer to the accompanying document [_Stream functions for Unicode_](strea
 The LINEOUT BIF is enhanced by supporting the _encoding_ options specified in the STREAM OPEN command.
 * When an _encoding_ has not been specified for stream _name_, the standard BIF is called.
 * When an _encoding_ has been specified for stream _name_, the _string_ is decoded to that _encoding_; additionally, the _encoding_ end-of-line sequence is used.
-  
+
 __Implementation restriction__. When line > 1, line positioning is not implemented in the following cases:
 * When the _encoding_ is a variable-length encoding.
 * When the length of the _encoding_ end-of-line character is greater than 1.
 * When the end-of-line character is not ``"0A"``.
 
-Some or all of these restrictions may be eliminated in a future release.  
+Some or all of these restrictions may be eliminated in a future release.
 
 Please refer to the accompanying document [_Stream functions for Unicode_](stream.md) for a comprehensive vision of the stream functions for Unicode-enabled streams.
 
@@ -305,8 +306,8 @@ __Implementation restriction__. ``LINES(name,"Count")`` will fail with a Syntax 
 * The _encoding_ is not fixed-length.
 * The length of the _encoding_ is greater than 1.
 * The _encoding_ end-of-line character is different from "0A"X.
-  
-Some or all of these restrictions may be eliminated in a future release.  
+
+Some or all of these restrictions may be eliminated in a future release.
 
 Please refer to the accompanying document [_Stream functions for Unicode_](stream.md) for a comprehensive vision of the stream functions for Unicode-enabled streams.
 
@@ -343,7 +344,7 @@ Length(Lower('Aİ'))                               -- 3
 ![Diagram for the POS BIF](img/BIF_POS.svg)
 
 Works as the standard BIF does, but it operates on bytes, codepoints or extended grapheme clusters depending of whether _haystack_ is a BYTES string,
-a CODEPOINTS string, or a GRAPHEMES or a TEXT string, respectively. If necessary, _needle_ is converted to the type of _haystack_. 
+a CODEPOINTS string, or a GRAPHEMES or a TEXT string, respectively. If necessary, _needle_ is converted to the type of _haystack_.
 If this conversion fails, a Syntax error is raised.
 
 __Examples:__
@@ -382,7 +383,7 @@ string = TEXT(string)
 Say string == REVERSE(string)                     -- 1, since LENGTH(string) == 1
 ```
 
-## RIGHT 
+## RIGHT
 
 ![Diagram for the RIGHT BIF](img/BIF_RIGHT.svg)
 
@@ -392,7 +393,7 @@ _pad_ is first converted, if necessary, to the type of _string_. If this convers
 
 ## STREAM
 
-The STREAM BIF is enhanced by adding _encoding_ options to the OPEN and QUERY commands. 
+The STREAM BIF is enhanced by adding _encoding_ options to the OPEN and QUERY commands.
 In this version, ENCODING should be the last option specified, and it can not be used with BINARY streams.
 
 ### New options for the OPEN command
@@ -422,7 +423,7 @@ The encoding options are as follows:
 * __QUERY ENCODING NAME__ returns the stream _encoding_ official name, or a null string if no _encoding_ was specified.
 * __QUERY ENCODING TARGET__ returns __TEXT__, __GRAPHEMES__ or __CODEPOINTS__, or a null string if no _encoding_ was specified.
 * __QUERY ENCODING ERROR__ returns __SYNTAX__ or __REPLACE__, or a null string if no _encoding_ was specified.
-* __QUERY ENCODING LASTERROR__ returns the value of the characters that could not be encoded or decoded by the last stream operation. __QUERY ENCODING LASTERROR__ will return a null string if no encoding or decoding 
+* __QUERY ENCODING LASTERROR__ returns the value of the characters that could not be encoded or decoded by the last stream operation. __QUERY ENCODING LASTERROR__ will return a null string if no encoding or decoding
   errors have been produced in the stream _name_, or when the last operation was successful; if there was an error in the last stream operation, the offending line will be returned.
 
 ### Modifications and restrictions to the SEEK and POSITION STREAM commands
@@ -438,7 +439,7 @@ Positioning the stream at the start of the stream with an offset of "=1" will un
 For line positioning, all the restrictions listed for character positioning apply, and, additionally:
 * When the _encoding_ specifies a line-end different from ``"0A"X``.
 
-Some or all of these restrictions may be eliminated in a future release.  
+Some or all of these restrictions may be eliminated in a future release.
 
 __Note.__ The source code for the enhanced stream operations can be found in the file Stream.cls.
 
@@ -471,7 +472,7 @@ as defined in rule __R1__ of section "Default Case Conversion" of [_The Unicode 
 > Map each character C in X to Uppercase_Mapping(C).
 
 Broadly speaking, ``Uppercase_Mapping(C)`` implements the ``Simple_Uppercase_Mapping`` property, as defined in the
-``UnicodeData.txt`` file of the Unicode Character Database (UCD), but a number of exceptions, defined in the ``SpecialCasing.txt`` 
+``UnicodeData.txt`` file of the Unicode Character Database (UCD), but a number of exceptions, defined in the ``SpecialCasing.txt``
 file of the UCD have to be applied. Additionally, the Iota-subscript, ``"0345"X``, receives a special treatment.
 
 __Examples.__

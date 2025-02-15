@@ -1,13 +1,10 @@
-/****************************************************************************************************************
-
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
 Call Time("R")
 
@@ -19,27 +16,27 @@ Call "rxu.rex" "basic.rxu"
 If result \== 0 Then Exit result
 
 Say Time("E") "Calling test.charin.rxu..."
-Call "rxu.rex" "test.charin.rxu auto" 
+Call "rxu.rex" "test.charin.rxu auto"
 If result \== 0 Then Exit result
 
 Say Time("E") "Calling test.charout.rxu..."
-Call "rxu.rex" "test.charout.rxu auto" 
+Call "rxu.rex" "test.charout.rxu auto"
 If result \== 0 Then Exit result
 
 Say Time("E") "Calling test.chars.rxu..."
-Call "rxu.rex" "test.chars.rxu auto" 
+Call "rxu.rex" "test.chars.rxu auto"
 If result \== 0 Then Exit result
 
 Say Time("E") "Calling test.linein.rxu..."
-Call "rxu.rex" "test.linein.rxu auto" 
+Call "rxu.rex" "test.linein.rxu auto"
 If result \== 0 Then Exit result
 
 Say Time("E") "Calling test.lines.rxu..."
-Call "rxu.rex" "test.lines.rxu auto" 
+Call "rxu.rex" "test.lines.rxu auto"
 If result \== 0 Then Exit result
 
 Say Time("E") "Calling test.unicode.property.rxu..."
-Call "rxu.rex" "test.unicode.property.rxu auto" 
+Call "rxu.rex" "test.unicode.property.rxu auto"
 If result \== 0 Then Exit result
 
 Say Time("E") "Calling test.utf8.rex..."
@@ -49,7 +46,7 @@ If result \== 0 Then Exit result
 Say Time("E") "Calling testrxu.rxu..."
 Call "rxu.rex" "../samples/testrxu.rxu auto"
 If result \== 0 Then Exit result
-Say 
+Say
 
 Say Time("E") "Calling samples/coercions.rxu..."
 Call "rxu.rex" "../samples/coercions.rxu auto"

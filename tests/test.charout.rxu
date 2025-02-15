@@ -1,13 +1,10 @@
-/****************************************************************************************************************
-
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
 --------------------------------------------------------------------------------
 -- This program is part of the automated test suite. See tests/test.all.rex   --
@@ -21,7 +18,7 @@ If tmpFile == "" Then Do
 End
 
 Say "Testing the CHAROUT BIF..."
-Say 
+Say
 Say "We will first test standard behaviour."
 
 Call CharOut tmpFile, "abcde" -- Write some chars
@@ -88,7 +85,7 @@ If lin \== "0000 0061 0000 0062 0000 0063 0000 0064 0000 0065 0000 0058"X Then D
   Call Exit 1
 End
 Say "Write, (failed) seek, write, close: PASSED!"
-Say 
+Say
 
 Call Stream tmpfile,"C","CLOSE"
 Call SysFileDelete tmpfile
@@ -120,10 +117,10 @@ Call Exit 0
 
 Test: Procedure
   Parse Arg fn, start, length, expected, syntax
-  
+
   Call CharOut , "Testing 'Call CharIn """fn"""," start"," length"'... "
-  
-  Signal On Syntax 
+
+  Signal On Syntax
   If length == "" Then Length = 1
   If Arg(2,"o") Then Call CharIn fn,      , length
   Else               Call CharIn fn, start, length
@@ -138,7 +135,7 @@ Test: Procedure
   End
   Say "FAILED!"
   Call Exit 1
-  
+
 Syntax:
   If \syntax Then Do
     Say "FAILED!"
@@ -149,7 +146,7 @@ Syntax:
   End
   Say "PASSED!"
   Return
- 
+
 Exit:
   Call Stream tmpfile,"C","CLOSE"
   Call SysFileDelete tmpfile
@@ -160,8 +157,8 @@ CreateFile: Procedure Expose tmpFile
   Use Strict Arg lines, eol
   Do counter c line Over lines
     Call CharOut tmpFile, line
-    -- No line-end after last line    
+    -- No line-end after last line
     If c < lines~items Then Call CharOut tmpFile, eol
   End
   Call Stream tmpFile,"C","CLOSE"
-Return  
+Return

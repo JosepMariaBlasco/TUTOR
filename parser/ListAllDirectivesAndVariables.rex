@@ -1,13 +1,10 @@
-/****************************************************************************************************************
-
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
 -- ListAllDirectivesAndVariables.rex
 -- =================================
@@ -25,7 +22,7 @@
 -- some sub-keywords, like "over", "value" or "with" may appear
 -- wrongly listed as variables. The same is true of function
 -- and method names.
--- 
+--
 -- Arguments: name -- The Rexx file to inspect
 --
 -- This program is a demo, and it includes no error handling.
@@ -59,21 +56,21 @@ Loop
   If Pos(token[class], interested) == 0 Then Iterate -- We are not interested in this token
   If token[class] == CONST_SYMBOL, token[subClass] \== ENVIRONMENT_SYMBOL Then Iterate -- Ditto
   Parse Value token[location] With line .         -- Retrieve the line number
-  
+
   -- Handle variables and environment symbols: collect them and their line numbers
-  If token[class] \== DIRECTIVE Then Do           
+  If token[class] \== DIRECTIVE Then Do
     name = Upper( token[value] )
     If vars.name = .nil Then vars.name = .Set~new -- Use a set, we don't want duplicates
     vars.name~put(line)                           -- Store the line number
     Iterate                                       -- Go for the new token
   End
-  
+
   -- That's a directive. If the "vars." stem has any tail, we have to list the variables
-  
-  tails = vars.~allIndexes~sort                   
+
+  tails = vars.~allIndexes~sort
   If tails~size > 0 Then Do
     Say "==============================================================================="
-    Say 
+    Say
     Say "  Variables and environment symbols        Lines"
     Say "  ---------------------------------        ------------------------------------"
     Do tail over tails
@@ -86,21 +83,21 @@ Loop
     Say
     vars. = .nil                                  -- reset the "vars." stem
   End
-  
+
   type = nameOf.[token[subclass]]                 -- And the directive type
   If \MoreTokens() Then Leave                     -- Next token is the name, if any
-  
+
   -- No error handling: we assume that there is a symbol or a string after a directive
   -- that is not ::Annotate or ::Options (these two don't [always] have a name).
   Select
-    When type == "ANNOTATE_DIRECTIVE" | type = "OPTIONS_DIRECTIVE" Then 
+    When type == "ANNOTATE_DIRECTIVE" | type = "OPTIONS_DIRECTIVE" Then
                                      name = ""
     When Token[class] == STRING Then name = '"'ChangeStr('"',Token[value],'""')'"'
     Otherwise                        name = Token[value]
   End
-  
+
   Say "At line" line":" type name
-  
+
 End
 
 Exit

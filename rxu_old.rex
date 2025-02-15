@@ -1,13 +1,10 @@
-/****************************************************************************************************************
-
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
 /**
  *
@@ -26,18 +23,18 @@
  *        <th class="col-xs-8">Description</th>
  *     </tr>
  *   </thead>
- *   <tr><td>00.1d <td>JMB <td>20230719 <td>Initial release                                       
- *   <tr><td>00.1e <td>JMB <td>20230721 <td>Fix error when "0A"X, "0D"X or "1F"X in U string      
- *   <tr><td>      <td>    <td>         <td>Add LOWER(n, length)                                  
- *   <tr><td>00.2  <td>JMB <td>20230725 <td>Add Upper                                             
- *   <tr><td>      <td>    <td>         <td>CHARACTER STRINGS are explicitly BYTES                 
- *   <tr><td>      <td>    <td>         <td>Issue warnings for unsupported BIFs                   
- *   <tr><td>      <td>    <td>         <td>Add support for OPTIONS instruction (see below)       
- *   <tr><td>      <td>    <td>         <td>Add support for OPTIONS DEFAULTSTRING                 
- *   <tr><td>00.2a <td>JMB <td>20230727 <td>U strings are Codepoints, not Text.     
- *   <tr><td>      <td>    <td>         <td>Bug when source contains X or B strings.              
- *   <tr><td>      <td>    <td>         <td>Change RUNES to CODEPOINTS                            
- *   <tr><td>00.3  <td>JMB <td>20230728 <td>Remove support for OPTIONS CONVERSIONS.               
+ *   <tr><td>00.1d <td>JMB <td>20230719 <td>Initial release
+ *   <tr><td>00.1e <td>JMB <td>20230721 <td>Fix error when "0A"X, "0D"X or "1F"X in U string
+ *   <tr><td>      <td>    <td>         <td>Add LOWER(n, length)
+ *   <tr><td>00.2  <td>JMB <td>20230725 <td>Add Upper
+ *   <tr><td>      <td>    <td>         <td>CHARACTER STRINGS are explicitly BYTES
+ *   <tr><td>      <td>    <td>         <td>Issue warnings for unsupported BIFs
+ *   <tr><td>      <td>    <td>         <td>Add support for OPTIONS instruction (see below)
+ *   <tr><td>      <td>    <td>         <td>Add support for OPTIONS DEFAULTSTRING
+ *   <tr><td>00.2a <td>JMB <td>20230727 <td>U strings are Codepoints, not Text.
+ *   <tr><td>      <td>    <td>         <td>Bug when source contains X or B strings.
+ *   <tr><td>      <td>    <td>         <td>Change RUNES to CODEPOINTS
+ *   <tr><td>00.3  <td>JMB <td>20230728 <td>Remove support for OPTIONS CONVERSIONS.
  *   <tr><td>      <td>    <td>20230728 <td>Change "C" suffix to "Y", as per Rony's suggestion
  *   <tr><td>      <td>    <td>20230804 <td>"U" strings are now BYTES
  *   <tr><td>      <td>    <td>         <td>Implement ENCODING in the STREAM BIF
@@ -75,7 +72,7 @@ End
 
 If Arg() == 0 Then Do
   Say .resources~help
-  Exit 
+  Exit
 End
 
 -- Process command options first
@@ -88,7 +85,7 @@ Do While Word(arguments,1)[1] == "-"
   Select Case Upper(option)
     When "H", "HELP" Then Do
       Say .resources~help
-      Exit 
+      Exit
     End
     When "K", "KEEP" Then keepOutputFile = 1
     When "NOKEEP"    Then keepOutputFile = 0
@@ -104,12 +101,12 @@ End
 
 arguments = Strip(arguments)
 
-quote? = arguments[1] 
+quote? = arguments[1]
 If Pos(quote?,"""'") > 0 Then
   Parse Value arguments With (quote?)filename(quote?)arguments
 Else
   Parse Var arguments filename arguments
-  
+
 arguments = Strip(arguments)
 
 -- Construct input and output file names
@@ -121,7 +118,7 @@ End
 Else If filename~caselessEndsWith(".rxu") Then Do
   inFile  = filename
   outFile = Left(filename,Length(filename)-3)"rex"
-End  
+End
 Else Do
   inFile  = filename
   outFile = filename".rex"
@@ -131,12 +128,12 @@ End
 
 If Stream(inFile,"c","query exists") == "" Then Do
   Call LineOut .StdOut, "File '"inFile"' does not exist."
-  Exit   
+  Exit
 End
 
 If .File~new(inFile)~isDirectory Then Do
   Call LineOut .StdOut, "'"inFile"' is a directory."
-  Exit   
+  Exit
 End
 
 Call Stream outFile,"c","close"
@@ -167,12 +164,12 @@ Exit saveRC
 
 Transform: Procedure Expose filename warnBIF interactive outIndex outArray
   Use Arg inFile, outFile
-  
+
   -- Implemented BIFs
   BIFs   = "C2X CHARIN CHAROUT CHARS CENTER CENTRE CHANGESTR COPIES DATATYPE LEFT "
   BIFs ||= "LENGTH LINEIN LINEOUT LINES LOWER POS REVERSE RIGHT STREAM SUBSTR "
   BIFs ||= "UPPER "
-  
+
   -- The following list is taken from rexxref, ooRexx 5.0
   Unsupported   = "ABBREV ABS ADDRESS ARG B2X BEEP BITAND BITOR BITXOR C2D "
   Unsupported ||= "COMPARE CONDITION "
@@ -183,21 +180,21 @@ Transform: Procedure Expose filename warnBIF interactive outIndex outArray
   Unsupported ||= "SETLOCAL SIGN SOURCELINE SPACE STRIP SUBWORD SYMBOL "
   Unsupported ||= "TIME TRACE TRANSLATE TRUNC USERID VALUE VAR VERIFY WORD "
   Unsupported ||= "WORDINDEX WORDLENGTH WORDPOS WORDS X2B X2C X2D XRANGE"
-  
+
   eol = .endOfLine
-  
+
   If inFile~isA(.Array) Then array = inFile
   Else Do
-    inFile = Qualify(infile)  
+    inFile = Qualify(infile)
     array = CharIn(inFile,,Chars(inFile))~makeArray
   End
-  
+
   t = .ooRexx.Unicode.Tokenizer~new(array,1)
-  
+
   Do tc over t~tokenClasses
    Call Value tc[1], tc[2]
   End
-  
+
   tokenNumber      = 0         -- (full) token no. in clause
   context          = "00"X     -- No context
   parseContext     = 0         -- Boolean: we are parsing a "parse" instruction
@@ -206,18 +203,18 @@ Transform: Procedure Expose filename warnBIF interactive outIndex outArray
   x                = .Stem~new -- Look-back. Avoids tests for .Nil
   nextToken        = .nil      -- Look-ahead
 
-  lastLine         = 1         -- 
-  
+  lastLine         = 1         --
+
   optionsContext   = 0
-  
+
   Do i = 1 By 1
-  
+
     Call GetAToken -- GetAToken returns "x" as a (full) token
 
     xClass = x[class]
-    
+
     Select Case xClass
-    
+
   When END_OF_SOURCE, SYNTAX_ERROR Then Leave
 
       -- Keep track of context and token number at the start of each (non-null) clause
@@ -227,10 +224,10 @@ Transform: Procedure Expose filename warnBIF interactive outIndex outArray
         subContext   = x[subClass]
         tokenNumber  = 1
       End
-      
+
       Otherwise tokenNumber += 1
     End
-    
+
     Select Case xClass
       -- Keep also track of expression nesting, but only when parsing a "parse" instruction
       When LPAREN   Then If parseContext Then openParens   += 1
@@ -249,7 +246,7 @@ Transform: Procedure Expose filename warnBIF interactive outIndex outArray
     -- and some other strings are part of expressions.
     If (,
          ( subcontext == PARSE_INSTRUCTION ) |,
-         ( subcontext == ARG_INSTRUCTION   ) |, 
+         ( subcontext == ARG_INSTRUCTION   ) |,
          ( subcontext == PULL_INSTRUCTION  ),
        ), tokenNumber == 1 Then Do
       parseContext      = 1
@@ -258,24 +255,24 @@ Transform: Procedure Expose filename warnBIF interactive outIndex outArray
       parseWithPending  = 0
     End
 
-    -- Is this a "Parse Value" instruction? Then there is a pending "With" 
-    If parseContext, subcontext == PARSE_INSTRUCTION, tokenNumber == 2, Upper( x[value] ) == "VALUE" Then 
+    -- Is this a "Parse Value" instruction? Then there is a pending "With"
+    If parseContext, subcontext == PARSE_INSTRUCTION, tokenNumber == 2, Upper( x[value] ) == "VALUE" Then
       parseWithPending = 1
-    
+
     -- Here is our "With". Resume normal "Parse" context
     If parseContext, parseWithPending, xClass = VAR_SYMBOL, Upper( x[VALUE] ) == "WITH" Then parseWithPending = 0
 
     -- Explore all the sub-tokens, if any
     If x~hasIndex(absorbed) Then y = x[absorbed]
     Else                         y = .array~of(x)
-            
-    Do counter count z over y      
-    
+
+    Do counter count z over y
+
       -- "Transformed" will be .nil if we leave the token as-is, or the new token otherwise
       transformed = .nil
-      
+
       Parse Value z[location] With line1 col1 line2 col2
-      
+
       -- Handling of strings
       If z[class] == STRING | z[class] == NUMBER Then Do
         Select Case context
@@ -320,17 +317,17 @@ Transform: Procedure Expose filename warnBIF interactive outIndex outArray
           val = Upper( z[value] )
           If WordPos(val, BIFs) > 0 Then transformed = '!'z[value]
           Else If WordPos(val, Unsupported) > 1 Then Do
-            If warnBIF Then 
+            If warnBIF Then
               Say "WARNING: Unsupported BIF '"val"' used in program '"filename"', line" Word(z[location],1)
           End
         End
       End
-           
+
       If x[class] == KEYWORD_INSTRUCTION, x[subClass] == OPTIONS_INSTRUCTION, x[cloneIndex] == count Then Do
         transformed = "Do; !Options ="
         optionsContext = 1
       End
-      
+
       Do i = lastLine To line1-1
         If interactive Then Do
           outIndex += 1
@@ -357,16 +354,16 @@ Transform: Procedure Expose filename warnBIF interactive outIndex outArray
     End
   End
   -- Final EOL
-  If \interactive Then 
+  If \interactive Then
     Call CharOut outFile, eol -- Sources are created in Windows
-  
-  If \interactive Then 
+
+  If \interactive Then
     Call Stream inFile ,"c","Close"
-  
+
   If x[class] == SYNTAX_ERROR Then Do
     line = x[line]
     Parse Value x["NUMBER"] With major"."minor
-    
+
     If inFile~isA(.Array) Then Do
       Say "  Oooops ! ... try again.    " x[message]
       Say "                             " x[secondaryMessage]
@@ -378,13 +375,13 @@ Transform: Procedure Expose filename warnBIF interactive outIndex outArray
     Say Right(line,6) "*-*" array[line]
     Say "Error" major "running" inFile "line" line":" x[message]
     Say "Error" major"."minor": " x[secondaryMessage]
-    
+
     Return -major
-    
+
   End
-  
+
 If interactive Then Return outArray
-  
+
 Return 0
 
 StringAsIs:
@@ -407,7 +404,7 @@ TypedStringOrNumber:
     val = x[value]
     If WordPos(val, BIFs) > 1 Then transformed = '"!'val'"'
     Else If WordPos(val, Unsupported) > 1 Then Do
-      If warnBIF Then 
+      If warnBIF Then
         Say "WARNING: Unsupported BIF '"val"' used in program '"filename"', line" Word(x[location],1)
       transformed = '"'val'"'
     End
@@ -422,7 +419,7 @@ TypedStringOrNumber:
     When GRAPHEMES_STRING   Then transformed =  concat'(Graphemes('array[line1][col1,col2-col1-1]'))'
     When TEXT_STRING        Then transformed =       concat'(Text('array[line1][col1,col2-col1-1]'))'
     When BYTES_STRING       Then transformed =      concat'(Bytes('array[line1][col1,col2-col1-1]'))'
-    When HEXADECIMAL_STRING Then transformed =      concat'(Bytes('array[line1][col1,col2-col1  ]'))' 
+    When HEXADECIMAL_STRING Then transformed =      concat'(Bytes('array[line1][col1,col2-col1  ]'))'
     When BINARY_STRING      Then transformed =      concat'(Bytes('array[line1][col1,col2-col1  ]'))'
     Otherwise                    transformed =        concat'(!DS('array[line1][col1,col2-col1  ]'))' -- Handles NUMBER too
   End
@@ -443,16 +440,16 @@ Return
 -- Implements lookahead
 NextToken:
   If nextToken~isNil Then nextToken = t~getFullToken
-Return nextToken  
+Return nextToken
 
 GenericCharout:
   If interactive Then Call InteractiveCharOut Arg(1)
   Else Call CharOut outFile, Arg(1)
-Return   
+Return
 
 InteractiveCharOut:
   outArray[outIndex] ||= Arg(1)
-Return  
+Return
 
 ::Resource Help
 rxu: A Rexx Preprocessor for Unicode
@@ -465,11 +462,11 @@ will be created, replacing an existing one, if any.
 
 Options (case insensitive):
 
-  -help, -h  : display help for the RXU command                          
-  -keep, -k  : do not delete the generated .rex file                     
-  -nokeep    : delete the generated .rex file (the default)              
+  -help, -h  : display help for the RXU command
+  -keep, -k  : do not delete the generated .rex file
+  -nokeep    : delete the generated .rex file (the default)
   -warnbif   : warn when using not-yet-migrated to Unicode BIFs
   -nowarnbif : do not warn when using not-yet-migrated-to-Unicode
                BIFs (the default)
-  
+
 ::END

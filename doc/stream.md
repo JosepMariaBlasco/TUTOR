@@ -1,13 +1,14 @@
 # Stream functions for Unicode
 
 ```
-┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
-│ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
-│ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
-│ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
-│ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
-└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-``` 
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
+```
 
 Several of the stream built-in functions have been rewritten to implement a basic level of Unicode support.
 
@@ -16,7 +17,7 @@ helper routines implementing Unicode-enabled streams.
 
 ### Backwards compatibility
 
-By default, stream operations continue to be byte-oriented, unless you specifically request otherwise. 
+By default, stream operations continue to be byte-oriented, unless you specifically request otherwise.
 This allows existing programs to continue to run unchanged.
 
 ### Unicode-enabled streams
@@ -27,11 +28,11 @@ A stream is said to be **Unicode-enabled** when an ``ENCODING`` is specified in 
    Call Stream filename, "Command", "Open read ENCODING UTF-8"
 ```
 
-When an encoding is specified, STREAM first checks that an encoding with that name is available in the system. 
-The name is looked for both as an official name, and as an alias. 
-If no encoding of that name can be found in the system, a syntax error is raised. 
-If the encoding can be found, the stream is open, in the mode specified by the options in the OPEN command, 
-and the encoding information gets associated with the stream until the stream is closed. 
+When an encoding is specified, STREAM first checks that an encoding with that name is available in the system.
+The name is looked for both as an official name, and as an alias.
+If no encoding of that name can be found in the system, a syntax error is raised.
+If the encoding can be found, the stream is open, in the mode specified by the options in the OPEN command,
+and the encoding information gets associated with the stream until the stream is closed.
 The official name of the encoding can be retrieved by using the ``QUERY ENCODING NAME`` command:
 
 ```
@@ -94,9 +95,9 @@ will be the original, undecoded, line or character sequence, as it appears in th
 
 ### Specifying the target type
 
-By default, Unicode-enabled streams return strings of type TEXT, composed of grapheme clusters automatically normalized to the NFC Unicode normalization form. 
+By default, Unicode-enabled streams return strings of type TEXT, composed of grapheme clusters automatically normalized to the NFC Unicode normalization form.
 You may prefer to manage Unicode string that are not automatically normalized; in that case, you should use GRAPHEMES as the target type.
-In some other occasions, you may prefer to manage CODEPOINTS strings. 
+In some other occasions, you may prefer to manage CODEPOINTS strings.
 You can specify the target type in the ``ENCODING`` section of your ``STREAM`` ``OPEN`` command:
 
 ```rexx
@@ -114,7 +115,7 @@ substitution is trivial to implement. On the other hand, if the target type is T
 ### Options order
 
 You can specify any of __TEXT__, __GRAPHEMES__, __CODEPOINTS__, __REPLACE__ and __SYNTAX__ in any order, but you can not specify
-contradictory options. For example, __TEXT SYNTAX__ is the same as __SYNTAX TEXT:: (and as __Syntax text__, since case is ignored), 
+contradictory options. For example, __TEXT SYNTAX__ is the same as __SYNTAX TEXT:: (and as __Syntax text__, since case is ignored),
 but __REPLACE SYNTAX__ will produce a syntax error.
 
 ### STREAM QUERY extensions
@@ -133,8 +134,8 @@ The ``STREAM`` BIF has been extended to support Unicode-enabled streams:
 ### Manual encoding and decoding
 
 Although the simplicity and ease of use of Unicode-enabled streams is very convenient, in some cases you may want to resort to manual
-encoding and decoding operations. For maximum control, you can use the new BIFs, ``ENCODE`` and ``DECODE`` (defined in 
-[Unicode.cls](https://htmlpreview.github.io/?https://github.com/RexxLA/rexx-repository/blob/master/ARB/standards/work-in-progress/unicode/UnicodeTools/doc/packages/Unicode.cls.html)).
+encoding and decoding operations. For maximum control, you can use the new BIFs, ``ENCODE`` and ``DECODE`` (defined in
+[Unicode.cls](https://rexx.epbcn.com/tutor/doc/packages/Unicode.cls.html)).
 
 ``DECODE`` can be used as an *encoding validator*:
 
@@ -173,10 +174,10 @@ The usual semantics of the stream BIFs can not be directly translated to the Uni
 Some of these limitations are due to the fact that the present implementation is a prototype, a proof-of-concept. Some other limitations
 are of a more serious nature.
 * _Variable-length encodings_. Managing character read/write positions for variable-length encodings, like UTF-8 and UTF-16, can
-  be prohibitive to the point of becoming impractical. The same can be said when the target type is TEXT (a "character", in this case, is 
+  be prohibitive to the point of becoming impractical. The same can be said when the target type is TEXT (a "character", in this case, is
   an [extended] grapheme cluster, and, in the limit case, an arbitrarily large cluster could substitute a one-byte, one-letter, ASCII grapheme.
   Operating systems don't have primitives to insert/delete bytes in the middle of a file, and, although this behaviour can certainly be simulated, it can be
   so, but at a extremely expensive price. It is highly dubious that such a functionality should be defined in the language, or implemented.
-* _In an encoding where the LF (``"0A"X``) character can be embedded in a normal character, like UTF-16 or UTF-32, ooRexx 
+* _In an encoding where the LF (``"0A"X``) character can be embedded in a normal character, like UTF-16 or UTF-32, ooRexx
   line count and line positioning can not be relied upon. This implementation does not go to the lengths of actively simulating line count
   and positioning, and therefore, it preventively disables such operations.

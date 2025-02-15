@@ -1,21 +1,22 @@
 # The encoding/decoding model
 
 ```
-┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
-│ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
-│ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
-│ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
-│ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
-└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-``` 
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
+```
 
 This directory contains the main encoding class, ``Encoding.cls``, and a growing set of particular encoding classes. The ['build'](.encoding/build/) subdirectory
 contains a set of utility routines to generate the translate tables used by some of the encoding classes.
 
-This file contains the documentation for the public Encoding class, contained in ``Encoding.cls``, 
+This file contains the documentation for the public Encoding class, contained in ``Encoding.cls``,
 and some guidelines to implement particular encodings, as subclasses of the Encoding class.
 
-Constants, registry methods and abstract methods will be implemented by the encoding subclasses. Utility methods 
+Constants, registry methods and abstract methods will be implemented by the encoding subclasses. Utility methods
 should be considered private documentation (i.e., not a public API).
 
 ## The Encoding class
@@ -39,15 +40,15 @@ The Encoding class and its subclasses operate under the following contract. All 
 
 ## Constants
 
-A number of abstract constants are specified by the Encoding class; they should be defined by each subclass. As ooRexx does not have abstract constants, those that do not have suitable defaults are defined as 
+A number of abstract constants are specified by the Encoding class; they should be defined by each subclass. As ooRexx does not have abstract constants, those that do not have suitable defaults are defined as
 abstract class attribute getters.
 
 ### aliases
 
 ```
-   ╭─────────╮             
+   ╭─────────╮
 ▸▸─┤ aliases ├──▸◂
-   ╰─────────╯  
+   ╰─────────╯
 ```
 
 In addition to a _name_, an encoding may also have a set of case-insensitive _aliases_. The encoding can be uniquely identified by its _name_, or by any of its _aliases_. The ``Encoding`` class keeps a registry of all the names and aliases of all encodings, takes care that there are no duplicates, and resolves names to their corresponding classes.
@@ -57,14 +58,14 @@ Aliases can specified either as a one-dimensional array of strings, or as a blan
 ### allowsurrogates
 
 ```
-   ╭─────────────────╮             
+   ╭─────────────────╮
 ▸▸─┤ allowsurrogates ├──▸◂
-   ╰─────────────────╯  
+   ╰─────────────────╯
 ```
 
 This is a boolean constant that determines if surrogates are allowed as Unicode values when decoding a string.
 
-The default is 0 (.false). A class may set this constant to 1 (.true) when it needs to manage ill-formed UTF-16 sequences, 
+The default is 0 (.false). A class may set this constant to 1 (.true) when it needs to manage ill-formed UTF-16 sequences,
 containing isolated or out-of-sequence surrogates. Such ill-formed strings are encountered in certain contexts, for example as Windows file names.
 
 WTF-8 and WTF-16 are encodings that need to set allowSurrogates to true.
@@ -72,23 +73,23 @@ WTF-8 and WTF-16 are encodings that need to set allowSurrogates to true.
 ### alternateEndOfLine
 
 ```
-   ╭────────────────────╮             
+   ╭────────────────────╮
 ▸▸─┤ alternateEndOfLine ├──▸◂
-   ╰────────────────────╯  
+   ╰────────────────────╯
 ```
 
-Some encodings and some implementations allow more than one form of end-of-line character. 
-For example, ooRexx recognizes both Windows end of line (CR LF) and Linux end of line (LF) sequences. 
+Some encodings and some implementations allow more than one form of end-of-line character.
+For example, ooRexx recognizes both Windows end of line (CR LF) and Linux end of line (LF) sequences.
 
-If _alternateEndOfLine_ is the null string, no alternate end of line sequence exists for this encoding. 
+If _alternateEndOfLine_ is the null string, no alternate end of line sequence exists for this encoding.
 If an alternate end of line sequence is otherwise specified, it has to verify that ``alternateEndOfLine~endsWith(endOfLine) = 1``.
 
 ### bytesPerChar
 
 ```
-   ╭──────────────╮             
+   ╭──────────────╮
 ▸▸─┤ bytesPerChar ├──▸◂
-   ╰──────────────╯  
+   ╰──────────────╯
 ```
 
 For fixed-length encodings, this is the length in bytes of one character. For variable-length encodings, this is the minimum length in bytes of a character.
@@ -96,9 +97,9 @@ For fixed-length encodings, this is the length in bytes of one character. For va
 ### endOfLine
 
 ```
-   ╭───────────╮             
+   ╭───────────╮
 ▸▸─┤ endOfLine ├──▸◂
-   ╰───────────╯  
+   ╰───────────╯
 ```
 
 Each encoding can define its own end-of-line sequence.
@@ -106,9 +107,9 @@ Each encoding can define its own end-of-line sequence.
 ### endOfLineAlignment
 
 ```
-   ╭────────────────────╮             
+   ╭────────────────────╮
 ▸▸─┤ endOfLineAlignment ├──▸◂
-   ╰────────────────────╯  
+   ╰────────────────────╯
 ```
 
 If endOfLineAlignment is > 1, ``endOfLine`` and ``alternateEndOfLine`` sequences will only be recognized when they are aligned to ``endOfLineAlignment`` bytes.
@@ -116,9 +117,9 @@ If endOfLineAlignment is > 1, ``endOfLine`` and ``alternateEndOfLine`` sequences
 ### isFixedLength
 
 ```
-   ╭───────────────╮             
+   ╭───────────────╮
 ▸▸─┤ isFixedLength ├──▸◂
-   ╰───────────────╯  
+   ╰───────────────╯
 ```
 
 An encoding can be __fixed-__ or __variable length__. For example, IBM850 is (1-byte) fixed length, as is UTF-32 (4-byte), but UTF-8 is variable-length (1 to 4 bytes).
@@ -128,9 +129,9 @@ The fact that an encoding is variable-length can have notable influence on the b
 ### maxBytesPerChar
 
 ```
-   ╭─────────────────╮             
+   ╭─────────────────╮
 ▸▸─┤ maxBytesPerChar ├──▸◂
-   ╰─────────────────╯  
+   ╰─────────────────╯
 ```
 
 For fixed-length encodings, this is the length in bytes of one character. For variable-length encodings, this is the maximum length in bytes of a character.
@@ -138,9 +139,9 @@ For fixed-length encodings, this is the length in bytes of one character. For va
 ### name
 
 ```
-   ╭──────╮             
+   ╭──────╮
 ▸▸─┤ name ├──▸◂
-   ╰──────╯  
+   ╰──────╯
 ```
 
 An encoding has an official _name_, a case-insensitive label by which it may be uniquely identified.
@@ -148,9 +149,9 @@ An encoding has an official _name_, a case-insensitive label by which it may be 
 ### useAlternateEndOfLine
 
 ```
-   ╭───────────────────────╮             
+   ╭───────────────────────╮
 ▸▸─┤ useAlternateEndOfLine ├──▸◂
-   ╰───────────────────────╯  
+   ╰───────────────────────╯
 ```
 
 For encodings where ``alternateEndOfLine \== ""``, determines whether ``endOfLine`` or ``alternateEndOfLine`` is used when writing a line to a stream.
@@ -194,7 +195,7 @@ The register itself is implemented and stored in a stem called ``Names.``, which
    ╰─────────────────────╯  └────────┘  ╰───╯
 ```
 
-Returns 0 if _string_ is a complete character, or the number of bytes remaining to get a complete character. For example, if the encoding is UTF-16 and the argument _string_ is a lone high surrogate, 
+Returns 0 if _string_ is a complete character, or the number of bytes remaining to get a complete character. For example, if the encoding is UTF-16 and the argument _string_ is a lone high surrogate,
 the _bytesNeededForChar_ method will return __2__.
 
 Please note that the fact that a character is complete does not imply that it is well-formed or valid.
@@ -211,7 +212,7 @@ Please note that the fact that a character is complete does not imply that it is
 
 This is an abstract method. All subclasses of ``.Encoding`` have to implement this method.
 
-This method takes a _string_ as an argument. The string is assumed to be encoded using the encoding implemented by the current class. A decoding operation is attempted. 
+This method takes a _string_ as an argument. The string is assumed to be encoded using the encoding implemented by the current class. A decoding operation is attempted.
 If the decoding operation is successful, a choice of Unicode versions of the string is returned, as determined by the optional second argument, _format_. By default, a UTF-8 version of the argument _string_ is returned.
 
 When _format_ is the null string (__""__), __UTF-8__, __UTF8__ or is not specified, a UTF-8 version of the argument _string_ is returned.
@@ -238,8 +239,8 @@ When _error_handling_ has the (case-insensitive) value of __SYNTAX__, a syntax e
 
 This is an abstract method. All subclasses of ``.Encoding`` have to implement this method.
 
-This method takes a _string_ as an argument. The _string_ can be an Unicode string, in which case an encoding operation is immediately attempted, 
-or it can be a non-unicode string (e.g., a BYTES string), in which case a normalization pass is attempted first. 
+This method takes a _string_ as an argument. The _string_ can be an Unicode string, in which case an encoding operation is immediately attempted,
+or it can be a non-unicode string (e.g., a BYTES string), in which case a normalization pass is attempted first.
 Normalizing consists of transforming the non-Unicode string into a Unicode string by promoting it to the CODEPOINTS class.
 
 Both operations may fail. The promotion, because _string_ contains ill-formed UTF-8, and the encoding, because the Unicode string cannot be encoded to this particular encoding.

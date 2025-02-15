@@ -1,13 +1,10 @@
-/****************************************************************************************************************
-
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
 -- Tough tests. Will take some few minutes
 
@@ -58,7 +55,7 @@ Do i = X2D("E0") To X2D("E0")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If c \== utf8~encode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -70,7 +67,7 @@ Do i = X2D("E1") To X2D("EC")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If c \== utf8~encode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -82,7 +79,7 @@ Do i = X2D("ED") To X2D("ED")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If c \ == utf8~encode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -94,7 +91,7 @@ Do i = X2D("EE") To X2D("EF")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If c \== utf8~encode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -108,9 +105,9 @@ Do i = X2D("F0") To X2D("F0")
         If c \== utf8~encode(c) Then Call Failed
         count += 1
       End
-    End  
+    End
   End
-End  
+End
 
 Call Tick "Encoding tests, F1..F3, 80..BF, 80..BF, 80..BF"
 
@@ -122,9 +119,9 @@ Do i = X2D("F1") To X2D("F3")
         If c \== utf8~encode(c) Then Call Failed
         count += 1
       End
-    End  
+    End
   End
-End 
+End
 
 Call Tick "Encoding tests, F0..F0, 90..8F, 80..BF, 80..BF"
 
@@ -136,9 +133,9 @@ Do i = X2D("F4") To X2D("F4")
         If c \== utf8~encode(c) Then Call Failed
         count += 1
       End
-    End  
+    End
   End
-End  
+End
 
 Call Tick "Encoding tests finished"
 Call Tick ""
@@ -221,7 +218,7 @@ Do i = X2D("E0") To X2D("E0")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If PASS == utf8~decode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -233,7 +230,7 @@ Do i = X2D("E0") To X2D("E0")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If FAIL == utf8~decode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -245,7 +242,7 @@ Do i = X2D("E0") To X2D("E0")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If PASS == utf8~decode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -275,7 +272,7 @@ Do i = X2D("E1") To X2D("EC")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If PASS == utf8~decode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -287,7 +284,7 @@ Do i = X2D("E1") To X2D("EC")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If FAIL == utf8~decode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -299,7 +296,7 @@ Do i = X2D("E1") To X2D("EC")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If PASS == utf8~decode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -331,7 +328,7 @@ Do i = X2D("ED") To X2D("ED")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If PASS == utf8~decode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -343,7 +340,7 @@ Do i = X2D("ED") To X2D("ED")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If FAIL == utf8~decode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -355,7 +352,7 @@ Do i = X2D("ED") To X2D("ED")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If PASS == utf8~decode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -387,7 +384,7 @@ Do i = X2D("EE") To X2D("EF")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If PASS == utf8~decode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -399,7 +396,7 @@ Do i = X2D("EE") To X2D("EF")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If FAIL == utf8~decode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -411,7 +408,7 @@ Do i = X2D("EE") To X2D("EF")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If PASS == utf8~decode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -443,7 +440,7 @@ Do i = X2D("F0") To X2D("F0")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If PASS == utf8~decode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -456,7 +453,7 @@ Do i = X2D("F0") To X2D("F0")
         c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))X2C(D2X(l))
         If PASS == utf8~decode(c) Then Call Failed
         count += 1
-      End    
+      End
     End
   End
 End
@@ -470,7 +467,7 @@ Do i = X2D("F0") To X2D("F0")
         c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))X2C(D2X(l))
         If FAIL == utf8~decode(c) Then Call Failed
         count += 1
-      End    
+      End
     End
   End
 End
@@ -485,9 +482,9 @@ Do i = X2D("F0") To X2D("F0")
         If PASS == utf8~decode(c) Then Call Failed
         count += 1
       End
-    End  
+    End
   End
-End  
+End
 
 Call Tick "Decoding tests, F0..F0, 90..BF, C0..FF (assert: FAIL)"
 
@@ -497,7 +494,7 @@ Do i = X2D("F0") To X2D("F0")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If PASS == utf8~decode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -529,9 +526,9 @@ Do i = X2D("F1") To X2D("F3")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If PASS == utf8~decode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
-End  
+End
 
 Call Tick "Decoding tests, F1..F3, 80..BF, 80..BF, 00..7F (assert: FAIL)"
 
@@ -557,9 +554,9 @@ Do i = X2D("F1") To X2D("F3")
         If FAIL == utf8~decode(c) Then Call Failed
         count += 1
       End
-    End  
+    End
   End
-End 
+End
 
 Call Tick "Decoding tests, F1..F3, 80..BF, 80..BF, C0..FF (assert: FAIL)"
 
@@ -583,9 +580,9 @@ Do i = X2D("F1") To X2D("F3")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If PASS == utf8~decode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
-End  
+End
 
 Call Tick "Decoding tests, F1..F3, C0..FF (assert: FAIL)"
 
@@ -615,7 +612,7 @@ Do i = X2D("F4") To X2D("F4")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If PASS == utf8~decode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -643,9 +640,9 @@ Do i = X2D("F4") To X2D("F4")
         If FAIL == utf8~decode(c) Then Call Failed
         count += 1
       End
-    End  
+    End
   End
-End  
+End
 
 Call Tick "Decoding tests, F4..F4, 80..8F, 80..BF, C0..FF (assert: FAIL)"
 
@@ -669,7 +666,7 @@ Do i = X2D("F4") To X2D("F4")
       c = X2C(D2X(i))X2C(D2X(j))X2C(D2X(k))
       If PASS == utf8~decode(c) Then Call Failed
       count += 1
-    End  
+    End
   End
 End
 
@@ -690,10 +687,10 @@ Exit 0
 
 Tick:
   Parse Value Time("E") WIth l"."r
-  If r == "" Then t = "0.000"  
+  If r == "" Then t = "0.000"
   Else            t = l"."Left(r,3)
   Say Right(t,10) myName Arg(1)
-Return  
+Return
 
 Failed:
   Say "Failed:" C2X(c) c

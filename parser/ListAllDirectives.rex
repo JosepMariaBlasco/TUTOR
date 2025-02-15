@@ -1,13 +1,10 @@
-/****************************************************************************************************************
-
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
 -- ListAllDirectives.rex
 -- =====================
@@ -15,8 +12,8 @@
 -- A demo program for the Rexx tokenizer, following a suggestion by Rony Flatscher
 --
 -- This program scans a ooRexx files and lists all its directives.
--- 
--- Items listed are (1) the line number, (2) the directive type and 
+--
+-- Items listed are (1) the line number, (2) the directive type and
 -- (3) the directive name, when applicable (::Annotate and ::Options do
 -- not have a clear notion of name).
 --
@@ -47,18 +44,18 @@ Loop
   Parse Value token[location] With line .         -- Retrieve the line number
   type = nameOf.[token[subclass]]                 -- And the directive type
   If \MoreTokens() Then Leave                     -- Next token is the name, if any
-  
+
   -- No error handling: we assume that there is a symbol or a string after a directive
   -- that is not ::Annotate or ::Options (these two don't [always] have a name).
   Select
-    When type == "ANNOTATE_DIRECTIVE" | type = "OPTIONS_DIRECTIVE" Then 
+    When type == "ANNOTATE_DIRECTIVE" | type = "OPTIONS_DIRECTIVE" Then
                                      name = ""
     When Token[class] == STRING Then name = '"'ChangeStr('"',Token[value],'""')'"'
     Otherwise                        name = Token[value]
   End
-  
+
   Say "At line" line":" type name
-  
+
 End
 
 Exit

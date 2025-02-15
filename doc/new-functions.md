@@ -1,13 +1,14 @@
 # New built-in functions
 
 ```
-┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
-│ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
-│ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
-│ Copyright © 2023, 2024 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                     │
-│ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
-└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-``` 
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
+```
 
 The Rexx Preprocessor for Unicode implements a series of _new_ built-in functions (BIFs). Follow [this link](built-in.md) if you want to read about modifications to _existing_ BIFs.
 
@@ -15,7 +16,7 @@ The Rexx Preprocessor for Unicode implements a series of _new_ built-in function
 
 ![Diagram for the BYTES BIF](img/BIF_BYTES.svg)
 
-Returns the _string_ converted to the BYTES format.  BYTES strings are composed of 8-bit bytes, and every character in the string can be an arbitrary 8-bit value, including binary data. 
+Returns the _string_ converted to the BYTES format.  BYTES strings are composed of 8-bit bytes, and every character in the string can be an arbitrary 8-bit value, including binary data.
 Rexx built-in-functions operate at the byte level, and no Unicode features are available (for example, LOWER operates only on the ranges ``"A".."Z"`` and ``"a".."z"``).
 This is equivalent to Classic Rexx strings, but with some enhancements. See the description of the BYTES class for details.
 
@@ -23,8 +24,8 @@ This is equivalent to Classic Rexx strings, but with some enhancements. See the 
 
 ![Diagram for the CODEPOINTS BIF](img/BIF_CODEPOINTS.svg)
 
-Converts _string_ to a CODEPOINTS string and returns it. CODEPOINTS strings are composed of Unicode codepoints, and every character in the string can be an arbitrary Unicode codepoint. 
-The argument _string_ has to contain well-formed UTF-8, or a Syntax error will be raised. When working with CODEPOINTS strings, Rexx built-in functions operate at the codepoint level, 
+Converts _string_ to a CODEPOINTS string and returns it. CODEPOINTS strings are composed of Unicode codepoints, and every character in the string can be an arbitrary Unicode codepoint.
+The argument _string_ has to contain well-formed UTF-8, or a Syntax error will be raised. When working with CODEPOINTS strings, Rexx built-in functions operate at the codepoint level,
 and can produce much richer results than when operating on BYTES strings.
 
 Please note that CODEPOINTS, GRAPHEMES and TEXT strings are guaranteed to contain well-formed UTF-8 sequences. To test if a string contains well-formed UTF-8, you can use the ``DECODE(string,"UTF-8")`` or ``UTF8(string)`` function calls.
@@ -108,7 +109,7 @@ ENCODE(string, "IBM1047","SYNTAX")                 -- The encoded string. If the
 
 ![Diagram for the GRAPHEMES BIF](img/BIF_GRAPHEMES.svg)
 
-Converts _string_ to a GRAPHEMES string and returns it. GRAPHEMES strings are composed of extended grapheme clusters, and every character in a GRAPHEMES string can be an arbitrary extended grapheme cluster. 
+Converts _string_ to a GRAPHEMES string and returns it. GRAPHEMES strings are composed of extended grapheme clusters, and every character in a GRAPHEMES string can be an arbitrary extended grapheme cluster.
 The argument _string_ has to contain well-formed UTF-8, or a Syntax error is raised. When working with GRAPHEMES strings, Rexx built-in functions operate at the extended grapheme cluster level, and can produce much richer results than when operating with BYTES or CODEPOINTS strings.
 
 Please note that CODEPOINTS, GRAPHEMES and TEXT strings are guaranteed to contain well-formed UTF-8 sequences. To test if a string contains well-formed UTF-8, you can use the ``DECODE(string,"UTF-8")`` or ``UTF8(string)`` function calls.
@@ -172,7 +173,7 @@ P2N("110000")  =  ""                          -- Out-of-range
 If you specify only _string_, it returns __TEXT__ when _string_ is a TEXT string,
 __GRAPHEMES__ when _string_ is a GRAPHEMES string,
 __CODEPOINTS__ when _string_ is a CODEPOINTS string, and __BYTES__ when _string_ is a BYTES string. If you specify _type_, it returns __1__ when
-_string_ matches the _type_. Otherwise, it returns __0__. The following are valid types: 
+_string_ matches the _type_. Otherwise, it returns __0__. The following are valid types:
 
 * __BYTES__. Returns __1__ if the string is a BYTES string.
 * __CODEPOINTS__. Returns __1__ if the string is a CODEPOINTS string.
@@ -183,7 +184,7 @@ _string_ matches the _type_. Otherwise, it returns __0__. The following are vali
 
 ![Diagram for the TEXT BIF](img/BIF_TEXT.svg)
 
-Converts _string_ to a TEXT string and returns it. TEXT strings are composed of extended grapheme clusters, and every character in a TEXT string can be an arbitrary extended grapheme cluster. 
+Converts _string_ to a TEXT string and returns it. TEXT strings are composed of extended grapheme clusters, and every character in a TEXT string can be an arbitrary extended grapheme cluster.
 The argument _string_ has to contain well-formed UTF-8, or a Syntax error is raised. When working with TEXT strings, Rexx built-in functions operate at the extended grapheme cluster level, and can produce much richer results than when operating with BYTES or CODEPOINTS strings.
 
 Please note that CODEPOINTS, GRAPHEMES and TEXT strings are guaranteed to contain well-formed UTF-8 sequences. To test if a string contains well-formed UTF-8, you can use the ``DECODE(string,"UTF-8")`` or ``UTF8(string)`` function calls.
@@ -335,7 +336,7 @@ For example, ``UTF8(string)`` returns __1__ when string contains well-formed UTF
 UTF8 always returns BYTES strings, except when it is used as a standalone routine (i.e., not in combination with ``Unicode.cls``, the RXU Rexx Preprocessor for Unicode, etc.), in which case it returns
 standard ooRexx strings.
 
-UTF8 performs a verification, at initialization time, to see whether .Bytes is a .Class, and, additionally, if .Bytes subclasses .String. If both conditions are met, UTF8 returns BYTES strings; 
+UTF8 performs a verification, at initialization time, to see whether .Bytes is a .Class, and, additionally, if .Bytes subclasses .String. If both conditions are met, UTF8 returns BYTES strings;
 if not, it returns standard ooRexx strings.
 
 ### Valid formats
@@ -354,7 +355,7 @@ UTF-8 and UTF-8Z do not allow sequences containing lone surrogates. All the othe
 
 To use UTF8 as a decoder, you have to specify a _target_ encoding. This argument accepts a single encoding, or a blank-separated set of tokens.
 
-Each token can have one of the following values: __UTF8__ (or __UTF-8__), __WTF8__ (or __WTF-8__), __UTF32__ (or __UTF-32__), __WTF32__ (or __WTF-32__). 
+Each token can have one of the following values: __UTF8__ (or __UTF-8__), __WTF8__ (or __WTF-8__), __UTF32__ (or __UTF-32__), __WTF32__ (or __WTF-32__).
 
 The W- forms of the encodings allow lone surrogates, while the U- do not.
 
@@ -401,8 +402,8 @@ UTF8("José")                                      -- 1
 UTF8("FF"X)                                       -- 0  ("FF"X is ill-formed)
 UTF8("00"X)                                       -- 1  (ASCII)
 UTF8("00"X, "UTF-8Z")                             -- 0  (UTF-8Z encodes "00"U differently)
-UTF8("C080"X)                                     -- 1  
-UTF8("C080"X, "UTF-8Z")                           -- 1  
+UTF8("C080"X)                                     -- 1
+UTF8("C080"X, "UTF-8Z")                           -- 1
 UTF8("C081"X, "UTF-8Z")                           -- 0  (Only "C080" is well-formed)
 UTF8("ED A0 80"X)                                 -- 0  (High surrogate)
 UTF8("ED A0 80"X,"WTF-8")                         -- 1  (UTF-8 allows surrogates)
@@ -414,7 +415,7 @@ UTF8("ED A0 BD ED B4 94"X,"CESU-8")               -- 1  ( ...it expects two thre
 
 __Error handling:__
 ```
-                                                  -- "C080" is ill-formed utf8                      
+                                                  -- "C080" is ill-formed utf8
 UTF8("C080"X,,utf8)                               -- "" (By default, UTF8 returns the null string when an error is found)
 UTF8("C080"X,,utf8, replace)                      -- "EFBFBD EFBFBD"X ("EFBFBD" is the Unicode Replacement character)
                                                   -- "C0"X is ill-formed, and then "80"X is ill-formed too
@@ -440,12 +441,12 @@ See [The Unicode® Standard. Version 15.0 – Core Specification](https://www.un
 >
 >| Code Points        | First Byte | Second Byte  | Third Byte | Fourth Byte |
 >| ------------------ | -----------| ------------ | ---------- | ----------- |
->| U+0000..U+007F     | 00..7F     |              |            |             | 
->| U+0080..U+07FF     | C2..DF     | 80..BF       |            |             | 
->| U+0800..U+0FFF     | E0         | ***A0***..BF | 80..BF     |             | 
->| U+1000..U+CFFF     | E1..EC     | 80..BF       | 80..BF     |             | 
->| U+D000..U+D7FF     | ED         | 80..***9F*** | 80..BF     |             | 
->| U+E000..U+FFFF     | EE..EF     | 80..BF       | 80..BF     |             | 
+>| U+0000..U+007F     | 00..7F     |              |            |             |
+>| U+0080..U+07FF     | C2..DF     | 80..BF       |            |             |
+>| U+0800..U+0FFF     | E0         | ***A0***..BF | 80..BF     |             |
+>| U+1000..U+CFFF     | E1..EC     | 80..BF       | 80..BF     |             |
+>| U+D000..U+D7FF     | ED         | 80..***9F*** | 80..BF     |             |
+>| U+E000..U+FFFF     | EE..EF     | 80..BF       | 80..BF     |             |
 >| U+10000..U+3FFFF   | F0         | ***90***..BF | 80..BF     | 80..BF      |
 >| U+40000..U+FFFFF   | F1..F3     | 80..BF       | 80..BF     | 80..BF      |
 >| U+100000..U+10FFFF | F4         | 80..***8F*** | 80..BF     | 80..BF      |
@@ -480,10 +481,10 @@ TRANSLATE tables, stored in the .local directory.
 | F1..F3       | "4b"X   | Four bytes, case (b)
 | F4           | "4c"X   | Four bytes, case (c)
 | F5..FF       | "I"     | Illegal byte
- 
+
 #### Table 3-7 (modified for UTF8Z)
 
-UTF-8Z is identical to UTF-8, with only one exception: "00"U is encoded using the overlong encoding "C080"X, so that a well-formed UTF-8Z string cannot contain NULL characters. 
+UTF-8Z is identical to UTF-8, with only one exception: "00"U is encoded using the overlong encoding "C080"X, so that a well-formed UTF-8Z string cannot contain NULL characters.
 Thus allows the continued use of old-style string C functions, which expect strings to be terminated by a NULL character.
 
 For UTF8Z, table 3-7 has to be modified in the following way:

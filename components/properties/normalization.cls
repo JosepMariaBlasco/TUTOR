@@ -1,78 +1,75 @@
-/****************************************************************************************************************
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
-
-/*****************************************************************************/
-/*                                                                           */
-/*  The UNICODE.NORMALIZATION class                                          */
-/*  ===============================                                          */
-/*                                                                           */
-/* See Unicode Standard Annex #15. UNICODE NORMALIZATION FORMS               */
-/* https://unicode.org/reports/tr15/                                         */
-/*                                                                           */
-/*  Version history                                                          */
-/*  ===============                                                          */
-/*                                                                           */
-/*  Vers. Aut Date     Comments                                              */
-/*  ----- --- -------- ----------------------------------------------------- */
-/*  00.4b JMB 20231014 Initial release. Implements toNFD                     */
-/*                                                                           */
-/*****************************************************************************/
+/******************************************************************************/
+/*                                                                            */
+/*  The UNICODE.NORMALIZATION class                                           */
+/*  ===============================                                           */
+/*                                                                            */
+/* See Unicode Standard Annex #15. UNICODE NORMALIZATION FORMS                */
+/* https://unicode.org/reports/tr15/                                          */
+/*                                                                            */
+/*  Version history                                                           */
+/*  ===============                                                           */
+/*                                                                            */
+/*  Vers. Aut Date     Comments                                               */
+/*  ----- --- -------- ------------------------------------------------------ */
+/*  00.4b JMB 20231014 Initial release. Implements toNFD                      */
+/*                                                                            */
+/******************************************************************************/
 
 .local~Unicode.Normalization = .Unicode.Normalization
 
 ::Class Unicode.Normalization Public SubClass Unicode.Property
 
-::Constant BinaryFile                           "normalization.bin"  
+::Constant BinaryFile                           "normalization.bin"
 
-::Constant PrimaryComposite                     "Unicode.PrimaryComposite.rex"  
+::Constant PrimaryComposite                     "Unicode.PrimaryComposite.rex"
 
 ::Constant Normalization.Properties             "Canonical_Decomposition_Mapping Canonical_Combining_Class ccc"
 
 --
 -- Activate is automatically called at the end of class initialization.
 --
- 
+
 ::Method Activate Class
   Expose canonicalCombiningClass Canonical_Decomposition_Mapping. canonicalDouble canonicalDoubleFirsts canonicalDoubleLasts CJK_2F800_2FA1D CJK_F900_FAD9 -
-         PrimaryCompositeLastSuffixes PrimaryCompositeFirstPrefixes PrimaryCompositeFirstSuffix  
+         PrimaryCompositeLastSuffixes PrimaryCompositeFirstPrefixes PrimaryCompositeFirstSuffix
 
   -- Inform the registry that we will be handling these properties and functions
-  
+
   super~registerFunctions(  "toNFC toNFD", self )
   super~registerProperties( self~Normalization.Properties, self )
-      
+
   If .Unicode.Buildtime \== 1 Then Do
-    super~loadPersistent( super~BinFile.Qualify( self~binaryFile ) ) 
-    
+    super~loadPersistent( super~BinFile.Qualify( self~binaryFile ) )
+
     table1                  = super~getPersistent("UnicodeData.normalization.canonicalDouble.Table1")
     table2                  = super~getPersistent("UnicodeData.normalization.canonicalDouble.Table2")
-    
+
     -- Chunk size should be coordinated with the build utility of the same name in /components/bin/build
-    
+
     canonicalDouble         = .MultiStageTable~new(table1,table2,,128,2)
 
     table1                  = super~getPersistent("UnicodeData.normalization.canonicalCombiningClass.Table1")
     table2                  = super~getPersistent("UnicodeData.normalization.canonicalCombiningClass.Table2")
-    
+
     -- Chunk size should be coordinated with the build utility of the same name in /components/bin/build
-    
+
     canonicalCombiningClass = .MultiStageTable~new(table1,table2, ,64)
-    
+
     canonicalDoubleFirsts   = super~getPersistent("UnicodeData.normalization.canonicalDoubleFirsts")
     canonicalDoubleLasts    = super~getPersistent("UnicodeData.normalization.canonicalDoubleLasts")
     CJK_2F800_2FA1D         = super~getPersistent("UnicodeData.normalization.CJK_2F800_2FA1D")
     CJK_F900_FAD9           = super~getPersistent("UnicodeData.normalization.CJK_F900_FAD9")
 
   End
-  
+
 -- Canonical decomposition, singletons
 --
 -- In the 15.0 version of UnicodeData.txt, most canonical decomposable
@@ -88,8 +85,8 @@
 -- 2126, 212A, 212B;
 -- 2329, 232A.
 --
---  
-  
+--
+
   Canonical_Decomposition_Mapping.    = "Same"
   Canonical_Decomposition_Mapping.03  = "03"
   Canonical_Decomposition_Mapping.1F  = "1F"
@@ -105,7 +102,7 @@
   Canonical_Decomposition_Mapping.2F8 = "CJK_2FXXX"
   Canonical_Decomposition_Mapping.2F9 = "CJK_2FXXX"
   Canonical_Decomposition_Mapping.2FA = "CJK_2FXXX"
-  
+
   --
   -- Primary Composite, an ordered pair <first, last>
   -- last: lastPrefix*256 + lastSuffix
@@ -141,7 +138,7 @@
   --    Byte  03: Number ("N") of different "first" suffixes
   --    Bytes 04 to 04+N-1: "first" suffixes (1 byte each)
   --          04+N to 04+N + 3*N: the corresponding composites (3 bytes each)
-  -- When byte 02 is "02"X, then: 
+  -- When byte 02 is "02"X, then:
   --    Byte  03: Number ("N") of different "first" suffixes
   --    Bytes 04 to 04+N-1: "first" suffixes (1 byte each)
   --          04+N to 04+N + 3*N: the corresponding composites (3 bytes each)
@@ -168,47 +165,47 @@
   Do i = 1 To 0119~x2d
     PrimaryCompositeLastSuffixes[i] =  ""
   End
-  
-  Call ( super~BinFile.Qualify( self~PrimaryComposite ) ) PrimaryCompositeLastSuffixes, PrimaryCompositeFirstPrefixes, PrimaryCompositeFirstSuffix    
-      
+
+  Call ( super~BinFile.Qualify( self~PrimaryComposite ) ) PrimaryCompositeLastSuffixes, PrimaryCompositeFirstPrefixes, PrimaryCompositeFirstSuffix
+
 ::Method ccc                       Class
-  Forward Message "Canonical_Combining_Class" 
+  Forward Message "Canonical_Combining_Class"
 ::Method Canonical_Combining_Class Class
   Expose canonicalCombiningClass
 
   Use Strict Arg code
-  
+
   If code~startsWith("00"X) Then code = C2X(code)
-  
+
   code = NiceCode(Upper(code))
-    
+
   Return X2D(C2X( canonicalCombiningClass[ X2D(code) ] ))
-  
-NiceCode: 
+
+NiceCode:
   Arg aCode
   aCode = Strip(aCode,"L",0)
   If Length(aCode) < 4 Then aCode = Right(aCode,4,0)
-Return aCode  
+Return aCode
 
 ::Method Canonical_Composition32           Class
-  Expose PrimaryCompositeLastSuffixes PrimaryCompositeFirstPrefixes PrimaryCompositeFirstSuffix  
+  Expose PrimaryCompositeLastSuffixes PrimaryCompositeFirstPrefixes PrimaryCompositeFirstSuffix
   Use Strict Arg utf32
-    
+
   lutf32 = Length(utf32)
-  
+
   -- Empty string, or only one char? Nothing to do.
   If lutf32 <= 4 Then Return utf32
-    
+
   -- Hangul constants
-  NCount  = 588 
+  NCount  = 588
   SCount  = 11172
   TCount  = 28
   SBase   = AC00~x2d
   TBase   = 11A7~x2d
-  
+
   i = 1
   Loop Label StarterLoop i = i By 4
-  
+
     -- p. 136 "D107 Starter: Any code point (assigned or not) with combining class of zero (ccc = 0)".
     --
     -- Have to use .Unicode instead of Unicode because the loading order of our packages doesn't make
@@ -216,18 +213,18 @@ Return aCode
     Do i = i To lutf32 By 4 Until .Unicode[starter,"Property","ccc"] == 0
       starter = utf32[i,4]
     End
-    
+
     maxCCC = 0
-    
+
     -- Start looking at char after starter
     j = i + 4
-    
+
     Loop Label LastLoop
       -- No starter found, or starter is last character in string
       If j > lutf32 Then Return utf32
-    
+
       last = utf32[j,4]
-  
+
       -- Hangul: Case LV + T
       If starter >>= "0000 AC00"X, starter <<= "0000 D7A3"X Then Do
         LV = (starter~c2x~right(4)~x2d - AC00~x2d) // 28
@@ -239,7 +236,7 @@ Return aCode
           Iterate StarterLoop
         End
       End
-      
+
       -- Hangul starter (L)...
       If starter >>= "0000 1100"X, starter <<= "0000 1112"X Then Do
         -- Hangul L+V...
@@ -266,7 +263,7 @@ Return aCode
         End
         Iterate StarterLoop
       End
-  
+
       newCCC = .Unicode[last,"Property", "ccc"]
       If 0 < newCCC Then Do
         If newCCC < maxCCC      Then Iterate StarterLoop -- Look for next starter
@@ -279,8 +276,8 @@ Return aCode
       Else If maxCCC > 0 Then Do
         i = j - 4
         Iterate StarterLoop
-      End      
- 
+      End
+
       subst = PrimaryComposite(starter, last)
       If subst == "" Then Do
         If newCCC == 0 Then Do
@@ -304,16 +301,16 @@ Return aCode
 
 PrimaryComposite: Procedure Expose PrimaryCompositeLastSuffixes PrimaryCompositeFirstPrefixes PrimaryCompositeFirstSuffix
   Use Strict Arg first, last
-  
+
   -- Calculate prefix = last % 256
   prefix      = last[1,3]
-  
+
   -- Case prefix = 0 handled manually, to avoid syntax error
   If prefix  == "000000"X Then Return ""
-  
+
   -- Heuristics
   If prefix  >> "000119"X Then Return ""
-  
+
   -- Calculate prefix = last % 256, and use if as an index
   suffixes    = PrimaryCompositeLastSuffixes[ prefix~c2x~x2d ]
 
@@ -321,17 +318,17 @@ PrimaryComposite: Procedure Expose PrimaryCompositeLastSuffixes PrimaryComposite
   If suffixes  == "" Then index2 = -1
   -- otherwise, suffixes[2..*] contains possible suffixes
   Else index2     = Pos(last[4], suffixes, 2) - 1
-  
+
   -- index2 == -1 means that this "last" forms no suitable pair
   If index2 == -1 Then Return ""
-  
+
   -- The first byte of "suffixes" is an index we will be using
   index1       = suffixes[1]~c2x~x2d
-  
+
   -- ccc + class + first suffixes
   suffixes     = PrimaryCompositeFirstPrefixes[index1][index2]
   class        = suffixes[2]
-  
+
   Select
     -- There are suitable "first" values with different prefixes
     -- Heuristics: all these prefixes are in the "00"X.."FF"X range
@@ -358,20 +355,20 @@ PrimaryComposite: Procedure Expose PrimaryCompositeLastSuffixes PrimaryComposite
   End
 
 0102Common:
-  pos      = Pos(first[4], suffixes,3, (Length(suffixes)-2)/4) - 2  
+  pos      = Pos(first[4], suffixes,3, (Length(suffixes)-2)/4) - 2
   If pos   == -2 Then Return ""
   Return "00"X || SubStr(suffixes, 2 + (Length(suffixes)-2)/4 + (pos-1)* 3 + 1, 3)
-  
+
 ::Method Canonical_Decomposition_Mapping   Class
   Expose Canonical_Decomposition_Mapping. canonicalDouble canonicalDoubleFirsts canonicalDoubleLasts CJK_2F800_2FA1D CJK_F900_FAD9
-  
+
   Use Strict Arg code
-  
+
   If code~startsWith("00"X) Then code = C2X(code)
   code = NiceCode(Upper(code))
-  
+
   n   = X2D(code)
-  
+
   -- Non-singletons
   bin = canonicalDouble[n]~c2x~x2d
   If bin \== 0 Then Do
@@ -381,15 +378,15 @@ PrimaryComposite: Procedure Expose PrimaryCompositeLastSuffixes PrimaryComposite
     last  = C2X(canonicalDoubleLasts[ 1-3+lastOffset *3,3])
     Return NiceCode(first) NiceCode(last)
   End
-  
+
   co = code~left(Length(code)-2)
   Signal (Canonical_Decomposition_Mapping.co)
 
-NiceCode: 
+NiceCode:
   Arg aCode
   aCode = Strip(aCode,"L",0)
   If Length(aCode) < 4 Then aCode = Right(aCode,4,0)
-Return aCode  
+Return aCode
 
 "Same": Return code
 
@@ -408,7 +405,7 @@ Return aCode
   End
 
 1F:
-  If code[3,2] << "71" Then 
+  If code[3,2] << "71" Then
                    Return code
   Select Case code
     When 1F71 Then Return 03AC
@@ -430,9 +427,9 @@ Return aCode
     When 1FEF Then Return 0060
     When 1FF9 Then Return 038C
     When 1FFB Then Return 038F
-    When 1FFD Then Return 00B4  
+    When 1FFD Then Return 00B4
     Otherwise      Return code
-  End  
+  End
 
 20:
   Select Case code
@@ -455,7 +452,7 @@ Return aCode
     When 232A Then Return 3009
     Otherwise      Return code
   End
-    
+
 -- There are no decompositions for codepoints D7xx higher than D7A3
 "Hangul_Syllabe":
   If code >> D7A3 Then Return code
@@ -468,7 +465,7 @@ Return aCode
   VCount    = 21
   TCount    = 28
   NCount    = 588   -- (VCount * TCount)
-  SCount    = 11172 -- (LCount * NCount)  
+  SCount    = 11172 -- (LCount * NCount)
   SIndex    = code~x2d - SBase
   LIndex    = (SIndex %  NCount)
   VIndex    = (SIndex // NCount) % TCount
@@ -478,13 +475,13 @@ Return aCode
     Return  D2X(SBase + LVIndex) D2X(TBase + TIndex)
   End
   Return    D2X(LBase + LIndex) D2X(VBase + VIndex)
-    
+
 -- There are no decompositions for codepoints 2FAxx higher than 2FA1D
 -- All the codepoints have a decomposition
 CJK_2FXXX:
   If code >> 2FA1D Then Return code
   Return NiceCode(CJK_2F800_2FA1D[3*(X2D(code)-X2D(2F800))+1,3]~C2X)
-  
+
 -- There are no decompositions for codepoints FAxx higher than FAD9
 -- Not all the codepoints have a decomposition
 CJK_FXXX:
@@ -499,11 +496,11 @@ CJK_FXXX:
 
 ::Method Canonical_Decomposition_Mapping32 Class
   Expose Canonical_Decomposition_Mapping. canonicalDouble canonicalDoubleFirsts canonicalDoubleLasts CJK_2F800_2FA1D CJK_F900_FAD9
-  
+
   Use Strict Arg code
-  
---If code == "0001 F071"X Then Trace ?a  
-  
+
+--If code == "0001 F071"X Then Trace ?a
+
   xcode = Substr(code~c2x,3)
   If Length(xcode) > 4, xcode[1] == "0" Then xcode = Substr(xcode,2)
   If Length(xcode) > 4, xcode[1] == "0" Then xcode = Substr(xcode,2)
@@ -517,7 +514,7 @@ CJK_FXXX:
     last  = canonicalDoubleLasts[ 1-3+lastOffset *3,3]
     Return "00"X || first || "00"X || last
   End
-  
+
   co = xcode~left(Length(xcode)-2)
   Signal (Canonical_Decomposition_Mapping.co)
 
@@ -560,9 +557,9 @@ CJK_FXXX:
     When "EF"X   Then Return "0000 0060"X
     When "F9"X   Then Return "0000 038C"X
     When "FB"X   Then Return "0000 038F"X
-    When "FD"X   Then Return "0000 00B4"X  
+    When "FD"X   Then Return "0000 00B4"X
     Otherwise         Return code
-  End  
+  End
 
 20:
   Select Case code[4]
@@ -585,7 +582,7 @@ CJK_FXXX:
     When "2A"X   Then Return "0000 3009"X
     Otherwise         Return code
   End
-    
+
 -- There are no decompositions for codepoints D7xx higher than D7A3
 "Hangul_Syllabe":
   If code >> "0000 D7A3"X Then Return code
@@ -598,7 +595,7 @@ CJK_FXXX:
   VCount    = 21
   TCount    = 28
   NCount    = 588   -- (VCount * TCount)
-  SCount    = 11172 -- (LCount * NCount)  
+  SCount    = 11172 -- (LCount * NCount)
   SIndex    = xcode~x2d - SBase
   LIndex    = (SIndex %  NCount)
   VIndex    = (SIndex // NCount) % TCount
@@ -608,13 +605,13 @@ CJK_FXXX:
     Return  X2C(D2X(SBase + LVIndex,8))X2C(D2X(TBase + TIndex,8))
   End
   Return    X2C(D2X(LBase + LIndex,8))X2C(D2X(VBase + VIndex,8))
-    
+
 -- There are no decompositions for codepoints 2FAxx higher than 2FA1D
 -- All the codepoints have a decomposition
 CJK_2FXXX:
   If code >> "0002 FA1D"X Then Return code
   Return "00"X||CJK_2F800_2FA1D[3*(X2D(C2X(code))-X2D(2F800))+1,3]
-  
+
 -- There are no decompositions for codepoints FAxx higher than FAD9
 -- Not all the codepoints have a decomposition
 CJK_FXXX:
@@ -624,30 +621,30 @@ CJK_FXXX:
   Return "00"X||decomp
 
 
---------------------------------------------------------------------------------    
+--------------------------------------------------------------------------------
 -- Method toNFC                                                               --
---------------------------------------------------------------------------------    
-    
+--------------------------------------------------------------------------------
+
 ::Method toNFC Class
   Use Strict arg string, failingPos = 1
   If \string~isA(.Codepoints) Then string = .Codepoints~new( string )
-  
+
   -- TODO Optimize that, but beware of loops:
   -- If string~isNFC Then Return string
-    
+
   nfd32 = .Codepoints~new( self~toNFD(string) )~c2u("UTF32")
-  
+
   nfc32 = self~Canonical_Composition32( .MutableBuffer~new(nfd32) )
-  
+
   utf8 = .MutableBuffer~new -- Will hold the result
-  
+
   Do i = 1 To nfc32~length By 4
     code = nfc32[i+1,3]~c2x
     If code << "010000" Then code = Substr(code,3)
     Else If code << "100000" Then code = Substr(code,2)
     utf8~append(UTF8( code ))
   End
-    
+
   Return string~class~new(utf8~string)
 
 UTF8: Procedure
@@ -662,31 +659,31 @@ UTF8: Procedure
     When n <= 65535 Then Return X2C(B2X("1110"Left(b,4)"10"SubStr(b,5,6)"10"Right(b,6)))
     Otherwise            Return X2C(B2X("11110"SubStr(b,4,3) "10"SubStr(b,7,6) "10"SubStr(b,13,6) "10"Right(b,6)))
   End
- 
---------------------------------------------------------------------------------    
+
+--------------------------------------------------------------------------------
 -- Method toNFD                                                               --
---------------------------------------------------------------------------------    
-    
+--------------------------------------------------------------------------------
+
 ::Method toNFD Class
   Use Strict arg string, failingPos = 1
-  
+
   -- TODO: Take a look at that:
   --
   -- "14.1.3 Optimizing Tables for NFD Quick Check
-  -- "The values of the Canonical_Combining_Class property are constrained by the character encoding stability guarantees to the range 0..254; 
-  --  the value 255 will never be assigned for a Canonical_Combining_Class value. Because of this constraint, implementations can make use of 255 
-  --  as an implementation-specific value for optimizing data tables. For example, one can do a fast and compact table for implementing isNFD(x) 
+  -- "The values of the Canonical_Combining_Class property are constrained by the character encoding stability guarantees to the range 0..254;
+  --  the value 255 will never be assigned for a Canonical_Combining_Class value. Because of this constraint, implementations can make use of 255
+  --  as an implementation-specific value for optimizing data tables. For example, one can do a fast and compact table for implementing isNFD(x)
   --  by using the value 255 to represent NFKC_QC=No."
   --  (https://www.unicode.org/reports/tr15/tr15-53.html)
-    
+
   If \string~isA(.Codepoints) Then string = CODEPOINTS(string)
-  
+
   If string~isNFD Then Return string
-  
+
   utf32 = string~c2u("UTF32")
-  
+
   buffer = .Array~new
-  
+
   Do i = 1 To Length(utf32) By 4
     code = NiceCode(C2X(utf32[i,4]))
     codes = self~Canonical_Decomposition_Mapping(code)
@@ -705,22 +702,22 @@ UTF8: Procedure
       Parse Value codes rest With first rest
     End
   End
-  
+
   -- Cfr. https://www.unicode.org/versions/Unicode15.0.0/UnicodeStandard-15.0.pdf, p. 137
   --
   -- D108 Reorderable pair: Two adjacent characters A and B in a coded character sequence
-  -- <A, B> are a Reorderable Pair if and only if ccc(A) > ccc(B) > 0. 
+  -- <A, B> are a Reorderable Pair if and only if ccc(A) > ccc(B) > 0.
   --
   -- D109 Canonical Ordering Algorithm: In a decomposed character sequence D, exchange
   -- the positions of the characters in each Reorderable Pair until the sequence contains
-  -- no more Reorderable Pairs. 
-  
+  -- no more Reorderable Pairs.
+
   Do i = 2 To buffer~items
     A = buffer[i - 1]
     B = buffer[i    ]
-    cccB = self~Canonical_Combining_Class(B) 
+    cccB = self~Canonical_Combining_Class(B)
     If cccB \== 0 Then Do
-      cccA = self~Canonical_Combining_Class(A) 
+      cccA = self~Canonical_Combining_Class(A)
       If cccA > cccB Then Do
         temp = buffer[i-1]
         buffer[i-1] = buffer[i]
@@ -730,21 +727,21 @@ UTF8: Procedure
       End
     End
   End
-  
+
   utf8 = .MutableBuffer~new -- Will hold the result
-  
+
   Do i = 1 To buffer~items
     utf8~append(UTF8(buffer[i]))
   End
-      
+
 Return string~class~new( utf8~string )
- 
-NiceCode: 
+
+NiceCode:
   Arg aCode
   aCode = Strip(aCode,"L",0)
   If Length(aCode) < 4 Then aCode = Right(aCode,4,0)
-Return aCode  
-  
+Return aCode
+
 UTF8: Procedure
   Use Arg code
   n = X2D(code)
@@ -759,15 +756,15 @@ UTF8: Procedure
   End
 
 
---------------------------------------------------------------------------------    
+--------------------------------------------------------------------------------
 -- Method toNFD32                                                             --
---------------------------------------------------------------------------------    
-    
+--------------------------------------------------------------------------------
+
 ::Method toNFD32 Class
   Use Strict arg utf32
-    
+
   buffer = .MutableBuffer~new
-  
+
   Do i = 1 To Length(utf32) By 4
     code = NiceCode(C2X(utf32[i,4]))
     codes = self~Canonical_Decomposition_Mapping(code)
@@ -786,22 +783,22 @@ UTF8: Procedure
       Parse Value codes rest With first rest
     End
   End
-  
+
   -- Cfr. https://www.unicode.org/versions/Unicode15.0.0/UnicodeStandard-15.0.pdf, p. 137
   --
   -- D108 Reorderable pair: Two adjacent characters A and B in a coded character sequence
-  -- <A, B> are a Reorderable Pair if and only if ccc(A) > ccc(B) > 0. 
+  -- <A, B> are a Reorderable Pair if and only if ccc(A) > ccc(B) > 0.
   --
   -- D109 Canonical Ordering Algorithm: In a decomposed character sequence D, exchange
   -- the positions of the characters in each Reorderable Pair until the sequence contains
-  -- no more Reorderable Pairs. 
-  
+  -- no more Reorderable Pairs.
+
   Do i = 2 To buffer~items
     A = buffer[i - 1]
     B = buffer[i    ]
-    cccB = self~Canonical_Combining_Class(B) 
+    cccB = self~Canonical_Combining_Class(B)
     If cccB \== 0 Then Do
-      cccA = self~Canonical_Combining_Class(A) 
+      cccA = self~Canonical_Combining_Class(A)
       If cccA > cccB Then Do
         temp = buffer[i-1]
         buffer[i-1] = buffer[i]
@@ -811,21 +808,21 @@ UTF8: Procedure
       End
     End
   End
-  
+
   utf8 = .MutableBuffer~new -- Will hold the result
-  
+
   Do i = 1 To buffer~items
     utf8~append(UTF8(buffer[i]))
   End
-      
+
 Return string~class~new( utf8~string )
- 
-NiceCode: 
+
+NiceCode:
   Arg aCode
   aCode = Strip(aCode,"L",0)
   If Length(aCode) < 4 Then aCode = Right(aCode,4,0)
-Return aCode  
-  
+Return aCode
+
 UTF8: Procedure
   Use Arg code
   n = X2D(code)

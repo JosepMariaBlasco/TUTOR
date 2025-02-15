@@ -1,13 +1,14 @@
 # New classes
 
 ```
-┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
-│ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
-│ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
-│ Copyright © 2023, 2024 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                     │
-│ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
-└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-``` 
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
+```
 
 ## Introduction
 
@@ -18,11 +19,11 @@ RXU is a work-in-progress. Its goal is to produce a proof-of-concept implementat
 * The RXU project is _Classic Rexx-first_. This means that its priority is to first _produce a procedural definition of Unicode Rexx_. This will be achieved by (a) extending the base string type to support a _polymorphic_ system, in which three different string types are supported, BYTES, CODEPOINTS and TEXT (the study of these three types will be the subject matter of this document). (b) _Extending the semantics_ of the existing built-in functions (BIFs) to work with the two Unicode string types, namely CODEPOINTS and TEXT; and: (c) _Defining new BIFs_, which will prove necessary for Unicode. A implementation of Classic Rexx, like Regina or BRexx, could be extended, if desided, by following the RXU definitions, to produce a Unicode-enabled Classic Rexx interpreter.
 * RXU is procedural in its _definitions_, but it is object-oriented in its _implementation_. This means that (a) RXU is implemented in ooRexx, which is object-oriented, but specially also that (b) our implementation uses _a set of ooRexx classes_, described below.
 * Our purpose is to be able to _manage Unicode strings_, i.e., read and write Unicode strings, compare and sort them, test them for (in)equality, break them into smaller components, etc. This is what we call "stage 1" Unicode. Other Unicode extensions, like allowing Unicode identifiers in Rexx programs, are considered "stage 2" (or of a later stage), and are not part of the present effort.
-* The _classes_ used in the _implementation_ of RXU are, by themselves, a (partial) implementation of a Unicode-extended object-oriented Rexx (ooRexx), which is a strict superset of the procedurally defined extensions. 
+* The _classes_ used in the _implementation_ of RXU are, by themselves, a (partial) implementation of a Unicode-extended object-oriented Rexx (ooRexx), which is a strict superset of the procedurally defined extensions.
 
 ## A non-object oriented presentation of the classes
 
-From a procedural point of view, a string can have one of three __types__: ``BYTES``, ``CODEPOINTS``, or ``TEXT``. You can retrieve the type of a string by using the ``STRINGTYPE(string)`` BIF. 
+From a procedural point of view, a string can have one of three __types__: ``BYTES``, ``CODEPOINTS``, or ``TEXT``. You can retrieve the type of a string by using the ``STRINGTYPE(string)`` BIF.
 
 ### Promotion and demotion BIFs
 
@@ -110,7 +111,7 @@ As an example, here is the code for the multiplication operator method, "*":
 ```
 
 "CoerceTo" is a private method of the BYTES class. It compares the class of "self" and the class of "string", and returns the class that should be assigned to the result of the operation,
-according to the ``OPTIONS COERCIONS`` setting (coerceTo raises a syntax error if ``OPTIONS COERCIONS NONE`` is in effect and ``self~class`` and ``string\class`` are different). 
+according to the ``OPTIONS COERCIONS`` setting (coerceTo raises a syntax error if ``OPTIONS COERCIONS NONE`` is in effect and ``self~class`` and ``string\class`` are different).
 
 Finally, the "*" method of the .String class is invoked, and the result is coerced to the class returned by coerceTo.
 
@@ -122,7 +123,7 @@ Returns a <code>BYTES</code> string such that if a <code>U</code> were appended 
 and it was inserted as a literal in a Rexx source program it would have
 the same string value as the target string.
 
-This method assumes that the target string contains well-formed UTF-8. If this is not the case, it will raise a Syntax condition. 
+This method assumes that the target string contains well-formed UTF-8. If this is not the case, it will raise a Syntax condition.
 Please note that <code>CODEPOINTS</code> and <code>TEXT</code> strings are always well-formed.
 
 * When _format_ is not specified, is specified as the null string, or is __"CODES"__ (the default), C2X will return a sequence of blank-separated codepoints,
@@ -130,8 +131,8 @@ Please note that <code>CODEPOINTS</code> and <code>TEXT</code> strings are alway
   Codepoints larger that "FFFF"U will have any leading zeroes removed.
 * When _format_ is __"U+"__, C2X returns a list of blank-separated codepoints, with the <code>"U+"</code> prefix.
 * When _format_ is __"NAMES"__, C2X returns a blank-separated list of the Unicode "Name" ("Na") property for each codepoint in the target string.
-* When _format_ is __"UTF32"__, C2X returns a UTF-32 representation of the target string, 
- 
+* When _format_ is __"UTF32"__, C2X returns a UTF-32 representation of the target string,
+
 __Examples:__
 
 ```
@@ -187,9 +188,9 @@ A new _type_ is admitted, __C__, for uni__C__ode. ``"String"~datatype("C")`` ret
 
 * Valid hexadecimal Unicode codepoints, like 61, or 200D, or 1F514.
 * Valid hexadecimal Unicode codepoints prefixed with U+ or u+, like u+61, or U+200D, or u+1F514.
-* Names, alias or labels that designate a Unicode codepoint, enclosed between parentheses, like (Latin small letter A), (ZWJ), (Bell), or (<Control-001d>). Items enclosed between parentheses do not need to be separated 
+* Names, alias or labels that designate a Unicode codepoint, enclosed between parentheses, like (Latin small letter A), (ZWJ), (Bell), or (<Control-001d>). Items enclosed between parentheses do not need to be separated
   by blanks.
-  
+
 __Examples:__
 
 ```
@@ -236,7 +237,7 @@ _(The Unicode Standard, Version 15.0 – Core Specification)[https://www.unicode
 
 > Map each character C in X to Lowercase_Mapping(C).
 
-Broadly speaking, ``Lowercase_Mapping(C)`` implements the ``Simple_Lowercase_Mapping`` property, as defined in the ``UnicodeData.txt`` file of the Unicode Character Database (UCD). 
+Broadly speaking, ``Lowercase_Mapping(C)`` implements the ``Simple_Lowercase_Mapping`` property, as defined in the ``UnicodeData.txt`` file of the Unicode Character Database (UCD).
 Two exceptions to this mapping are defined in the ``SpecialCasing.txt`` file of the UCD. One exception is not one to one: ``"0130"U``, ``LATIN CAPITAL LETTER I WITH DOT ABOVE``, which lowercases to ``"0069 0307"U``. The second exception is for ``"03A3"U``, the final greek sigma, which lowercases to ``"03C2"U`` only in certain contexts (i.e., when it is not in a medial position).
 
 __Examples:__
@@ -371,17 +372,17 @@ __Examples:__
 "u+0041"~U2C                            -- "A"
 "(Latin Capital Letter A)"~U2C          -- "A"
 "41 42"~U2C                             -- "AB"
-"1F514"~U2C                             -- "🔔" 
+"1F514"~U2C                             -- "🔔"
 "(Bell)"~U2C                            -- "🔔"
 "A(Bell)"~U2C                           -- "A🔔"
 ```
 
 ## CODEPOINTS
 
-A CODEPOINTS string is composed of Unicode codepoints. The CODEPOINTS class is a subclass of the BYTES class. The CODEPOINTS class redefines the most basic BIMs (\[\] and LENGTH), and the other BIMs, being defined on 
+A CODEPOINTS string is composed of Unicode codepoints. The CODEPOINTS class is a subclass of the BYTES class. The CODEPOINTS class redefines the most basic BIMs (\[\] and LENGTH), and the other BIMs, being defined on
 those, work automatically.
 
-Instances of the class can be created by resorting to the class ``init`` method (``.Codepoints~new("string")``), 
+Instances of the class can be created by resorting to the class ``init`` method (``.Codepoints~new("string")``),
 by using the new built-in function ``CODEPOINTS(string)`` (``var = CodePoints("string")``), or by using the
 new ``"string"P`` string notation (requires the use of the RXU
 Rexx Preprocessor for Unicode). The strings are checked for UTF-8 well-formedness,
@@ -400,7 +401,7 @@ Indeed, the current implementation of the CODEPOINTS class uses _two_ forms of t
 When you ask for the LENGTH of a CODEPOINTS string, the length of the UTF-32 string is being returned, after dividing it by 4. In other cases,
 the UTF-8 string is used. There is no single entity that can be called "the" internal representation of a CODEPOINTS string, but a set
 of instance variables that, together, constitute the internal state. This is not a novelty brought by RXU, but the way things are
-in the object-oriented world. 
+in the object-oriented world.
 
 Similar things can be said, _mutatis mutandis_, of the TEXT class.
 
@@ -418,7 +419,7 @@ C2X is, therefore, type-invariant.
 A TEXT string os composed of Unicode extended grapheme clusters. The TEXT class is a subclass of the CODEPOINTS class. The TEXT class redefines the most basic BIMs (\[\] and LENGTH), and the other BIMs, being defined on
 those, work automatically.
 
-Instances of the class can be created by resorting to the class ``init`` method (``.Text~new("string")``), 
+Instances of the class can be created by resorting to the class ``init`` method (``.Text~new("string")``),
 by using the new built-in function ``TEXT(string)`` (``var = TEXT("string")``), or by using the
 new ``"string"T`` string notation (requires the use of the RXU
 Rexx Preprocessor for Unicode). The strings are checked for UTF-8 well-formedness,

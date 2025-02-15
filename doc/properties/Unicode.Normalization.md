@@ -1,15 +1,16 @@
 # The Unicode.Normalization class
 
 ```
-┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
-│ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
-│ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
-│ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
-│ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
-└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-``` 
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
+```
 
-The Unicode.Normalization class, a subclass of Unicode.Property, resides in [``/components/properties/normalization.cls``](../../components/properties/normalization.cls). 
+The Unicode.Normalization class, a subclass of Unicode.Property, resides in [``/components/properties/normalization.cls``](../../components/properties/normalization.cls).
 
 The associated build routine is located at [``/components/bin/build/normalization.rex``](../../components/bin/build/normalization.rex); it generates the ``/components/bin/normalization.bin`` PersistentStringTable.
 
@@ -20,9 +21,9 @@ The Unicode.Normalization class implements the following methods.
 ## activate (Class method)
 
 ```
-   ╭──────────╮             
+   ╭──────────╮
 ▸▸─┤ activate ├──▸◂
-   ╰──────────╯  
+   ╰──────────╯
 ```
 
 This class method gets automatically called at the end of the class construction process. It uses the Unicode.Property registry to register:
@@ -53,9 +54,9 @@ The ``/components/bin/normalization.bin`` PersistentStringTable contains the fol
       <dd>Offset table for the ``canonicalCombiningClass`` MultiStageTable.</dd>
   <dt>UnicodeData.normalization.canonicalCombiningClass.Table2</dt>
       <dd>Chunks table for the ``canonicalCombiningClass`` MultiStageTable.</dd>
-</dl>  
+</dl>
 
-A stem called ``Canonical_Decomposition_Mapping.`` is created. It will contain targets for a calculated SIGNAL instruction. 
+A stem called ``Canonical_Decomposition_Mapping.`` is created. It will contain targets for a calculated SIGNAL instruction.
 This will handle the cases of Hangul Syllabes ("AC00"U to "D7A3"U), and the few singleton decompositions that are not CJK Ideographs.
 
 In the 15.0 version of ``UnicodeData.txt``, most singleton canonical decomposable characters are CJK COMPATIBILITY IDEOGRAPH F900 to FAD9 (some few
@@ -67,7 +68,7 @@ The algorithm for Hangul Syllabes can be found in https://www.unicode.org/versio
 
 The `activate` class method initializes three arrays, `PrimaryCompositeLastSuffixes`, `PrimaryCompositeFirstPrefixes` and `PrimaryCompositeFirstSuffix`. It does so
 by calling `Unicode.PrimaryComposite.rex`, located in the `components/bin` directory. This file is created at build time by `components/bin/build/normalization.rex`.
-    
+
 ## Canonical_Combining_Class (Class method)
 
 ```
@@ -134,7 +135,7 @@ Returns a new NFC-normalized string equivalent to _string_.
 Returns a new NFD-normalized string equivalent to _string_. Each codepoint in the supplied _string_ is substituted by its _Canonical_Decomposition_Mapping_, and then the substituted codepoints are themselves substituted by their respective decompositions, until no more decompositions are possible. Then the characters that have a _Canonical_Combining_Class_ greater than 0 are reordered according to the following algorithm:
 
 >_D108_ Reorderable pair: Two adjacent characters `A` and `B` in a coded character sequence
->`<A, B>` are a Reorderable Pair if and only if `ccc(A) > ccc(B) > 0`. 
+>`<A, B>` are a Reorderable Pair if and only if `ccc(A) > ccc(B) > 0`.
 >
 >_D109_ Canonical Ordering Algorithm: In a decomposed character sequence `D`, exchange
 >the positions of the characters in each Reorderable Pair until the sequence contains

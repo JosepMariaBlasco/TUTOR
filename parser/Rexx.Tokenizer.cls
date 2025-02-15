@@ -1,13 +1,10 @@
-/****************************************************************************************************************
-
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023, 2024 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                     │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-
- *****************************************************************************************************************/
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
 /**
  *
@@ -78,7 +75,7 @@
     pair[2] = X2C(D2X(c - 1))
     If c >= 256 Then Say "PANIC! tokenClasses array has more than 256 elements!"
   End
-  
+
   self~InitializeCharacterCategories
   self~InitializeClasses
   self~InitializeStringSuffixes       -- Must go after InitializeClasses
@@ -178,9 +175,9 @@
                                             -
                                             -  -- CLAUSE SUPPORT (Full tokenizer only)
                                             -  -- ==============
-  ( NULL_CLAUSE                    , "*" ), -  --  
-  ( DO_CLAUSE                      , "*" ), -  --  
-  ( END_CLAUSE                     , "*" ), -  --  
+  ( NULL_CLAUSE                    , "*" ), -  --
+  ( DO_CLAUSE                      , "*" ), -  --
+  ( END_CLAUSE                     , "*" ), -  --
   ( LOOP_CLAUSE                    , "*" ), -  --
   ( IF_CLAUSE                      , "*" ), -  --
   ( THEN_CLAUSE                    , "*" ), -  --
@@ -1085,7 +1082,7 @@ Return
 ::Method getSimpleToken
   Use Local
   Use Strict Arg array = 0
-  
+
   If array Then Signal Array
 
   token = getAToken()
@@ -1124,7 +1121,7 @@ Array:
     End
 
     lastClass = newClass
-    
+
   End
 Return TokenArray
 

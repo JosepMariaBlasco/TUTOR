@@ -1,19 +1,16 @@
-/****************************************************************************************************************
-
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
 --------------------------------------------------------------------------------
 -- This program is part of the automated test suite. See tests/test.all.rex   --
 --------------------------------------------------------------------------------
 
--- normalization.rex - Performs a consistency check on the properties implemented by 
+-- normalization.rex - Performs a consistency check on the properties implemented by
 -- components/properties/normalization.cls
 --
 -- See also /components/bin/build/normalization.rex
@@ -21,28 +18,28 @@
   Call "Unicode.cls"
 
   self = .Unicode.normalization
-  
+
   super = self~superClass
-      
+
   Call Time "R"
-  
+
   Say "Running tests for Unicode.normalization.cls..."
-  
+
   Say
-  
+
   Say "Running normalization test suite..."
-    
-  inFile = super~UCDFile.Qualify( self~NormalizationTest ) 
-  
+
+  inFile = super~UCDFile.Qualify( self~NormalizationTest )
+
   If Stream(inFile,"C","Query Exists") == "" Then Do
     Say "File '"inFile"' not found."
     Exit 1
   End
-  
+
   Call Stream inFile,"C","Close" -- In case it was left open elsewhere
-  
+
   tests = 0
-  
+
   Do While Lines(inFile)
     line = LineIn(inFile)
     c = line[1]
@@ -53,7 +50,7 @@
     source = Codepoints(C2S(source))
     NFD    = C2S(NFD)
     NFC    = C2S(NFC)
-    
+
     If source == NFD Then Do
       If \Unicode(source,"isNFD") Then Do
         Say "isNFD failed!"
@@ -97,7 +94,7 @@
         Exit 1
       End
     End
-    
+
     If Unicode(source,"toNFD") == NFD Then Nop
     Else Do
       Say "toNFD failed!"
@@ -108,7 +105,7 @@
       Say "toNFD :" Unicode(source,"toNFD")
       Exit 1
     End
-        
+
     If Unicode(source,"toNFC") == NFC Then Nop
     Else Do
       Say "toNFC failed!"
@@ -119,28 +116,28 @@
       Say "toNFC :" Unicode(source,"toNFC")
       Exit 1
     End
-    
+
   End
-  
+
   Call Stream inFile,"C","Close"
-  
+
   Say "All" tests "tests in the test suite PASSED, t=" Time("E")
 
   Say
-  
+
   Say "Checking the Canonical_Combining_Class property in UnicodeData.txt..."
 
-  inFile = super~UCDFile.Qualify( self~UnicodeData ) 
-  
+  inFile = super~UCDFile.Qualify( self~UnicodeData )
+
   If Stream(inFile,"C","Query Exists") == "" Then Do
     Say "File '"inFile"' not found."
     Exit 1
   End
-  
+
   Call Stream inFile,"C","Close" -- In case it was left open elsewhere
-  
+
   tests = 0
-  
+
   oldcode = 0
   Do While Lines(inFile)
     Parse Value LineIn(inFile) With code";" ";" ";"ccc";"
@@ -162,18 +159,18 @@
     oldcode = dcode + 1
   End
 
-  Call Stream inFile,"C","Close" 
-  
+  Call Stream inFile,"C","Close"
+
   Say "All" tests "ccc tests PASSED, t=" Time("E")"!"
-  
-  Say 
-  
+
+  Say
+
   Say "Checking the Canonical_Decomposition_Mapping property in UnicodeData.txt..."
-  
+
   tests = 0
 
   oldCode = 0
-  
+
   Do While Lines(inFile)
     Parse Value LineIn(inFile) With code";"  ";"  ";"  ";"  ";"decomp";"
     dcode = X2D(code)
@@ -195,9 +192,9 @@
       */
       tests += 1
     End
-    If dcode >= X2D(30000) Then Leave    
+    If dcode >= X2D(30000) Then Leave
     code32 = X2C(Right(code,8,0))
---If code32 == "0000 0340"X Then Trace ?a    
+--If code32 == "0000 0340"X Then Trace ?a
     If Words(decomp) == 2 Then Do
       Parse var decomp one two .
       decomp32 = X2C(Right(one,8,0))X2C(Right(two,8,0))
@@ -207,33 +204,33 @@
       Say "Canonical_Decomposition_Mapping32 failed for" code32~c2x":" self~Canonical_Decomposition_Mapping32(code32)~c2x
       Exit 1
     End
-/*    
+/*
     If self~Canonical_Decomposition_Mapping(code) \== decomp Then Do
       Say "FAILED! UnicodeData canonical decomposition for '"code"'U says '"decomp"', found" self~Canonical_Decomposition_Mapping(code) "instead."
       Exit 1
     End
-*/    
+*/
     tests += 1
     oldCode = dCode + 1
   End
 
-  Call Stream inFile,"C","Close" 
-  
+  Call Stream inFile,"C","Close"
+
   Say "All" tests "decomposition tests PASSED, t=" Time("E")"!"
-  
+
   Say
 
-  Say "End of tests for Unicode.normalization.cls. All tests PASSED!"  
-  
+  Say "End of tests for Unicode.normalization.cls. All tests PASSED!"
+
   Say
-  
+
 Exit 0
 
-NiceCode: 
+NiceCode:
   Arg aCode
   aCode = Strip(aCode,"L",0)
   If Length(aCode) < 4 Then aCode = Right(aCode,4,0)
-Return aCode  
+Return aCode
 
 C2S: Procedure
   Arg source
@@ -242,7 +239,7 @@ C2S: Procedure
     Parse var source code source
     res ||= UTF8(code)
   End
-Return res  
+Return res
 
 UTF8: Procedure
   Use Arg code
@@ -257,4 +254,4 @@ UTF8: Procedure
     Otherwise            Return X2C(B2X("11110"SubStr(b,4,3) "10"SubStr(b,7,6) "10"SubStr(b,13,6) "10"Right(b,6)))
   End
 
-  
+

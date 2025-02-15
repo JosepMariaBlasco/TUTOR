@@ -1,35 +1,32 @@
-/****************************************************************************************************************
-
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
 /** <h3>The <code>UTF-16</code> encoding class</h3>
- *   
+ *
  *  <p>
  *    The <code>CP850</code> class implements encoding/decoding from/to the CP850
- *    format. 
- *  
- *  <p>This is a subclass of <a href="Encoding.cls.html">the Encoding class</a>. 
+ *    format.
+ *
+ *  <p>This is a subclass of <a href="Encoding.cls.html">the Encoding class</a>.
  *    Please refer to the documentation for <a href="Encoding.cls.html">that class</a>
  *    for additional details.
- *    
+ *
  *  <h4>Version history</h4>
- *  
+ *
  *  <table>
  *    <tr><td><b>1.0</b><td><b>20230811</b><td>Initial release.
  *    <tr><td>          <td><b>20230816</b><td>Change the buffers from strings to mutablebuffer, as per Rony's suggestion
- *    <tr><td><b>1.1</b><td><b>20230926</b><td>JMB</td><td>Change name to IBM850 as per IANA 
- *                                                         https://www.iana.org/assignments/character-sets/character-sets.xhtml 
+ *    <tr><td><b>1.1</b><td><b>20230926</b><td>JMB</td><td>Change name to IBM850 as per IANA
+ *                                                         https://www.iana.org/assignments/character-sets/character-sets.xhtml
  *  </table>
- * 
+ *
  *  @see https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP850.TXT
- *   
+ *
  */
 
 .Encoding~register(.IBM850) -- Honor the contract with the .Encoding superclass
@@ -53,15 +50,15 @@
 
 ::Method encode Class
   Expose encode. -- Built by the "activate" method
-  
+
   Use Strict Arg string, option = ""
-  
-  utf32 = self~prepareEncode(string, option) 
+
+  utf32 = self~prepareEncode(string, option)
 
   If string == "" Then Return ""
-  
+
   syntax = Upper(option) = "SYNTAX"
-   
+
   res = .MutableBuffer~new -- Will hold the result
   Do i = 1 To Length(utf32) By 4
     code = Strip(C2X(utf32[i,4]),"L",0)
@@ -73,7 +70,7 @@
       Else Return ""
     res~append( enc )
   End
-  
+
   Return res~string
 
 /**
@@ -82,27 +79,27 @@
  */
 ::Method decode Class
   Expose decode. -- Built by the "activate" method
-     
+
   Use Strict Arg string, format = "", errorHandling = ""
 
   -- Check that the supplied arguments are OK, and raise a Syntax condition if not
-  Parse Value self~checkDecodeOptions(format,errorHandling) With errorHandling returnUTF8 returnUTF32  
+  Parse Value self~checkDecodeOptions(format,errorHandling) With errorHandling returnUTF8 returnUTF32
 
   -- Null strings always decode to the null string.
   If string == "" Then Signal StringIsEmpty
-  
+
   -- Will hold the utf8 value, if needed
   utf8  = .MutableBuffer~new
-  
+
   -- Will hold the utf32 value, if needed
-  utf32 = .MutableBuffer~new  
-  
+  utf32 = .MutableBuffer~new
+
   -- cp850 decoding always succeeds (i.e., there is no such thing as a badly
-  -- encoded cp850 sequence).  
+  -- encoded cp850 sequence).
   If \returnUTF8, \returnUTF32 Then Return 1
 
   length = Length(string)
-  
+
   -- We want some real decoding after all
   Do i = 1 To length
     code = decode.[string[i]]
@@ -130,8 +127,8 @@ StringIsGood:
   If returnUTF32 Then Return utf32~string
   -- Validation only
   Return 1
-  
-StringIsEmpty:  
+
+StringIsEmpty:
   If returnUTF8 , returnUTF32  Then Do
     -- Several targets. Return a stem.
     s. = .Stem~new()
@@ -141,11 +138,11 @@ StringIsEmpty:
   End
   If returnUTF8 | returnUTF32  Then Return ""
   -- Validation only
-  Return 1  
+  Return 1
 
 /**
  *  <p>The <code>activate</code> class method is automatically called at the end
- *  of the class construction. It creates two stems, <code>encode.</code> and 
+ *  of the class construction. It creates two stems, <code>encode.</code> and
  *  <code>decode.</code>, that will be used by the <code>encode</code> and
  *  <code>decode</code> methods.
  *
@@ -156,14 +153,14 @@ StringIsEmpty:
 
 ::Method Activate        Class
   Expose encode. decode.
-  
+
   encode. = ""
   decode. = ""
   Do i = 0 To 127
     decode.[i~d2x~x2c] = Right(i~d2x,4,0)
     encode.[Right(i~d2x,4,0)] = i~d2x~x2c
   End
-  
+
   decode.['80'X ] = '00C7'; encode.['00C7'] = '80'X
   decode.['81'X ] = '00FC'; encode.['00FC'] = '81'X
   decode.['82'X ] = '00E9'; encode.['00E9'] = '82'X

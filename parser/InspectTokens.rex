@@ -1,15 +1,12 @@
-/****************************************************************************************************************
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
-
--- InspectTokens.rex - A sample program for the Rexx Tokenizer. It tokenizes a file, and then prints its tokenization. 
+-- InspectTokens.rex - A sample program for the Rexx Tokenizer. It tokenizes a file, and then prints its tokenization.
 
 Parse Arg inFile
 
@@ -47,7 +44,7 @@ If inFile = "" Then Do
 End
 
 quote = infile[1]
-If Pos(quote,"""'") > 0 Then Do 
+If Pos(quote,"""'") > 0 Then Do
   Parse Arg (quote)inFile(quote)rest
   If rest \= "" Then Do
     Say "Invalid file name" quote||inFile||quote||rest"."
@@ -103,16 +100,16 @@ Do tokenNo = 1 By 1
   Else         token = tokenizer~getSimpleToken
 
   lastToken = token
-  
-  -- Exit conditions  
+
+  -- Exit conditions
   If token[class] == END_OF_SOURCE Then Leave
   If token[class] == SYNTAX_ERROR  Then Leave
-  
+
   Parse Value token[location] With n.1 n.2 n.3 n.4
   Do i = 1 To 4
     LocationPlaces.i = Max(LocationPlaces.i, Length(n.i))
   End
-  
+
   tokens~append(token)
 End
 
@@ -130,7 +127,7 @@ Do tokenNo = 1 To tokens~items
     Right(n.3, LocationPlaces.3),
     Right(n.4, LocationPlaces.4) || ,
     "]" printClass(token)": '"token[value]"'"
-  
+
   -- Detailed full tokenizing? Print the absorbed subtokens
   If token~hasIndex(absorbed) Then Do
     clonedIndex = token[cloneIndex]
@@ -149,7 +146,7 @@ Do tokenNo = 1 To tokens~items
       subToken = token[absorbed][subTokenNo]
       Parse Value subToken[location] With n.1 n.2 n.3 n.4
       Say "        "Right(subTokenNo,subTokenNoPlaces),
-        "[" || , 
+        "[" || ,
           Right(n.1, SubTokenLocationPlaces.1) ,
           Right(n.2, SubTokenLocationPlaces.2) ,
           Right(n.3, SubTokenLocationPlaces.3) ,
@@ -176,14 +173,14 @@ Exit
 PrintClass:
   theClass    = Arg(1)[class]
   theSubClass = Arg(1)[subClass]
-  
-  -- Class and subclass are the same in some cases. 
+
+  -- Class and subclass are the same in some cases.
   -- Print only the class, since the subclass is redundant
   If theClass == theSubClass Then Return nameOf.[theClass]
-  
+
   -- Print class and subclass
   Return nameOf.[theClass] "("nameOf.[theSubClass]")"
-  
+
 ::Resource Help
 InspectTokens.rex -- Tokenize and inspect a .rex source file
 ------------------------------------------------------------
@@ -193,7 +190,7 @@ Format:
   [rexx] InspectTokens[.rex] [options] [filename]
 
 Options (starred descriptions are the default):
-  
+
   -h,  -help                   Print this information
   -d,  -detail, -detailed      Perform a detailed tokenization (*)
   -nd, -nodetail, -nodetailed  Perform an undetailed tokenization
@@ -204,5 +201,5 @@ Options (starred descriptions are the default):
   -o,  -oorexx                 Use the Open Object Rexx tokenizer (*)
   -r,  -regina                 Use the Regina Rexx tokenizer
   -a,  -ansi                   Use the ANSI Rexx tokenizer
-::END    
+::END
 ::Requires Rexx.Tokenizer.cls

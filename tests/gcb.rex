@@ -1,19 +1,16 @@
-/****************************************************************************************************************
-
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
 --------------------------------------------------------------------------------
 -- This program is part of the automated test suite. See tests/test.all.rex   --
 --------------------------------------------------------------------------------
 
--- gcb.rex - Performs a consistency check on the properties implemented by 
+-- gcb.rex - Performs a consistency check on the properties implemented by
 -- /components/properties/gcb.cls
 --
 -- See also /components/bin/build/gcb.rex
@@ -21,17 +18,17 @@
   Call "Unicode.cls"
 
   self = .Unicode.Grapheme_Cluster_Break
-  
+
   super = self~superClass
-      
+
   Call Time "R"
-  
+
   Say "Running consistency checks..."
 
   inFile = super~UCDFile.Qualify( self~UnicodeData )
 
   Call Stream inFile,"C","Close"      -- Recovers if previous run crashed
-  
+
   Call Stream inFile,"C","Open Read"
 
   ccc. = 0
@@ -39,17 +36,17 @@
     Parse Value LineIn(inFile) With code";" ";"ccc";"
     If ccc \== 0 Then ccc.code = 1
   End
-  
+
   Call Stream inFile,"C","Close"
-  
+
   Say "Checking the 'Grapheme_Cluster_Break' property for 1114112 codepoints..."
-  
+
   inFile = super~UCDFile.Qualify( self~GraphemeBreakProperty )
-  
+
   Call Stream inFile,"C","Close"      -- Recovers if previous run crashed
-  
+
   Call Stream inFile,"C","Open Read"
-  
+
   checked. = 0 -- Will allow us to check non-listed code points
   count = 0
   Do While Lines(inFile)
@@ -73,7 +70,7 @@
       End
     End
   End
-  
+
   ExtPic. = 0
   ExtPics = 0
   Do i = 0 To 1114111
@@ -94,11 +91,11 @@
   Call Stream inFile,"C","Close"
 
   inFile = super~UCDFile.Qualify( self~Emoji_data )
-  
+
   Call Stream inFile,"C","Close"      -- Recovers if previous run crashed
-  
+
   Call Stream inFile,"C","Open Read"
-  
+
   extpic = 0
   Do While Lines(inFile)
     line = LineIn(infile)
@@ -123,7 +120,7 @@
     End
   End
   If ExtPics \== 0 Then Do
-    Say "Consistency check failed:" ExtPics "'Extended_Pictographic' items remaining"  
+    Say "Consistency check failed:" ExtPics "'Extended_Pictographic' items remaining"
     Exit 1
   End
 
@@ -164,18 +161,18 @@
       Say i":"graphemes[i] "(vs." check[i]")"
     End
   End
-  If bad == 0 Then 
+  If bad == 0 Then
     Say "All tests PASSED"
-  Else 
+  Else
     Say bad "tests FAILED"
 
   elapsed = Time("E")
   If elapsed = 0 Then elapsed = "0.001"
-  
-  Say count "codepoints checked in" elapsed "seconds." 
+
+  Say count "codepoints checked in" elapsed "seconds."
   Say "This is" (count/elapsed) "codepoints/second."
   Say extpic "'Extended_Pictographic' values were checked twice."
   Say ccc.~items "values changed from 'Extend' to 'Extend_ExtCccZwj'."
-  Say 
-  
+  Say
+
   Exit bad

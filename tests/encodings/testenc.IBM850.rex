@@ -1,13 +1,10 @@
-/****************************************************************************************************************
-
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
 -- This test will take a few seconds. Only the BMP is tested, since the encoding is confined to this plane.
 
@@ -16,7 +13,7 @@ myName = "CP-850"
 cp850 = .Encoding[myName]
 utf16 = .Encoding["utf16"]
 
-count  = 0 
+count  = 0
 failed = 0
 FAIL   = 0
 PASS   = 1
@@ -99,11 +96,11 @@ Call Tick ""
 If failed == 0 Then Do
   Call Tick "All" count "tests PASSED!"
   Say ""
-End  
+End
 Else Do
   Call Tick failed "of the" count "tests FAILED"
   Exit 1
-End  
+End
 
 Exit 0
 
@@ -126,14 +123,14 @@ TestDecode:
     Say "'"C2X(Arg(1))"' failed."
     failed += 1
   End
-Return  
+Return
 
 Tick:
   Parse Value Time("E") WIth l"."r
-  If r == "" Then t = "0.000"  
+  If r == "" Then t = "0.000"
   Else            t = l"."Left(r,3)
   Say Right(t,10) myName Arg(1)
-Return  
+Return
 
 Init:
   decode. = ""
@@ -266,6 +263,6 @@ Init:
   decode.['FD'X ] = '00B2'; encode.['00B2'] = 'FD'X
   decode.['FE'X ] = '25A0'; encode.['25A0'] = 'FE'X
   decode.['FF'X ] = '00A0'; encode.['00A0'] = 'FF'X
-Return  
+Return
 
 ::Requires "Unicode.cls"

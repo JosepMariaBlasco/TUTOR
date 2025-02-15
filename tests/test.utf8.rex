@@ -1,13 +1,10 @@
-/****************************************************************************************************************
-
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
 --------------------------------------------------------------------------------
 -- This program is part of the automated test suite. See tests/test.all.rex   --
@@ -72,100 +69,100 @@ Replace3 = ReplChar || ReplChar || ReplChar
 Do i = X2D("00") To X2D("7F")
   h = Right(D2X(i),2,0)
   c = X2C(h)
-  Call Test 'UTF8("'h'"X,       utf8 ,utf32, REPLACE)', 4(c)                             
+  Call Test 'UTF8("'h'"X,       utf8 ,utf32, REPLACE)', 4(c)
 End
 Do c Over (XRange("80"X,"FF"X))~makeArray("")
   h = C2X(c)
-  Call Test 'UTF8("'h'"X,       utf8 ,utf32, REPLACE)', Replace1                          
+  Call Test 'UTF8("'h'"X,       utf8 ,utf32, REPLACE)', Replace1
 End
 
--- Instead of testing all the combinations, we test only the extremes. 
+-- Instead of testing all the combinations, we test only the extremes.
 -- For example, to check that "8000", "8001",...,"807F" all return
 -- a replacement character + one ascii character, we test only
--- "8000" and "807F". 
+-- "8000" and "807F".
 
 -- 2-byte sequences
 
 Do c Over (XRange("80"X,"FF"X))~makeArray("")
   h = C2X(c)
   b1 = Right(X2B(h),5)
-  Do d Over "007F"X~makeArray("") 
-    Call Test 'UTF8("'h C2X(d)'"X,   utf8 ,utf32, REPLACE)', Replace1 || 4(d)                 
+  Do d Over "007F"X~makeArray("")
+    Call Test 'UTF8("'h C2X(d)'"X,   utf8 ,utf32, REPLACE)', Replace1 || 4(d)
   End
   If c <= "C1"X | c >= "F5"X Then Do
-    Do d Over "80FF"X~makeArray("") 
-      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2                         
+    Do d Over "80FF"X~makeArray("")
+      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2
     End
     Iterate
   End
   If c <= "DF"X Then Do -- C2..DF
-    Do d Over "80BF"X~makeArray("") 
+    Do d Over "80BF"X~makeArray("")
       g = C2X(d)
       b2 = Right(X2B(g),6)
-      Call Test 'UTF8("'h g'"X, utf8 ,utf32, REPLACE)', 4(X2C(B2X(b1||b2)))              
+      Call Test 'UTF8("'h g'"X, utf8 ,utf32, REPLACE)', 4(X2C(B2X(b1||b2)))
     End
-    Do d Over "C0FF"X~makeArray("") 
-      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2                         
+    Do d Over "C0FF"X~makeArray("")
+      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2
     End
     Iterate
   End
   If c == "E0"X  Then Do
-    Do d Over "809F"X~makeArray("") 
-      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2                         
+    Do d Over "809F"X~makeArray("")
+      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2
     End
-    Do d Over "A0BF"X~makeArray("") 
-      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace1                         
+    Do d Over "A0BF"X~makeArray("")
+      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace1
     End
     Do d Over "C0FF"X~makeArray("")
-      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2                         
+      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2
     End
     Iterate
   End
   If c == "ED"X  Then Do
-    Do d Over "809F"X~makeArray("") 
-      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace1                         
+    Do d Over "809F"X~makeArray("")
+      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace1
     End
-    Do d Over "A0FF"X~makeArray("") 
-      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2                         
+    Do d Over "A0FF"X~makeArray("")
+      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2
     End
     Iterate
   End
   If c <= "EF"X  Then Do -- E1..EC, EE..EF
-    Do d Over "80BF"X~makeArray("") 
-      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace1                         
+    Do d Over "80BF"X~makeArray("")
+      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace1
     End
-    Do d Over "C0FF"X~makeArray("") 
-      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2                         
+    Do d Over "C0FF"X~makeArray("")
+      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2
     End
     Iterate
   End
   If c == "F0"X  Then Do
-    Do d Over "808F"X~makeArray("") 
-      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2                         
+    Do d Over "808F"X~makeArray("")
+      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2
     End
-    Do d Over "90BF"X~makeArray("") 
-      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace1                         
+    Do d Over "90BF"X~makeArray("")
+      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace1
     End
-    Do d Over "C0FF"X~makeArray("") 
-      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2                         
+    Do d Over "C0FF"X~makeArray("")
+      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2
     End
     Iterate
   End
   If c <= "F3"X  Then Do -- F1..F3
     Do d Over "80BF"X~makeArray("")
-      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace1                         
+      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace1
     End
-    Do d Over "C0FF"X~makeArray("") 
-      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2                         
+    Do d Over "C0FF"X~makeArray("")
+      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2
     End
     Iterate
   End
   If c == "F4"X  Then Do
-    Do d Over "808F"X~makeArray("") 
-      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace1                         
+    Do d Over "808F"X~makeArray("")
+      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace1
     End
-    Do d Over "90FF"X~makeArray("") 
-      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2                         
+    Do d Over "90FF"X~makeArray("")
+      Call Test 'UTF8("'h C2X(d)'"X, utf8 ,utf32, REPLACE)', Replace2
     End
     Iterate
   End
@@ -179,15 +176,15 @@ b1 = Right(X2B(h),5)
 Do d Over XRange("A0"X,"BF"X)~makeArray("")
   g = C2X(d)
   b2 = Right(X2B(g),6)
-  Do e Over "007F"X~makeArray("") 
+  Do e Over "007F"X~makeArray("")
     Call Test 'UTF8("'h C2X(d) C2X(e)'"X, utf8 ,utf32, REPLACE)', replace1 || 4(e)
   End
-  Do e Over "80BF"X~makeArray("") 
+  Do e Over "80BF"X~makeArray("")
     f = C2X(e)
     b3 = Right(X2B(f),6)
-    Call Test 'UTF8("'h C2X(d) C2X(e)'"X, utf8 ,utf32, REPLACE)', 4(X2C(B2X(b1||b2||b3)))              
+    Call Test 'UTF8("'h C2X(d) C2X(e)'"X, utf8 ,utf32, REPLACE)', 4(X2C(B2X(b1||b2||b3)))
   End
-  Do e Over "C0FF"X~makeArray("") 
+  Do e Over "C0FF"X~makeArray("")
     Call Test 'UTF8("'h C2X(d) C2X(e)'"X, utf8 ,utf32, REPLACE)', replace2
   End
 End
@@ -198,15 +195,15 @@ Do c Over (XRange("E1"X,"EC"X)XRange("EE"X,"EF"X))~makeArray("")
   Do d Over XRange("80"X,"BF"X)~makeArray("")
     g = C2X(d)
     b2 = Right(X2B(g),6)
-    Do e Over "007F"X~makeArray("") 
+    Do e Over "007F"X~makeArray("")
       Call Test 'UTF8("'h C2X(d) C2X(e)'"X, utf8 ,utf32, REPLACE)', replace1 || 4(e)
     End
-    Do e Over "80BF"X~makeArray("") 
+    Do e Over "80BF"X~makeArray("")
       f = C2X(e)
       b3 = Right(X2B(f),6)
-      Call Test 'UTF8("'h C2X(d) C2X(e)'"X, utf8 ,utf32, REPLACE)', 4(X2C(B2X(b1||b2||b3)))              
+      Call Test 'UTF8("'h C2X(d) C2X(e)'"X, utf8 ,utf32, REPLACE)', 4(X2C(B2X(b1||b2||b3)))
     End
-    Do e Over "C0FF"X~makeArray("") 
+    Do e Over "C0FF"X~makeArray("")
       Call Test 'UTF8("'h C2X(d) C2X(e)'"X, utf8 ,utf32, REPLACE)', replace2
     End
   End
@@ -218,15 +215,15 @@ b1 = Right(X2B(h),5)
 Do d Over XRange("80"X,"9F"X)~makeArray("")
   g = C2X(d)
   b2 = Right(X2B(g),6)
-  Do e Over "007F"X~makeArray("") 
+  Do e Over "007F"X~makeArray("")
     Call Test 'UTF8("'h C2X(d) C2X(e)'"X, utf8 ,utf32, REPLACE)', replace1 || 4(e)
-  End  
-  Do e Over "80BF"X~makeArray("") 
+  End
+  Do e Over "80BF"X~makeArray("")
     f = C2X(e)
     b3 = Right(X2B(f),6)
-    Call Test 'UTF8("'h C2X(d) C2X(e)'"X, utf8 ,utf32, REPLACE)', 4(X2C(B2X(b1||b2||b3)))              
+    Call Test 'UTF8("'h C2X(d) C2X(e)'"X, utf8 ,utf32, REPLACE)', 4(X2C(B2X(b1||b2||b3)))
   End
-  Do e Over "C0FF"X~makeArray("") 
+  Do e Over "C0FF"X~makeArray("")
     Call Test 'UTF8("'h C2X(d) C2X(e)'"X, utf8 ,utf32, REPLACE)', replace2
   End
 End
@@ -242,16 +239,16 @@ Do d Over XRange("90"X,"BF"X)~makeArray("")
   Do e Over XRange("80"X,"BF"X)~makeArray("")
     ex = C2X(e)
     b3 = Right(X2B(ex),6)
-    Do f Over "007F"X~makeArray("") 
+    Do f Over "007F"X~makeArray("")
       fx = C2X(f)
       Call Test 'UTF8("'cx dx ex fx'"X, utf8 ,utf32, REPLACE)', replace1 || 4(f)
     End
-    Do f Over "80BF"X~makeArray("") 
+    Do f Over "80BF"X~makeArray("")
       fx = C2X(f)
       b4 = Right(X2B(fx),6)
-      Call Test 'UTF8("'cx dx ex fx'"X, utf8 ,utf32, REPLACE)', 4(X2C(B2X(b1||b2||b3||b4)))              
+      Call Test 'UTF8("'cx dx ex fx'"X, utf8 ,utf32, REPLACE)', 4(X2C(B2X(b1||b2||b3||b4)))
     End
-    Do f Over "C0FF"X~makeArray("") 
+    Do f Over "C0FF"X~makeArray("")
       fx = C2X(f)
       Call Test 'UTF8("'cx dx ex fx'"X, utf8 ,utf32, REPLACE)', replace2
     End
@@ -267,16 +264,16 @@ Do c Over XRange("F1"X,"F3"X)~makeArray("")
     Do e Over XRange("80"X,"BF"X)~makeArray("")
       ex = C2X(e)
       b3 = Right(X2B(ex),6)
-      Do f Over "007F"X~makeArray("") 
+      Do f Over "007F"X~makeArray("")
         fx = C2X(f)
         Call Test 'UTF8("'cx dx ex fx'"X, utf8 ,utf32, REPLACE)', replace1 || 4(f)
       End
-      Do f Over "80BF"X~makeArray("") 
+      Do f Over "80BF"X~makeArray("")
         fx = C2X(f)
         b4 = Right(X2B(fx),6)
-        Call Test 'UTF8("'cx dx ex fx'"X, utf8 ,utf32, REPLACE)', 4(X2C(B2X(b1||b2||b3||b4)))              
+        Call Test 'UTF8("'cx dx ex fx'"X, utf8 ,utf32, REPLACE)', 4(X2C(B2X(b1||b2||b3||b4)))
       End
-      Do f Over "C0FF"X~makeArray("") 
+      Do f Over "C0FF"X~makeArray("")
         fx = C2X(f)
         Call Test 'UTF8("'cx dx ex fx'"X, utf8 ,utf32, REPLACE)', replace2
       End
@@ -294,31 +291,31 @@ Do d Over XRange("80"X,"8F"X)~makeArray("")
   Do e Over XRange("80"X,"BF"X)~makeArray("")
     ex = C2X(e)
     b3 = Right(X2B(ex),6)
-    Do f Over "007F"X~makeArray("") 
+    Do f Over "007F"X~makeArray("")
       fx = C2X(f)
       Call Test 'UTF8("'cx dx ex fx'"X, utf8 ,utf32, REPLACE)', replace1 || 4(f)
     End
-    Do f Over "80BF"X~makeArray("") 
+    Do f Over "80BF"X~makeArray("")
       fx = C2X(f)
       b4 = Right(X2B(fx),6)
-      Call Test 'UTF8("'cx dx ex fx'"X, utf8 ,utf32, REPLACE)', 4(X2C(B2X(b1||b2||b3||b4)))              
+      Call Test 'UTF8("'cx dx ex fx'"X, utf8 ,utf32, REPLACE)', 4(X2C(B2X(b1||b2||b3||b4)))
     End
-    Do f Over "C0FF"X~makeArray("") 
+    Do f Over "C0FF"X~makeArray("")
       fx = C2X(f)
       Call Test 'UTF8("'cx dx ex fx'"X, utf8 ,utf32, REPLACE)', replace2
-    End    
+    End
   End
 End
 
-Say 
+Say
 Say Time() "All UTF-8 tests PASSED!"
 
 --------------------------------------------------------------------------------
 
 -- UTF-8Z is identical to UTF-8, save for the encoding of "00"U, which is
--- "C080"X instead of "00"X. 
+-- "C080"X instead of "00"X.
 
-Say 
+Say
 Say Time() "Testing the UTF-8Z decoding"
 
 Call Test 'UTF8("00"X, utf8z ,utf32, REPLACE)', replace1
@@ -326,12 +323,12 @@ Call Test 'UTF8("C001"X, utf8z ,utf32, REPLACE)', replace1 || 4("01"X)
 Call Test 'UTF8("C080"X, utf8z ,utf32, REPLACE)', 4()
 Call Test 'UTF8("C081"X, utf8z ,utf32, REPLACE)', replace2
 
-Say 
+Say
 Say Time() "All UTF-8Z tests PASSED!"
 
 --------------------------------------------------------------------------------
 
-Say 
+Say
 Say Time() "Testing the WTF-8 decoding"
 
 c = "ED"X
@@ -344,30 +341,30 @@ End
 Do d Over XRange("80"X,"9F"X)~makeArray("")
   dx = C2X(d)
   b2 = Right(X2B(dx),6)
-  Do e Over "80BF"X~makeArray("") 
+  Do e Over "80BF"X~makeArray("")
     ex = C2X(e)
     b3 = Right(X2B(ex),6)
-    Call Test 'UTF8("'cx dx ex'"X, wtf8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3)))              
+    Call Test 'UTF8("'cx dx ex'"X, wtf8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3)))
   End
 End
 -- Lead surrogates are ok in wtf-32
 Do d Over XRange("A0"X,"AF"X)~makeArray("")
   dx = C2X(d)
   b2 = Right(X2B(dx),6)
-  Do e Over "80BF"X~makeArray("") 
+  Do e Over "80BF"X~makeArray("")
     ex = C2X(e)
     b3 = Right(X2B(ex),6)
-    Call Test 'UTF8("'cx dx ex'"X, wtf8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3)))              
+    Call Test 'UTF8("'cx dx ex'"X, wtf8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3)))
   End
 End
 -- Trail surrogates are ok in wtf-32
 Do d Over XRange("B0"X,"BF"X)~makeArray("")
   dx = C2X(d)
   b2 = Right(X2B(dx),6)
-  Do e Over "80BF"X~makeArray("") 
+  Do e Over "80BF"X~makeArray("")
     ex = C2X(e)
     b3 = Right(X2B(ex),6)
-    Call Test 'UTF8("'cx dx ex'"X, wtf8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3)))              
+    Call Test 'UTF8("'cx dx ex'"X, wtf8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3)))
   End
 End
 -- Surrogate pairs are always ill-formed
@@ -375,11 +372,11 @@ f = "ED"x
 fx = C2X(f)
 Do d Over XRange("A0"X,"AF"X)~makeArray("")
   dx = C2X(d)
-  Do e Over "80BF"X~makeArray("") 
+  Do e Over "80BF"X~makeArray("")
     ex = C2X(e)
     Do g Over XRange("B0"X,"BF"X)~makeArray("")
       gh = C2X(g)
-      Do h Over "80BF"X~makeArray("") 
+      Do h Over "80BF"X~makeArray("")
         hx = C2X(h)
         Call Test 'UTF8("'cx dx ex fx gh hx'"X, wtf8 ,wtf32, REPLACE)', replace2
       End
@@ -392,12 +389,12 @@ Do d Over XRange("C0"X,"FF"X)~makeArray("")
   Call Test 'UTF8("'cx dx'"X, wtf8 ,wtf32, REPLACE)', replace2
 End
 
-Say 
+Say
 Say Time() "All WTF-8 tests PASSED!"
 
 --------------------------------------------------------------------------------
 
-Say 
+Say
 Say Time() "Testing the CESU-8 decoding"
 
 c = "ED"X
@@ -412,66 +409,66 @@ Do d Over XRange("80"X,"9F"X)~makeArray("")
   Do e Over XRange("80"X,"BF"X)~makeArray("")
     ex = C2X(e)
     b3 = Right(X2B(ex),6)
-    Call Test 'UTF8("'cx dx ex'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3)))              
+    Call Test 'UTF8("'cx dx ex'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3)))
   End
 End
-Do d Over "A0AF"X~makeArray("") 
+Do d Over "A0AF"X~makeArray("")
   dx = C2X(d)
   b2 = Right(X2B(dx),6)
   Call Test 'UTF8("'cx dx'"X, cesu8 ,wtf32, REPLACE)', replace1
-  Do e Over "80BF"X~makeArray("") 
+  Do e Over "80BF"X~makeArray("")
     ex = C2X(e)
     b3 = Right(X2B(ex),6)
-    Call Test 'UTF8("'cx dx ex'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3)))              
+    Call Test 'UTF8("'cx dx ex'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3)))
     Call Test 'UTF8("'cx dx ex fx'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3))) || replace1
-    Do g Over "007F"X~makeArray("") 
+    Do g Over "007F"X~makeArray("")
       gx = C2X(g)
       Call Test 'UTF8("'cx dx ex fx gx'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3))) || replace1 || 4(g)
     End
-    Do g Over "809F"X~makeArray("") 
+    Do g Over "809F"X~makeArray("")
       gx = C2X(g)
       b5 = Right(X2B(gx),6)
       Call Test 'UTF8("'cx dx ex fx gx'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3))) || replace1
-      Do h Over "007F"X~makeArray("") 
+      Do h Over "007F"X~makeArray("")
         hx = C2X(h)
         Call Test 'UTF8("'cx dx ex fx gx hx'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3))) || replace1 || 4(h)
       End
-      Do h Over "80BF"X~makeArray("") 
+      Do h Over "80BF"X~makeArray("")
         hx = C2X(h)
         b6 = Right(X2B(hx),6)
         Call Test 'UTF8("'cx dx ex fx gx hx'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3))) || 4(X2C(B2X(b4||b5||b6)))
       End
-      Do h Over "C0FF"X~makeArray("") 
+      Do h Over "C0FF"X~makeArray("")
         hx = C2X(h)
         Call Test 'UTF8("'cx dx ex fx gx hx'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3))) || replace2
       End
     End
-    Do g Over "A0AF"X~makeArray("") 
+    Do g Over "A0AF"X~makeArray("")
       gx = C2X(g)
       b5 = Right(X2B(gx),6)
       Call Test 'UTF8("'cx dx ex fx gx'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3))) || replace1
-      Do h Over "007F"X~makeArray("") 
+      Do h Over "007F"X~makeArray("")
         hx = C2X(h)
         Call Test 'UTF8("'cx dx ex fx gx hx'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3))) || replace1 || 4(h)
       End
-      Do h Over "80BF"X~makeArray("") 
+      Do h Over "80BF"X~makeArray("")
         hx = C2X(h)
         b6 = Right(X2B(hx),6)
         Call Test 'UTF8("'cx dx ex fx gx hx'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3))) || 4(X2C(B2X(b4||b5||b6)))
       End
-      Do h Over "C0FF"X~makeArray("") 
+      Do h Over "C0FF"X~makeArray("")
         hx = C2X(h)
         Call Test 'UTF8("'cx dx ex fx gx hx'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3))) || replace2
       End
     End
-    Do g Over "B0BF"X~makeArray("") 
+    Do g Over "B0BF"X~makeArray("")
       gx = C2X(g)
       Call Test 'UTF8("'cx dx ex fx gx'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3))) || replace1
-      Do h Over "007F"X~makeArray("") 
+      Do h Over "007F"X~makeArray("")
         hx = C2X(h)
         Call Test 'UTF8("'cx dx ex fx gx hx'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3))) || replace1 || 4(h)
       End
-      Do h Over "80BF"X~makeArray("") 
+      Do h Over "80BF"X~makeArray("")
         hx = C2X(h)
         a = Right(X2B(dx), 4)
         b = Right(X2B(ex), 6)
@@ -481,23 +478,23 @@ Do d Over "A0AF"X~makeArray("")
         scalar = Right(X2C(B2X(a || b || c || d)),4,"00"X)
         Call Test 'UTF8("'cx dx ex fx gx hx'"X, cesu8 ,wtf32, REPLACE)', scalar
       End
-      Do h Over "C0FF"X~makeArray("") 
+      Do h Over "C0FF"X~makeArray("")
         hx = C2X(h)
         Call Test 'UTF8("'cx dx ex fx gx hx'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3))) || replace2
       End
     End
-    Do g Over "C0FF"X~makeArray("") 
+    Do g Over "C0FF"X~makeArray("")
       gx = C2X(g)
       Call Test 'UTF8("'cx dx ex fx gx'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3))) || replace2
-      Do h Over "007F"X~makeArray("") 
+      Do h Over "007F"X~makeArray("")
         hx = C2X(h)
         Call Test 'UTF8("'cx dx ex fx gx hx'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3))) || replace2 || 4(h)
       End
-      Do h Over "80BF"X~makeArray("") 
+      Do h Over "80BF"X~makeArray("")
         hx = C2X(h)
         Call Test 'UTF8("'cx dx ex fx gx hx'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3))) || replace3
       End
-      Do h Over "C0FF"X~makeArray("") 
+      Do h Over "C0FF"X~makeArray("")
         hx = C2X(h)
         Call Test 'UTF8("'cx dx ex fx gx hx'"X, cesu8 ,wtf32, REPLACE)', 4(X2C(B2X(b1||b2||b3))) || replace3
       End
@@ -513,7 +510,7 @@ Do d Over XRange("C0"X,"CF"X)~makeArray("")
   Call Test 'UTF8("'cx dx'"X, cesu8 ,wtf32, REPLACE)', replace2
 End
 
-Say 
+Say
 Say Time() "All CESU-8 tests PASSED!"
 
 --------------------------------------------------------------------------------
@@ -521,7 +518,7 @@ Say Time() "All CESU-8 tests PASSED!"
 -- MUTF-8 is identical to CESU-8, save for the encoding of "00"U, which is
 -- "C080"X instead of "00"X.
 
-Say 
+Say
 Say Time() "Testing the MUTF-8 decoding"
 
 Call Test 'UTF8("00"X,   mutf8, wtf32, REPLACE)', replace1
@@ -537,12 +534,12 @@ Call Test 'UTF8("ED A0 80 ED B0 80"X, mutf8, wtf8,  REPLACE)', "F0 90 80 80"X
 Call Test 'UTF8("ED A0 BD ED B4 94"X, mutf8, wtf32, REPLACE)', 4("1F514"X)
 Call Test 'UTF8("ED A0 BD ED B4 94"X, mutf8, wtf8,  REPLACE)', "F0 9F 94 94"X
 
-Say 
+Say
 Say Time() "All MUTF-8 tests PASSED!"
 
 --------------------------------------------------------------------------------
 
-Say 
+Say
 Say Time() "Testing parameter combinations"
 
 -- It is an error to specify errorHandling when target has not been specified
@@ -653,12 +650,12 @@ Call Test 'UTF8("C0"X,,utf8,"REPLACE")', "efbfbd"X
 Call Test 'UTF8("00"X,,utf8,"SYNTAX")', "00"X
 Call Test 'UTF8("C0"X,,utf8,"SYNTAX")', SYNTAX
 
-Say 
+Say
 Say Time() "All tests PASSED!"
 
 --------------------------------------------------------------------------------
 
-Say 
+Say
 Say Time() "Testing helpfile examples"
 
 Call Test 'UTF8("")'                                          , 1 --  (The null string always validates)
@@ -690,12 +687,12 @@ Call Test 'UTF8("C080"X,,utf8, replace)', "EFBFBD EFBFBD"X        -- ("EFBFBD" i
 Call Test 'UTF8("C080"X,,utf8, syntax)', SYNTAX                   -- Syntax error
 
 
-Say 
+Say
 Say Time() "All tests PASSED!"
 
 --------------------------------------------------------------------------------
 
-Say 
+Say
 Say Time() "Testing empty strings"
 
 Call Test 'UTF8("",utf8,utf8)', ""
@@ -704,7 +701,7 @@ Call Test 'UTF8("",utf8,utf32)', ""
 Call Test 'UTF8("",utf8,wtf32)', ""
 Call TestStem 'UTF8("",utf8,utf8 utf32)', ( ("UTF8",""), ("UTF32",""))
 Call TestStem 'UTF8("",utf8,wtf8 wtf32)', ( ("WTF8",""), ("WTF32",""))
-Say 
+Say
 Say Time() "All tests PASSED!"
 
 --------------------------------------------------------------------------------
@@ -712,7 +709,7 @@ Say Time() "All tests PASSED!"
 
 
 secs = time("E")
-Say 
+Say
 Say Time() "Total:" count" tests," secs "seconds," count/secs "tests/sec."
 
 Exit 0
@@ -726,10 +723,10 @@ TestStem:
   Signal On Syntax
   Interpret "s.=" Arg(1)
   If Arg(2) == "SYNTAX" Then Do
-    Say 
+    Say
     Say "Expected SYNTAX condition not raised"
     Say "when evaluating" Arg(1)"."
-    Say 
+    Say
     Say "Test FAILED!"
     Exit 1
   End
@@ -750,28 +747,28 @@ Test:
   Signal On Syntax
   Interpret "temp=" Arg(1)
   If Arg(2) == "SYNTAX" Then Do
-    Say 
+    Say
     Say "Expected SYNTAX condition not raised"
     Say "when evaluating" Arg(1)"."
-    Say 
+    Say
     Say "Test FAILED!"
     Exit 1
   End
   If temp \== Arg(2) Then Do
-    Say 
+    Say
     Say "  "saveSigl":" Arg(1)" = '"C2X(temp)"'X,"
     Say "  expected: '"C2X(Arg(2))"'X."
     Say "FAILED!"
     Exit 1
   End
-Return  
+Return
 
 Syntax:
   If Arg(2) == "SYNTAX" Then Return 1
-  Say 
+  Say
   Say "Unexpected SYNTAX condition" rc"."Condition("E") "at line" saveSigl": '"Condition("O")[Message]"'"
   Say "when evaluating" Arg(1)"."
-  Say 
+  Say
   Say "Test FAILED!"
 Exit 1
 

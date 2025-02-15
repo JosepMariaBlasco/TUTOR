@@ -1,59 +1,56 @@
-/****************************************************************************************************************
+/******************************************************************************
+ * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
+ * See https://rexx.epbcn.com/tutor/                                          *
+ *     and https://github.com/JosepMariaBlasco/tutor                          *
+ * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
+ * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
+ ******************************************************************************/
 
- ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  
- │ This file is part of The Unicode Tools Of Rexx (TUTOR).                                                       │
- │ See https://github.com/RexxLA/rexx-repository/tree/master/ARB/standards/work-in-progress/unicode/UnicodeTools │
- │ Copyright © 2023 Josep Maria Blasco <josep.maria.blasco@epbcn.com>.                                           │
- │ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).                                    │
- └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
- 
- *****************************************************************************************************************/
-
-/*****************************************************************************/
-/*                                                                           */
-/*  The normalization.rex build program                                      */
-/*  ===================================                                      */
-/*                                                                           */
-/*  This program generates the binary data needed by                         */
-/*    componentsproperties/normalization.cls.                                */      
-/*                                                                           */
-/*  See also tests/normalization.rex.                                        */
-/*                                                                           */
-/*  Version history                                                          */
-/*  ===============                                                          */
-/*                                                                           */
-/*  Vers. Aut Date     Comments                                              */
-/*  ----- --- -------- ----------------------------------------------------- */
-/*  00.4b JMB 20231014 Initial release. Implements toNFD                     */
-/*                                                                           */
-/*****************************************************************************/
+/******************************************************************************/
+/*                                                                            */
+/*  The normalization.rex build program                                       */
+/*  ===================================                                       */
+/*                                                                            */
+/*  This program generates the binary data needed by                          */
+/*    componentsproperties/normalization.cls.                                 */
+/*                                                                            */
+/*  See also tests/normalization.rex.                                         */
+/*                                                                            */
+/*  Version history                                                           */
+/*  ===============                                                           */
+/*                                                                            */
+/*  Vers. Aut Date     Comments                                               */
+/*  ----- --- -------- -----------------------------------------------------  */
+/*  00.4b JMB 20231014 Initial release. Implements toNFD                      */
+/*                                                                            */
+/******************************************************************************/
 
   -- Inform our classes that we are building the .bin files, so that they don't
   -- complain that they are not there.
-  
+
   .local~Unicode.Buildtime = 1
 
   -- Call instead of ::Requires allows us to set the above variable first.
-  
+
   Call "Unicode.cls"
-  
+
   self = .Unicode.Normalization
-  
+
   super = self~superClass
-  
+
   Say "Generating binary values for the Unicode.Normalization class..."
 
   Call Time "R"
-  
+
   inFile = super~UCDFile.Qualify( self~UnicodeData )
-  
+
   outFile = super~BinFile.Qualify( self~PrimaryComposite )
-  
+
   Call Stream inFile, "c", "query exists"
-  
+
   If result == "" Then self~SyntaxError("File '"inFile"' not found. Aborting")
 
-  canonicalCombiningClass = .MutableBuffer~new(Copies("00"X,2 * 2**16))  
+  canonicalCombiningClass = .MutableBuffer~new(Copies("00"X,2 * 2**16))
   canonicalDoubleLast.    = 0
   canonicalDoubleFirst.   = 0
   canonicalDoubleFirsts   = .MutableBuffer~new
@@ -94,9 +91,9 @@
       canonicalDouble[2*X2D(code)+1,2] = Right(X2C(D2X(bin)),2,"00"X)
     End
   End
-  
+
   Call Stream inFile, "c", "close"
-  
+
   canonicalDouble       = canonicalDouble~string
   canonicalDoubleFirsts = canonicalDoubleFirsts~string
   canonicalDoubleLasts  = canonicalDoubleLasts ~string
@@ -106,26 +103,26 @@
   -- Chunk size should be coordinated with the property class of the same name in /components/properties
 
   v = .MultiStageTable~compress(canonicalDouble, 128)
-  
+
   super~setPersistent("UnicodeData.normalization.canonicalDouble.Table1", v[1])
   super~setPersistent("UnicodeData.normalization.canonicalDouble.Table2", v[2])
-  
+
   -- Chunk size should be coordinated with the property class of the same name in /components/properties
-  
+
   v = .MultiStageTable~compress(canonicalCombiningClass, 64)
 
   super~setPersistent("UnicodeData.normalization.canonicalCombiningClass.Table1", v[1])
   super~setPersistent("UnicodeData.normalization.canonicalCombiningClass.Table2", v[2])
-  
+
   super~setPersistent("UnicodeData.normalization.canonicalDoubleFirsts" , canonicalDoubleFirsts)
   super~setPersistent("UnicodeData.normalization.canonicalDoubleLasts"  , canonicalDoubleLasts)
   super~setPersistent("UnicodeData.normalization.CJK_2F800_2FA1D"       , CJK_2F800_2FA1D)
   super~setPersistent("UnicodeData.normalization.CJK_F900_FAD9"         , CJK_F900_FAD9)
 
   super~SavePersistent( super~BinFile.Qualify( self~binaryFile ) )
-    
+
   Say "Generating arrays for the Canonical Composition Algorithm..."
-  
+
   Call SysFileDelete outFile
 
   Call LineOut outFile, "-- This file is automatically generated by the build processes (/components/bin/build/normalization.rex)."
@@ -168,19 +165,19 @@
     Parse Var decomp first last .
     first = Right(first,6,0)
     last = Right(last,6,0)
-  
+
     If Lasts.last   == 0 Then Do
       Lasts.last    += 1
       Lasts.0       += 1
     End
-    
+
     If PrimaryComposite.last = "" Then
       PrimaryComposite.last = .StringTable~new
     PrimaryComposite.last[first] = Right(code,6,0)
     lastPrefix = Left(last,4)
     If last < LastMin.lastPrefix Then LastMin.lastPrefix = last
     If last > LastMax.lastPrefix Then LastMax.lastPrefix = last
-  
+
   End
 
   Call Stream inFile, "c", "close"
@@ -207,7 +204,7 @@
     Call LineOut outFile, "PrimaryCompositeLastSuffixes["lastPrefix"~x2d] = '"D2X(lastCount,2)" "endings"'X"
     PrimaryCompositeFirstPrefixesArrayCreated = 0
     Do i = 0 To length(endings)/2-1
-      code = lastPrefix||endings[2*i+1,2] 
+      code = lastPrefix||endings[2*i+1,2]
       firstPrefixSeen. = 0
       firstSuffixSeen. = 0
       firstPrefixes = ""
@@ -253,7 +250,7 @@
         If \PrimaryCompositeFirstPrefixesArrayCreated Then Do
           PrimaryCompositeFirstPrefixesArrayCreated = 1
           Call LineOut outFile, "PrimaryCompositeFirstPrefixes["Right(lastCount,2)"]      = .Array~new"
-        End      
+        End
         Call CharOut outFile,"PrimaryCompositeFirstPrefixes["Right(lastCount,2)"]["Right(i+1,2)"]  = '"Hex(Unicode(code,"property","ccc"))" 02"
         Do j = 1 To Length(firstSuffixes)-1 By 2
           xfirst = "0000"firstSuffixes[j,2]
@@ -273,14 +270,14 @@
         If \PrimaryCompositeFirstPrefixesArrayCreated Then Do
           PrimaryCompositeFirstPrefixesArrayCreated = 1
           Call LineOut outFile, "PrimaryCompositeFirstPrefixes["Right(lastCount,2)"]      = .Array~new"
-        End      
-      
+        End
+
         Call CharOut outFile,"PrimaryCompositeFirstPrefixes["Right(lastCount,2)"]["Right(i+1,2)"]  = '"Hex(Unicode(code,"property","ccc"))" 00"
         Do j = 1 To Words(firstPrefixes)
           Call CharOut outFile, " "Right(Word(firstPrefixes,j),2)
         End
         Call LineOut outFile, "'X"
-      
+
         count. = 0
         Do j = 1 To Words(firstPrefixes)
           prefix = "00"Right(Word(firstPrefixes,j),2)
