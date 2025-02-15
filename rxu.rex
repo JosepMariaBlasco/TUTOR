@@ -47,7 +47,7 @@
 --------------------------------------------------------------------------------
 
   local~ALL.DEFAULT_STRING = -
-    .TK.STRING || .ALL.NUMBERS || .TK.PERIOD || .TK.SYMBOL_LITERAL
+    .EL.STRING || .ALL.NUMBERS || .EL.PERIOD || .EL.SYMBOL_LITERAL
 
 --------------------------------------------------------------------------------
 -- Main program                                                               --
@@ -243,7 +243,7 @@ Exit saveRC
     End
 
     prev = token~prev
-    If prev \== .Nil, prev < (.ALL.SYMBOLS_AND_STRINGS||.TK.OP.ABUTTAL) Then prefix = "||"
+    If prev \== .Nil, prev < (.ALL.SYMBOLS_AND_STRINGS||.EL.OP.ABUTTAL) Then prefix = "||"
     Else prefix = ""
 
     source = token~source
@@ -270,7 +270,7 @@ Exit saveRC
       End
 
       -- Sanitize taken constants
-      When token < .TK.TAKEN_CONSTANT Then Do
+      When token < .EL.TAKEN_CONSTANT Then Do
         source = token~source
         c = source[1]
         -- Symbols are emitted as-is
@@ -297,21 +297,21 @@ Exit saveRC
       -- For portability and storage, however, a C2X version of the string
       -- should be used (Unicode characters can degrade, depending on the
       -- editor).
-      When token < .TK.UNICODE_STRING Then
+      When token < .EL.UNICODE_STRING Then
         Call Out prefix'('namespace':Bytes("'ChangeStr('"',token~value,'""')'"))'
 
       -- The four new Unicode string types
-      When token < .TK.TEXT_STRING Then
+      When token < .EL.TEXT_STRING Then
         Call Out prefix'('namespace':Text('nosuffix'))'
-      When token < .TK.GRAPHEMES_STRING Then
+      When token < .EL.GRAPHEMES_STRING Then
         Call Out prefix'('namespace':Graphemes('nosuffix'))'
-      When token < .TK.CODEPOINTS_STRING Then
+      When token < .EL.CODEPOINTS_STRING Then
         Call Out prefix'('namespace':Codepoints('nosuffix'))'
-      When token < .TK.BYTES_STRING Then
+      When token < .EL.BYTES_STRING Then
         Call Out prefix'('namespace':Bytes('nosuffix'))'
 
       -- Hexadecimal and binary strings are low-level, hence BYTES strings
-      When token < (.TK.HEX_STRING || .TK.BINARY_STRING) Then
+      When token < (.EL.HEX_STRING || .EL.BINARY_STRING) Then
         Call Out prefix'('namespace':Bytes('source'))'
 
       -- Standard strings, numbers and pure constant symbols.
@@ -337,7 +337,7 @@ Exit saveRC
       End
 
       -- Keep track of the current instruction
-      When token < .TK.KEYWORD Then Do
+      When token < .EL.KEYWORD Then Do
         currentInstruction = token~value
         -- OPTIONS instruction support
         If currentInstruction == "OPTIONS" Then
@@ -348,7 +348,7 @@ Exit saveRC
       End
 
       -- Process subkeywords (special for PARSE VAR)
-      When token < .TK.SUBKEYWORD Then Do
+      When token < .EL.SUBKEYWORD Then Do
         If token~value == "VAR", currentInstruction == "PARSE" Then Do
           -- Emit "Value" instead of "Var"
           Call Out "Value"
@@ -362,7 +362,7 @@ Exit saveRC
       End
 
       -- Process end of clause markers (inserted or not)
-      When token < .TK.END_OF_CLAUSE Then Do
+      When token < .EL.END_OF_CLAUSE Then Do
         Select Case currentInstruction
           When "OPTIONS" Then Do
             optionsInstruction = 0
