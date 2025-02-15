@@ -25,7 +25,7 @@ This allows existing programs to continue to run unchanged.
 A stream is said to be **Unicode-enabled** when an ``ENCODING`` is specified in the ``STREAM`` ``OPEN`` command:
 
 ```rexx
-   Call Stream filename, "Command", "Open read ENCODING UTF-8"
+  Call Stream filename, "Command", "Open read ENCODING UTF-8"
 ```
 
 When an encoding is specified, STREAM first checks that an encoding with that name is available in the system.
@@ -43,7 +43,8 @@ Say  Stream filename, "Command", "QUERY ENCODING NAME"             -- IBM1047 (m
 Once a stream is opened with the ENCODING option, stream I/O BIFs recognize that the stream is Unicode-enabled, and change their behaviour accordingly:
 
 * For input BIFs, the contents of the stream is automatically decoded and converted to Unicode (i.e., to a UTF-8 *presentation*).
-* Both ``LINEIN`` and ``CHARIN`` return strings of type ``TEXT``, composed of extended grapheme clusters. Lines and character strings are automatically normalized to the NFC Unicode normalization form.
+* Both ``LINEIN`` and ``CHARIN`` return strings of type ``TEXT``, composed of extended grapheme clusters.
+  Lines and character strings are automatically normalized to the NFC Unicode normalization form.
 * When you call ``CHARIN`` and specify the *length* parameter, the appropriate number of codepoints (or grapheme clusters) are read and returned.
 * Each encoding can specify its own set of end-of-line characters. For example, the IBM-1047 encoding (a variant of EBCDIC)
   specifies that ``"15"X``, the NL character, is to be used as end-of-line. Both ``LINEIN`` and ``LINEOUT`` honor this requirement, i.e.,
@@ -135,7 +136,7 @@ The ``STREAM`` BIF has been extended to support Unicode-enabled streams:
 
 Although the simplicity and ease of use of Unicode-enabled streams is very convenient, in some cases you may want to resort to manual
 encoding and decoding operations. For maximum control, you can use the new BIFs, ``ENCODE`` and ``DECODE`` (defined in
-[Unicode.cls](https://rexx.epbcn.com/tutor/doc/packages/Unicode.cls.html)).
+[Unicode.cls](https://rexx.epbcn.com/tutor/Unicode.cls)).
 
 ``DECODE`` can be used as an *encoding validator*:
 
