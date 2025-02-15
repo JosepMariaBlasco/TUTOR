@@ -4,7 +4,9 @@
 /* =======================================                                    */
 /*                                                                            */
 /* This program is part of the The Unicode Tools Of Rexx (TUTOR) package      */
-/* [https://rexx.epbcn.com/tutor/]                                            */
+/*                                                                            */
+/* See https://rexx.epbcn.com/tutor/                                          */
+/*     and https://github.com/JosepMariaBlasco/tutor                          */
 /*                                                                            */
 /* Copyright (c) 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>  */
 /*                                                                            */
@@ -214,7 +216,7 @@ Exit saveRC
   namespaces = .Set~new                 -- To collect all namespaces
 
   -- First pass. Collect tokens and all namespaces
-  token  = parser~firstToken
+  token  = parser~firstElement
   Do While token \== .Nil
     tokens~append( token )
     If token << .NAMESPACE.NAME Then namespaces[] = token~value
