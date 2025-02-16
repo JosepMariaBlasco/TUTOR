@@ -1,6 +1,18 @@
 # The Unicode Tools Of Rexx (TUTOR)
 
-Version 0.5, 20240307.
+The TUTOR package is hosted on:
+
+- <https://rexx.epbcn.com/tutor/> (daily builds and releases).
+- <https://github.com/JosepMariaBlasco/TUTOR/> (releases only).
+
+The copy at <https://rexx.epbcn.com/tutor/> uses
+the Rexx Highlighter to display Rexx programs, while
+the copy at <https://github.com/JosepMariaBlasco/TUTOR/>
+uses the (limited) highlighting provided by GitHub.
+
+---
+
+Version 0.6, 20250215.
 
 ```
 /******************************************************************************
@@ -25,7 +37,7 @@ Version 0.5, 20240307.
 
 ## Quick installation
 
-Download Unicode.zip, unzip it in some directory of your choice, and run ``setenv`` to set the path (for Linux users: use ``. ./setenv.sh``, not ``./setenv.sh``, or your path will not be set).
+Download [Tutor.zip](Tutor.zip), unzip it in some directory of your choice, and run ``setenv`` to set the path (for Linux users: use ``. ./setenv.sh``, not ``./setenv.sh``, or your path will not be set).
 
 You can then navigate to the ``samples`` directory and try the samples by using ``[rexx] rxu filename``, or experiment interactively with the ``rxutry`` utility.
 
@@ -47,42 +59,20 @@ You can then navigate to the ``samples`` directory and try the samples by using 
     * [The PersistentStringTable class](./doc/persistent-string-table/)
 * [Using TUTOR from Classic Rexx](./doc/using-tutor-from-classic-rexx/)
 
-## Release notes for version 0.5, 20240307
+## Release notes for version 0.6, 20250215
 
-New and changed features in the 0.5 release are:
+New and changed features in the 0.6 release are:
 
-* Implementations of NFC normalization (``toNFC`` and ``isNFC`` functions).
-* Addition of a new GRAPHEMES string type. TEXT auto-normalizes to NFC at creation time (this includes the results of operations and built-ins), while GRAPHEMES does perform any automatical normalization. Both GRAPHEMES and TEXT can be used as targets when opening a Unicode-enabled stream.
-* Implement loose matching for property names (UNICODE BIF).
-* Implement all tests in NormalizationTest.txt, consistency check on ccc and canonical decomposition.
-* InspectTokens: add options to select different dialects, specify default in the help display.
-* New ``rxutry.rex`` utility, a modification of ``rexxtry.rex`` with Unicode support.
-* ``Options DefaultString`` and ``Options Promote`` can be set by the caller. Make Options DefaultString TEXT the default.
-* Added [a new helpfile](doc/using-tutor-from-classic-rexx/) detailing how to use some of the TUTOR-generated data files from Classic Rexx dialects like Regina.
+* The package is now distributed as Tutor.zip instead of Unicode.zip.
+* RXU, the Rexx Preprocessor for Unicode, has been rewritten from scratch
+  to use the newly developed [Rexx Parser](https://rexx.epbcn.com/rexx.parser/).
+* The rxutry.rex utility program has also been updated.
+* The package is now hosted on <https://rexx.epbcn.com/tutor/> (daily builds and releases).
+  and <https://github.com/JosepMariaBlasco/TUTOR/> (releases only),
+  which makes for much simpler and easy to remember URLs.
+  Additionally, the rexx.epbcn.com version uses the new Rexx Highlighter.
 
-Bugs fixed:
-
-* Fix [bug #6](https://github.com/RexxLA/rexx-repository/issues/6)
-* RXU: do not translate BIF names after a twiddle.
-
-Documentation additions and enhancements:
-
-* Document [the Unicode.Normalization class](doc/properties/normalization/).
-* Document many of the properties currently implemented by the UNICODE BIF.
-* Move notes for old releases to separate files in the ``doc`` subdirectory.
-* Improve the docs for the PersistentStringTable class, and move them to [a separate helpfile](doc/persistent-string-table/).
-
-## Components of TUTOR which can be used independently
-
-There are currently two components of TUTOR which can be used independently of TUTOR, since they have no absolute dependencies on other TUTOR components.
-
-* [The Rexx Tokenizer](https://rexx.epbcn.com/tokenizer/) can be used independently of TUTOR, but you will need TUTOR
-  when you use one of the Unicode subclasses.
-* [The UTF8](utf8.cls) routine can be used independently of TUTOR. UTF8 detects whether Unicode.cls has been loaded (by looking for the existence of a .Bytes class that subclasses .String), and returns .Bytes strings or standard ooRexx strings as appropriate.
-
----
-
-## \[Cumulative change log since release 0.5\]
+Other fixes and enhancements:
 
 * 20240326 &mdash; Update all BIF railroad diagrams, add some new for STREAM ENCODING
 * 20240325 &mdash; Update tokenizer constants, in preparation for clauser
@@ -94,8 +84,19 @@ There are currently two components of TUTOR which can be used independently of T
 * 20240323 &mdash; Create [0.5-release-notes.md](doc/0.5-release-notes.md).
 * 20240323 &mdash; Tokenizer: SPECIAL --> COMMA (all other special characters already handled separately).
 
+## Components of TUTOR which can be used independently
+
+* [The UTF8](utf8.cls) routine can be used independently of TUTOR. UTF8 detects whether Unicode.cls has been loaded (by looking for the existence of a .Bytes class that subclasses .String), and returns .Bytes strings or standard ooRexx strings as appropriate.
+
 ---
 
+## \[Cumulative change log since release 0.6\]
+
+(No changes yet)
+
+---
+
+[Release notes for version 0.6, 20250215](doc/0.6-release-notes.md)<br>
 [Release notes for version 0.5, 20240307](doc/0.5-release-notes.md)<br>
 [Release notes for version 0.4a, 20231002](doc/0.4a-release-notes.md)<br>
 [Release notes for version 0.4, 20230901](doc/0.4-release-notes.md)<br>
