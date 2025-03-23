@@ -420,7 +420,6 @@ Syntax:
 
   If \interactive Then Signal NotRXUTry
 
-  Signal On Syntax Name RXUTry
   If \options.silent then Signal On Syntax Name RXUTry
   additional = Condition("A")~lastItem
   Raise Syntax (additional~code) Additional (additional~additional)
