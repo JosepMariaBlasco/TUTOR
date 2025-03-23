@@ -18,6 +18,7 @@
 /* -------- ------- --------------------------------------------------------- */
 /* 20250114    0.6  Complete rewrite for the 0.6 version. First version to    */
 /*                  use the Rexx Parser.                                      */
+/* 20250323    0.6a Add support for Jean Louis Faucher's ooRexxShell          */
 /*                                                                            */
 /******************************************************************************/
 
@@ -63,6 +64,7 @@
     outArray[1] = ""
     options. = 0
     options.namespace = "U"
+    options.silent = "silent"~caselessAbbrev(arg(2), 1)
     Call Transform arguments, outArray, options.
     If result == .Nil Then Return .nil
     Return outArray
@@ -419,6 +421,7 @@ Syntax:
   If \interactive Then Signal NotRXUTry
 
   Signal On Syntax Name RXUTry
+  If \options.silent then Signal On Syntax Name RXUTry
   additional = Condition("A")~lastItem
   Raise Syntax (additional~code) Additional (additional~additional)
 

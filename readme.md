@@ -12,7 +12,7 @@ uses the (limited) highlighting provided by GitHub.
 
 ---
 
-Version 0.6, 20250215.
+Version 0.6a, 20250325.
 
 ```
 /******************************************************************************
@@ -37,9 +37,16 @@ Version 0.6, 20250215.
 
 ## Quick installation
 
-Download [Tutor.zip](Tutor.zip), unzip it in some directory of your choice, and run ``setenv`` to set the path (for Linux users: use ``. ./setenv.sh``, not ``./setenv.sh``, or your path will not be set).
+Download [Tutor.zip](Tutor.zip), unzip it in some directory of your choice,
+and run `setenv` to set the path
+(for Linux users: use `. ./setenv.sh`, not `./setenv.sh`, or your path will not be set).
 
-You can then navigate to the ``samples`` directory and try the samples by using ``[rexx] rxu filename``, or experiment interactively with the ``rxutry`` utility.
+If you intend to use RXU, the Rexx Preprocessor for Unicode, you will need to
+download and install the Rexx Parser
+(available at <https://rexx.epbcn.com/rexx.parser/> and <https://github.com/JosepMariaBlasco/rexx.parser/>)
+and also run `setenv` in the parser installation directory.
+
+You can then navigate to the `samples` directory and try the samples by using `[rexx] rxu filename`, or experiment interactively with the `rxutry` utility.
 
 ## Documentation
 
@@ -59,30 +66,11 @@ You can then navigate to the ``samples`` directory and try the samples by using 
     * [The PersistentStringTable class](./doc/persistent-string-table/)
 * [Using TUTOR from Classic Rexx](./doc/using-tutor-from-classic-rexx/)
 
-## Release notes for version 0.6, 20250215
+## Release notes for version 0.6a, 20250215
 
-New and changed features in the 0.6 release are:
-
-* The package is now distributed as Tutor.zip instead of Unicode.zip.
-* RXU, the Rexx Preprocessor for Unicode, has been rewritten from scratch
-  to use the newly developed [Rexx Parser](https://rexx.epbcn.com/rexx.parser/).
-* The rxutry.rex utility program has also been updated.
-* The package is now hosted on <https://rexx.epbcn.com/tutor/> (daily builds and releases).
-  and <https://github.com/JosepMariaBlasco/TUTOR/> (releases only),
-  which makes for much simpler and easy to remember URLs.
-  Additionally, the rexx.epbcn.com version uses the new Rexx Highlighter.
-
-Other fixes and enhancements:
-
-* 20240326 &mdash; Update all BIF railroad diagrams, add some new for STREAM ENCODING
-* 20240325 &mdash; Update tokenizer constants, in preparation for clauser
-* 20240325 &mdash; Start working on new railroad diagrams, using the same tools as in rexxref. First document migrated: new BIFS
-* 20240323 &mdash; Fix https://github.com/RexxLA/rexx-repository/issues/7
-* 20240323 &mdash; Implement the STRINGTYPE BIM, fixing https://github.com/RexxLA/rexx-repository/issues/9
-* 20240323 &mdash; U2C was left undocumented in 0.5.
-* 20240323 &mdash; Create the [publications](publications) subdirectory.
-* 20240323 &mdash; Create [0.5-release-notes.md](doc/0.5-release-notes.md).
-* 20240323 &mdash; Tokenizer: SPECIAL --> COMMA (all other special characters already handled separately).
+Version 0.6a includes some small changes to allow running RXU,
+the Rexx Preprocessor for Unicode, under Jean Louis Faucher's ooRexxShell
+(thanks to Jean Louis for suggesting the changes).
 
 ## Components of TUTOR which can be used independently
 
@@ -90,12 +78,13 @@ Other fixes and enhancements:
 
 ---
 
-## \[Cumulative change log since release 0.6\]
+## \[Cumulative change log since release 0.6a\]
 
 (No changes yet)
 
 ---
 
+[Release notes for version 0.6a, 20250323](doc/0.6a-release-notes.md)<br>
 [Release notes for version 0.6, 20250215](doc/0.6-release-notes.md)<br>
 [Release notes for version 0.5, 20240307](doc/0.5-release-notes.md)<br>
 [Release notes for version 0.4a, 20231002](doc/0.4a-release-notes.md)<br>
