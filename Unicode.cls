@@ -1,6 +1,6 @@
 /******************************************************************************
  * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
- * See https://rexx.epbcn.com/tutor/                                          *
+ * See https://rexx.epbcn.com/TUTOR/                                          *
  *     and https://github.com/JosepMariaBlasco/TUTOR                          *
  * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
  * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
@@ -13,9 +13,9 @@
  * <p>This classfile offers a set of public routines and classes that implement
  *   the basic architecture of The Unicode Tools Of Rexx (TUTOR).
  *   Please refer to
- *   <a href="https://rexx.epbcn.com/tutor/doc/built-in.md">https://rexx.epbcn.com/tutor/doc/built-in.md</a>
+ *   <a href="https://rexx.epbcn.com/TUTOR/doc/built-in.md">https://rexx.epbcn.com/TUTOR/doc/built-in.md</a>
  *   and to
- *   <a href="https://rexx.epbcn.com/tutor/doc/new-functions.md">https://rexx.epbcn.com/tutor/doc/new-functions.md</a>
+ *   <a href="https://rexx.epbcn.com/TUTOR/doc/new-functions.md">https://rexx.epbcn.com/TUTOR/doc/new-functions.md</a>
  *   for documentation and examples.
  *
  *  <h4>Version history</h4>
@@ -345,7 +345,7 @@ Return string~upper(n, length)
 
 ::Class "Bytes" SubClass String Public
 
--- Please refer to https://rexx.epbcn.com/tutor/doc/classes.md
+-- Please refer to https://rexx.epbcn.com/TUTOR/doc/classes.md
 -- for documentation details
 
 ::Method C2U

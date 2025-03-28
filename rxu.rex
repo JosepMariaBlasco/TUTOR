@@ -5,7 +5,7 @@
 /*                                                                            */
 /* This program is part of the The Unicode Tools Of Rexx (TUTOR) package      */
 /*                                                                            */
-/* See https://rexx.epbcn.com/tutor/                                          */
+/* See https://rexx.epbcn.com/TUTOR/                                          */
 /*     and https://github.com/JosepMariaBlasco/TUTOR                          */
 /*                                                                            */
 /* Copyright (c) 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>  */

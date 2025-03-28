@@ -2,10 +2,10 @@
 
 The TUTOR package is hosted on:
 
-- <https://rexx.epbcn.com/tutor/> (daily builds and releases).
+- <https://rexx.epbcn.com/TUTOR/> (daily builds and releases).
 - <https://github.com/JosepMariaBlasco/TUTOR/> (releases only).
 
-The copy at <https://rexx.epbcn.com/tutor/> uses
+The copy at <https://rexx.epbcn.com/TUTOR/> uses
 the Rexx Highlighter to display Rexx programs, while
 the copy at <https://github.com/JosepMariaBlasco/TUTOR/>
 uses the (limited) highlighting provided by GitHub.
@@ -17,7 +17,7 @@ Version 0.6a, 20250325.
 ```
 /******************************************************************************
  * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
- * See https://rexx.epbcn.com/tutor/                                          *
+ * See https://rexx.epbcn.com/TUTOR/                                          *
  *     and https://github.com/JosepMariaBlasco/TUTOR                          *
  * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
  * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
@@ -43,7 +43,7 @@ and run `setenv` to set the path
 
 If you intend to use RXU, the Rexx Preprocessor for Unicode, you will need to
 download and install the Rexx Parser
-(available at <https://rexx.epbcn.com/rexx.parser/> and <https://github.com/JosepMariaBlasco/rexx.parser/>)
+(available at <https://rexx.epbcn.com/rexx-parser/> and <https://github.com/JosepMariaBlasco/rexx-parser/>)
 and also run `setenv` in the parser installation directory.
 
 You can then navigate to the `samples` directory and try the samples by using `[rexx] rxu filename`, or experiment interactively with the `rxutry` utility.

@@ -3,7 +3,7 @@
 ```
 /******************************************************************************
  * This file is part of The Unicode Tools Of Rexx (TUTOR)                     *
- * See https://rexx.epbcn.com/tutor/                                          *
+ * See https://rexx.epbcn.com/TUTOR/                                          *
  *     and https://github.com/JosepMariaBlasco/TUTOR                          *
  * Copyright © 2023-2025 Josep Maria Blasco <josep.maria.blasco@epbcn.com>    *
  * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
@@ -136,7 +136,7 @@ The ``STREAM`` BIF has been extended to support Unicode-enabled streams:
 
 Although the simplicity and ease of use of Unicode-enabled streams is very convenient, in some cases you may want to resort to manual
 encoding and decoding operations. For maximum control, you can use the new BIFs, ``ENCODE`` and ``DECODE`` (defined in
-[Unicode.cls](https://rexx.epbcn.com/tutor/Unicode.cls)).
+[Unicode.cls](https://rexx.epbcn.com/TUTOR/Unicode.cls)).
 
 ``DECODE`` can be used as an *encoding validator*:
 

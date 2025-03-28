@@ -5,7 +5,7 @@
   * [New types of strings](./string-types/)
   * [Revised built-in functions](./built-in/)
     * [Stream functions for Unicode](./stream/)
-    * [The encoding/decoding model](https://rexx.epbcn.com/tutor/doc/encodings/)
+    * [The encoding/decoding model](https://rexx.epbcn.com/TUTOR/doc/encodings/)
   * [New built-in functions](./new-functions/)
     * [The properties model](./properties/)
       * [The Unicode.Normalization class](./properties/normalization/).
