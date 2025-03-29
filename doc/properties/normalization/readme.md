@@ -10,10 +10,10 @@
  ******************************************************************************/
 ```
 
-The Unicode.Normalization class, a subclass of Unicode.Property, resides in [``/components/properties/normalization.cls``](../../../components/properties/normalization.cls).
+The Unicode.Normalization class, a subclass of Unicode.Property, resides in [``/bin/properties/normalization.cls``](../../../bin/properties/normalization.cls).
 
-The associated build routine is located at [``/components/bin/build/normalization.rex``](../../../components/bin/build/normalization.rex);
-it generates the ``/components/bin/normalization.bin`` PersistentStringTable.
+The associated build routine is located at [``/bin/bin/build/normalization.rex``](../../../bin/bin/build/normalization.rex);
+it generates the ``/bin/bin/normalization.bin`` PersistentStringTable.
 
 The PersistentStringTable can be checked for internal consistency by the [``/tests/normalization.rex``](../../../tests/normalization.rex) utility.
 It also runs all the tests in NormalizationTest-15.0.0.txt.
@@ -33,7 +33,7 @@ This class method gets automatically called at the end of the class construction
 * The ``toNFD`` function.
 * The ``Canonical_Decomposition_Mapping`` and ``Canonical_Combining_Class`` (``ccc``) properties.
 
-The ``/components/bin/normalization.bin`` PersistentStringTable contains the following entries:
+The ``/bin/bin/normalization.bin`` PersistentStringTable contains the following entries:
 
 <dl>
   <dt>UnicodeData.normalization.canonicalDouble.Table1</dt>
@@ -69,7 +69,7 @@ characters in this range are not decomposable) and 2F800 to 2FA1D. The rest of t
 The algorithm for Hangul Syllabes can be found in https://www.unicode.org/versions/Unicode15.0.0/UnicodeStandard-15.0.pdf, pp. 144ss.
 
 The `activate` class method initializes three arrays, `PrimaryCompositeLastSuffixes`, `PrimaryCompositeFirstPrefixes` and `PrimaryCompositeFirstSuffix`. It does so
-by calling `Unicode.PrimaryComposite.rex`, located in the `components/bin` directory. This file is created at build time by `components/bin/build/normalization.rex`.
+by calling `Unicode.PrimaryComposite.rex`, located in the `bin/bin` directory. This file is created at build time by `bin/bin/build/normalization.rex`.
 
 ## Canonical_Combining_Class (Class method)
 

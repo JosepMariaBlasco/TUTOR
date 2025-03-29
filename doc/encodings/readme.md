@@ -11,7 +11,7 @@
 ```
 
 This directory contains the main encoding class, ``Encoding.cls``, and a growing set of particular encoding classes.
-The ['build'](../../components/encodings/build/) subdirectory contains a set of utility routines to generate the translate tables used by some of the encoding classes.
+The ['build'](../../bin/encodings/build/) subdirectory contains a set of utility routines to generate the translate tables used by some of the encoding classes.
 
 This file contains the documentation for the public Encoding class, contained in ``Encoding.cls``,
 and some guidelines to implement particular encodings, as subclasses of the Encoding class.
@@ -29,7 +29,7 @@ The Encoding class implements a series of services common to all encodings (like
 
 The Encoding class and its subclasses operate under the following contract. All subclasses must adhere to this contract to work properly.
 
-* Subclasses of ``Encoding`` must reside each in a separate ``.cls`` file, and these files must be located in the "components/encodings" subdirectory.
+* Subclasses of ``Encoding`` must reside each in a separate ``.cls`` file, and these files must be located in the "bin/encodings" subdirectory.
 * At initialization time, the ``Encoding`` class will register itself in the ``.local`` directory by using ``.local~encoding = .Encoding``.
   This allows encoding subclasses to subclass Encoding without having to use the ``::Requires`` directive.
 * ``Encoding`` will then call all the ``.cls`` files that reside in the "encoding" subdirectory, except itself. This will give all subclasses an opportunity to register with the ``Encoding`` class.

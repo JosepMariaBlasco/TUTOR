@@ -78,14 +78,14 @@ If .local~Unicode.Coercions~isNil Then
 
 .local~Unicode = .routines~Unicode
 
-Call "components/utilities/MultiStageTable.cls"
-Call "components/utilities/PersistentStringTable.cls"
-Call "components/properties/properties.cls"
-Call "components/properties/case.cls"
-Call "components/properties/gc.cls"
-Call "components/properties/gcb.cls"
-Call "components/properties/name.cls"
-Call "components/properties/normalization.cls"
+Call "utilities/MultiStageTable.cls"
+Call "utilities/PersistentStringTable.cls"
+Call "properties/properties.cls"
+Call "properties/case.cls"
+Call "properties/gc.cls"
+Call "properties/gcb.cls"
+Call "properties/name.cls"
+Call "properties/normalization.cls"
 
 
 /**
@@ -988,5 +988,5 @@ Return class~new(left~"=":.String(right))
 --------------------------------------------------------------------------------
 
 ::Requires "utf8.cls"
-::Requires "components/stream.cls"
-::Requires "components/encoding.cls"
+::Requires "stream.cls"
+::Requires "encoding.cls"

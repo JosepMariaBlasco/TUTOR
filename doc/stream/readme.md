@@ -12,7 +12,7 @@
 
 Several of the stream built-in functions have been rewritten to implement a basic level of Unicode support.
 
-Unicode support for the built-in functions is implemented by the [``stream.cls``](../../components/stream.cls) package. It contains a set of
+Unicode support for the built-in functions is implemented by the [``stream.cls``](../../bin/stream.cls) package. It contains a set of
 helper routines implementing Unicode-enabled streams.
 
 ### Backwards compatibility
@@ -136,7 +136,7 @@ The ``STREAM`` BIF has been extended to support Unicode-enabled streams:
 
 Although the simplicity and ease of use of Unicode-enabled streams is very convenient, in some cases you may want to resort to manual
 encoding and decoding operations. For maximum control, you can use the new BIFs, ``ENCODE`` and ``DECODE`` (defined in
-[Unicode.cls](https://rexx.epbcn.com/TUTOR/Unicode.cls)).
+[Unicode.cls](https://rexx.epbcn.com/TUTOR/bin/Unicode.cls)).
 
 ``DECODE`` can be used as an *encoding validator*:
 

@@ -37,7 +37,7 @@ Version 0.6a, 20250325.
 
 ## Quick installation
 
-Download [Tutor.zip](Tutor.zip), unzip it in some directory of your choice,
+Download [Tutor.zip](TUTOR.zip), unzip it in some directory of your choice,
 and run `setenv` to set the path
 (for Linux users: use `. ./setenv.sh`, not `./setenv.sh`, or your path will not be set).
 
@@ -74,7 +74,7 @@ the Rexx Preprocessor for Unicode, under Jean Louis Faucher's ooRexxShell
 
 ## Components of TUTOR which can be used independently
 
-* [The UTF8](utf8.cls) routine can be used independently of TUTOR. UTF8 detects whether Unicode.cls has been loaded (by looking for the existence of a .Bytes class that subclasses .String), and returns .Bytes strings or standard ooRexx strings as appropriate.
+* [The UTF8](bin/utf8.cls) routine can be used independently of TUTOR. UTF8 detects whether Unicode.cls has been loaded (by looking for the existence of a .Bytes class that subclasses .String), and returns .Bytes strings or standard ooRexx strings as appropriate.
 
 ---
 
