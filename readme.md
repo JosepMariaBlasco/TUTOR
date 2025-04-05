@@ -8,11 +8,16 @@ The TUTOR package is hosted on:
 The copy at <https://rexx.epbcn.com/TUTOR/> uses
 the Rexx Highlighter to display Rexx programs, while
 the copy at <https://github.com/JosepMariaBlasco/TUTOR/>
-uses the (limited) highlighting provided by GitHub.
+uses the (more limited) highlighting provided by GitHub.
+
+TUTOR is also distributed as part of **net-oo-rexx**,
+a software bundle curated by Rony Flatscher.
+The net-oo-rexx package can be downloaded at
+<https://wi.wu.ac.at/rgf/rexx/tmp/net-oo-rexx-packages/>.
 
 ---
 
-Version 0.6a, 20250325.
+Version 0.6a, 20250325, 20250405 refresh.
 
 ```
 /******************************************************************************
@@ -35,7 +40,7 @@ Version 0.6a, 20250325.
 
 ---
 
-## Quick installation
+## Quick installation notes
 
 Download [Tutor.zip](TUTOR.zip), unzip it in some directory of your choice,
 and run `setenv` to set the path
@@ -46,7 +51,18 @@ download and install the Rexx Parser
 (available at <https://rexx.epbcn.com/rexx-parser/> and <https://github.com/JosepMariaBlasco/rexx-parser/>)
 and also run `setenv` in the parser installation directory.
 
-You can then navigate to the `samples` directory and try the samples by using `[rexx] rxu filename`, or experiment interactively with the `rxutry` utility.
+You may prefer to use the net-oo-rexx bundle, available at
+<https://wi.wu.ac.at/rgf/rexx/tmp/net-oo-rexx-packages/>,
+which includes a copy of both TUTOR and the Rexx Package.
+In that case, please follow the installation instructions
+present in that package. You will then be able to use
+TUTOR from a terminal shell, or by using **ooRexxShell**
+a powerful, Swiss army knife shell developed by Jean Louis
+Faucher; ooRexxShell includes integrated support for
+TUTOR and for the Rexx parser.
+
+You can then navigate to the `samples` directory and try the samples by using `[rexx] rxu filename`,
+or experiment interactively with the `rxutry` utility, or with ooRexxShell.
 
 ## Documentation
 
@@ -80,7 +96,8 @@ the Rexx Preprocessor for Unicode, under Jean Louis Faucher's ooRexxShell
 
 ## \[Cumulative change log since release 0.6a\]
 
-(No changes yet)
++ 20250405 - Add references to net-oo-rexx and to ooRexxShell in the
+appropriate places.
 
 ---
 
