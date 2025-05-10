@@ -6,11 +6,11 @@
  * License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)  *
  ******************************************************************************/
 
-/*  The Unicode Jean-Louis Faucher demo                                       */
+/*  The Unicode Jean Louis Faucher demo                                       */
 /*  ===================================                                       */
 /*                                                                            */
 /*  This demo file reproduces most of the tests included in the test set      */
-/*  devised by Jean-Louis Faucher (see the URL below) and runs them using     */
+/*  devised by Jean Louis Faucher (see the URL below) and runs them using     */
 /*  the Unicode Tools.                                                        */
 
 noelemojiText = "noël👩‍👨‍👩‍👧🎅"T

@@ -17,7 +17,7 @@ The net-oo-rexx package can be downloaded at
 
 ---
 
-Version 0.6a, 20250325, 20250405 refresh.
+Version 0.6a, 20250325, 20250510 refresh.
 
 ```
 /******************************************************************************
@@ -82,6 +82,15 @@ or experiment interactively with the `rxutry` utility, or with ooRexxShell.
     * [The PersistentStringTable class](./doc/persistent-string-table/)
 * [Using TUTOR from Classic Rexx](./doc/using-tutor-from-classic-rexx/)
 
+## Publications
+
+* [Unicode and Rexx. A brief introduction to TUTOR](https://www.epbcn.com/pdf/josep-maria-blasco/2025-05-04-Unicode-and-Rexx.pdf) (20250504;
+  see also [as a web page](/publications/2025-05-04-Unicode-and-Rexx/)). Presented to the
+  [36th International Rexx Language Symposium -- Vienna, Austria and online](https://www.rexxla.org/events/schedule.rsp?year=2025).
+* [The Unicode Tools of Rexx (TUTOR)](https://www.epbcn.com/pdf/josep-maria-blasco/2024-03-04-The-Unicode-Tools-Of-Rexx.pdf) (20240304).
+  Presented to the
+  [35th International Rexx Language Symposium -- Brisbane, Australia and online](https://www.rexxla.org/events/schedule.rsp?year=2024).
+
 ## Release notes for version 0.6a, 20250215
 
 Version 0.6a includes some small changes to allow running RXU,
@@ -96,6 +105,7 @@ the Rexx Preprocessor for Unicode, under Jean Louis Faucher's ooRexxShell
 
 ## \[Cumulative change log since release 0.6a\]
 
++ 20250510 - Add a "publications" section to the main readme.md page.
 + 20250405 - Add references to net-oo-rexx and to ooRexxShell in the
 appropriate places.
 

@@ -14,7 +14,7 @@ The Rexx Preprocessor for Unicode implements a series of _new_ built-in function
 
 ## BYTES
 
-![Diagram for the BYTES BIF](../img/BIF_BYTES.svg)
+![Diagram for the BYTES BIF](../img/BIF_BYTES.svg) \
 
 Returns the _string_ converted to the BYTES format.  BYTES strings are composed of 8-bit bytes, and every character in the string can be an arbitrary 8-bit value, including binary data.
 Rexx built-in-functions operate at the byte level, and no Unicode features are available (for example, LOWER operates only on the ranges ``"A".."Z"`` and ``"a".."z"``).
@@ -22,7 +22,7 @@ This is equivalent to Classic Rexx strings, but with some enhancements. See the 
 
 ## CODEPOINTS
 
-![Diagram for the CODEPOINTS BIF](../img/BIF_CODEPOINTS.svg)
+![Diagram for the CODEPOINTS BIF](../img/BIF_CODEPOINTS.svg) \
 
 Converts _string_ to a CODEPOINTS string and returns it. CODEPOINTS strings are composed of Unicode codepoints, and every character in the string can be an arbitrary Unicode codepoint.
 The argument _string_ has to contain well-formed UTF-8, or a Syntax error will be raised. When working with CODEPOINTS strings, Rexx built-in functions operate at the codepoint level,
@@ -32,7 +32,7 @@ Please note that CODEPOINTS, GRAPHEMES and TEXT strings are guaranteed to contai
 
 ## C2U (Character to Unicode)
 
-![Diagram for the C2U BIF](../img/BIF_C2U.svg)
+![Diagram for the C2U BIF](../img/BIF_C2U.svg) \
 
 Returns a string, in character format, that represents _string_ converted to Unicode codepoints.
 
@@ -57,7 +57,7 @@ __Examples__ (assuming an ambient encoding of UTF-8):
 
 ## DECODE
 
-![Diagram for the DECODE BIF](../img/BIF_DECODE.svg)
+![Diagram for the DECODE BIF](../img/BIF_DECODE.svg) \
 
 Tests whether a _string_ is encoded according to a certain _encoding_, and optionally decodes it to a certain _format_.
 
@@ -91,7 +91,7 @@ var = DECODE(string, "UTF-16", "UTF-8", "SYNTAX")  -- Decodes string to the UTF-
 
 ## ENCODE
 
-![Diagram for the ENCODE BIF](../img/BIF_ENCODE.svg)
+![Diagram for the ENCODE BIF](../img/BIF_ENCODE.svg) \
 
 ENCODE first validates that _string_ contains well-formed UTF-8. Once the _string_ is validated, encoding is attempted using the specified _encoding_. ENCODE returns the encoded string,
   or a null string if validation or encoding failed. You can influence the behaviour of the function when an error is encountered by specifying the optional _error_handling_ argument.
@@ -107,7 +107,7 @@ ENCODE(string, "IBM1047","SYNTAX")                 -- The encoded string. If the
 
 ## GRAPHEMES
 
-![Diagram for the GRAPHEMES BIF](../img/BIF_GRAPHEMES.svg)
+![Diagram for the GRAPHEMES BIF](../img/BIF_GRAPHEMES.svg) \
 
 Converts _string_ to a GRAPHEMES string and returns it. GRAPHEMES strings are composed of extended grapheme clusters, and every character in a GRAPHEMES string can be an arbitrary extended grapheme cluster.
 The argument _string_ has to contain well-formed UTF-8, or a Syntax error is raised. When working with GRAPHEMES strings, Rexx built-in functions operate at the extended grapheme cluster level, and can produce much richer results than when operating with BYTES or CODEPOINTS strings.
@@ -116,12 +116,12 @@ Please note that CODEPOINTS, GRAPHEMES and TEXT strings are guaranteed to contai
 
 ## N2P (Name to codePoint)
 
-![Diagram for the N2P BIF](../img/BIF_N2P.svg)
+![Diagram for the N2P BIF](../img/BIF_N2P.svg) \
 
 Returns the hexadecimal Unicode codepoint corresponding to _name_, or the null string if _name_ does not correspond to a Unicode codepoint.
 
 ``N2P`` accepts _names_, as defined in the second column of ``UnicodeData.txt`` (that is, the Unicode "Name" \["Na"\] property), like ``"LATIN CAPITAL LETTER F"`` or ``"BELL"``;
-aliases, as defined in ``NameAliases.txt``, like ``"LF"`` or ``"FORM FEED"``, and labels identifying codepoints that have no names, like ``"<Control-0001>"`` or ``"<Private Use-E000>"``.
+_aliases_, as defined in ``NameAliases.txt``, like ``"LF"`` or ``"FORM FEED"``, and _labels_ identifying codepoints that have no names, like ``"<Control-0001>"`` or ``"<Private Use-E000>"``.
 
 When specifying a _name_, case is ignored, as are certain characters: spaces, medial dashes (except for the ``"HANGUL JUNGSEONG O-E"`` codepoint) and underscores that replace dashes.
 Hence, ``"BELL"``, ``"bell"`` and ``"Bell"`` are all equivalent, as are ``"LATIN CAPITAL LETTER F"``, ``"Latin capital letter F"`` and ``"latin_capital_letter_f"``.
@@ -139,7 +139,7 @@ N2P("Potatoes")               = ""            -- ..but no "Potatoes".
 
 ## P2N (codePoint to Name)
 
-![Diagram for the P2N BIF](../img/BIF_P2N.svg)
+![Diagram for the P2N BIF](../img/BIF_P2N.svg) \
 
 Returns the name or label corresponding to the hexadecimal Unicode _codepoint_ argument, or the null string if the codepoint has no name or label.
 
@@ -168,7 +168,7 @@ P2N("110000")  =  ""                          -- Out-of-range
 
 ## STRINGTYPE
 
-![Diagram for the STRINGTYPE BIF](../img/BIF_STRINGTYPE.svg)
+![Diagram for the STRINGTYPE BIF](../img/BIF_STRINGTYPE.svg) \
 
 If you specify only _string_, it returns __TEXT__ when _string_ is a TEXT string,
 __GRAPHEMES__ when _string_ is a GRAPHEMES string,
@@ -182,7 +182,7 @@ _string_ matches the _type_. Otherwise, it returns __0__. The following are vali
 
 ## TEXT
 
-![Diagram for the TEXT BIF](../img/BIF_TEXT.svg)
+![Diagram for the TEXT BIF](../img/BIF_TEXT.svg) \
 
 Converts _string_ to a TEXT string and returns it. TEXT strings are composed of extended grapheme clusters, and every character in a TEXT string can be an arbitrary extended grapheme cluster.
 The argument _string_ has to contain well-formed UTF-8, or a Syntax error is raised. When working with TEXT strings, Rexx built-in functions operate at the extended grapheme cluster level, and can produce much richer results than when operating with BYTES or CODEPOINTS strings.
@@ -191,7 +191,7 @@ Please note that CODEPOINTS, GRAPHEMES and TEXT strings are guaranteed to contai
 
 ## U2C (Unicode to Character)
 
-![Diagram for the U2C BIF](../img/BIF_U2C.svg)
+![Diagram for the U2C BIF](../img/BIF_U2C.svg) \
 
 Returns a string, in character format, that represents _u-string_ converted to characters. _U-string_ must be
 a blank-separated sequence of hexadecimal codepoints, or parenthesized code point names, alias or labels (separator
@@ -200,7 +200,7 @@ string would be syntactically correct, and produce a syntax error otherwise.
 
 ## UNICODE (Functional form)
 
-![Diagram for the functional form of the UNICODE BIF](../img/BIF_UNICODE_FUNCTIONAL.svg)
+![Diagram for the functional form of the UNICODE BIF](../img/BIF_UNICODE_FUNCTIONAL.svg) \
 
 _Function_ can be one of:
 
@@ -223,7 +223,7 @@ UNICODE("ὈΔΥΣΣΕΎΣ"T,toLowercase)                  -- "ὀδυσσεύς
 
 ## UNICODE ("Property" form)
 
-![Diagram for the property form of the UNICODE BIF](../img/BIF_UNICODE_PROPERTY.svg)
+![Diagram for the property form of the UNICODE BIF](../img/BIF_UNICODE_PROPERTY.svg) \
 
 The first argument, _code_, must be either a UTF-32 codepoint (i.e., a four-byte BYTES string representing a 32-bit positive integer) or a hexadecimal codepoint (without the leading "U+").
 
@@ -288,8 +288,8 @@ UNICODE(C7, Property, Canonical_Decomposition_Mapping)      -- "0043 0327" ("Ç"
 UNICODE(B8, Property, Case_Ignorable)                       -- 1 ("B8"U, Cedilla)
 UNICODE(F8, Property, Cased)                                -- 1 ("ù", Latin small letter u with grave)
 UNICODE(110, Property, Changes_When_Lowercased)             -- 1 ("Đ", Latin capital letter D with stroke)
-UNICODE(128, Property, Changes_When_Casefolded              -- 1 ("Ĩ", Latin capital letter I with tilde)
-UNICODE(222, Property, Changes_When_Casemapped              -- 1 ("Ȣ", Latin capital letter Ou)
+UNICODE(128, Property, Changes_When_Casefolded)             -- 1 ("Ĩ", Latin capital letter I with tilde)
+UNICODE(222, Property, Changes_When_Casemapped)             -- 1 ("Ȣ", Latin capital letter Ou)
 UNICODE(105, Property, Changes_When_Titlecased)             -- 1 ("ą", Latin small letter a with ogonek)
 UNICODE(113, Property, Changes_When_Uppercased)             -- 1 ("ē", Latin small letter e with macron)
 UNICODE(340, Property, Full_Composition_Exclusion)          -- 1 ("◌̀ ", Combining grave tone mark)
@@ -312,7 +312,7 @@ UNICODE(102, Property, Uppercase)                           -- 1
 
 ## UTF8
 
-![Diagram for the UTF8 BIF](../img/BIF_UTF8.svg)
+![Diagram for the UTF8 BIF](../img/BIF_UTF8.svg) \
 
 __Note:__ Although this routine is part of TUTOR, The Unicode Tools Of Rexx, it can also be used separately, as it has no dependencies on the rest of components of TUTOR.
 
