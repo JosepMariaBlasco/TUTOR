@@ -16,6 +16,15 @@
     * [The PersistentStringTable class](./persistent-string-table/)
 * [Using TUTOR from Classic Rexx](./using-tutor-from-classic-rexx/)
 
+## Publications
+
+* [Unicode and Rexx. A brief introduction to TUTOR](https://www.epbcn.com/pdf/josep-maria-blasco/2025-05-04-Unicode-and-Rexx.pdf) (20250504;
+  see also [as a web page](/TUTOR/doc/publications/36/2025-05-04-Unicode-and-Rexx/)). Presented to the
+  [36th International Rexx Language Symposium -- Vienna, Austria and online](https://www.rexxla.org/events/schedule.rsp?year=2025).
+* [The Unicode Tools of Rexx (TUTOR)](https://www.epbcn.com/pdf/josep-maria-blasco/2024-03-04-The-Unicode-Tools-Of-Rexx.pdf) (20240304).
+  Presented to the
+  [35th International Rexx Language Symposium -- Brisbane, Australia and online](https://www.rexxla.org/events/schedule.rsp?year=2024).
+
 ## Older releases
 
 - [Release notes for version 0.6, 20250215](0.6-release-notes.md)

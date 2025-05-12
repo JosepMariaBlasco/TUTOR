@@ -85,7 +85,7 @@ or experiment interactively with the `rxutry` utility, or with ooRexxShell.
 ## Publications
 
 * [Unicode and Rexx. A brief introduction to TUTOR](https://www.epbcn.com/pdf/josep-maria-blasco/2025-05-04-Unicode-and-Rexx.pdf) (20250504;
-  see also [as a web page](/publications/2025-05-04-Unicode-and-Rexx/)). Presented to the
+  see also [as a web page](/TUTOR/doc/publications/36/2025-05-04-Unicode-and-Rexx/)). Presented to the
   [36th International Rexx Language Symposium -- Vienna, Austria and online](https://www.rexxla.org/events/schedule.rsp?year=2025).
 * [The Unicode Tools of Rexx (TUTOR)](https://www.epbcn.com/pdf/josep-maria-blasco/2024-03-04-The-Unicode-Tools-Of-Rexx.pdf) (20240304).
   Presented to the
@@ -105,6 +105,7 @@ the Rexx Preprocessor for Unicode, under Jean Louis Faucher's ooRexxShell
 
 ## \[Cumulative change log since release 0.6a\]
 
++ 20250512 - Add "publications" to Documentation page too, restructure publications directory.
 + 20250510 - Add a "publications" section to the main readme.md page.
 + 20250405 - Add references to net-oo-rexx and to ooRexxShell in the
 appropriate places.
