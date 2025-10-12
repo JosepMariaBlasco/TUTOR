@@ -52,6 +52,7 @@
  *    <tr><td>     <td>JMB <td>20240128<td>Make TEXT the default string
  *    <tr><td>     <td>JMB <td>20240323<td>Implement the STRINGTYPE BIM
  *    <tr><td>00.6 <td>JMB <td>20250116<td>Migrate to the Rexx Parser
+ *    <tr><tr>     <td>JMB <td>20251012<td>Fix https://github.com/JosepMariaBlasco/TUTOR/issues/7 (thanks, Jean Louis!)
  *  </table>
  */
 
@@ -523,6 +524,7 @@ UTF8: Procedure
   Return class~new(self~"+":.String(string))
 
 ::Method "-"
+  Numeric Digits .context~stackFrames[2]~context~digits
   If Arg() == 0 Then Return self~class~new(0) - self
   Use Strict Arg string
   class = self~coerceTo(string,"a subtraction")
