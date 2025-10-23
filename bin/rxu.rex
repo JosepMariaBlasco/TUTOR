@@ -19,6 +19,7 @@
 /* 20250114    0.6  Complete rewrite for the 0.6 version. First version to    */
 /*                  use the Rexx Parser.                                      */
 /* 20250323    0.6a Add support for Jean Louis Faucher's ooRexxShell          */
+/* 20251022         Implement a temporary fix for isuse no. 7                 */
 /*                                                                            */
 /******************************************************************************/
 
@@ -299,32 +300,36 @@ Exit saveRC
       -- For portability and storage, however, a C2X version of the string
       -- should be used (Unicode characters can degrade, depending on the
       -- editor).
+      --
       When token < .EL.UNICODE_STRING Then
-        Call Out prefix'('namespace':Bytes("'ChangeStr('"',token~value,'""')'"))'
+        Call Out prefix'('namespace':Bytes("'ChangeStr('"',token~value,'""',Digits())'"))'
 
       -- The four new Unicode string types
       When token < .EL.TEXT_STRING Then
-        Call Out prefix'('namespace':Text('nosuffix'))'
+        Call Out prefix'('namespace':Text('nosuffix',Digits()))'
       When token < .EL.GRAPHEMES_STRING Then
-        Call Out prefix'('namespace':Graphemes('nosuffix'))'
+        Call Out prefix'('namespace':Graphemes('nosuffix',Digits()))'
       When token < .EL.CODEPOINTS_STRING Then
-        Call Out prefix'('namespace':Codepoints('nosuffix'))'
+        Call Out prefix'('namespace':Codepoints('nosuffix',Digits()))'
       When token < .EL.BYTES_STRING Then
-        Call Out prefix'('namespace':Bytes('nosuffix'))'
+        Call Out prefix'('namespace':Bytes('nosuffix',Digits()))'
 
       -- Hexadecimal and binary strings are low-level, hence BYTES strings
       When token < (.EL.HEX_STRING || .EL.BINARY_STRING) Then
-        Call Out prefix'('namespace':Bytes('source'))'
+        Call Out prefix'('namespace':Bytes('source',Digits()))'
 
       -- Standard strings, numbers and pure constant symbols.
       When token < .ALL.DEFAULT_STRING Then
-        Call Out prefix'('namespace':Default('source'))'
+        Call Out prefix'('namespace':Default('source',Digits()))'
 
+      --
       -- We apply the default string method only to variables which are
       -- not the direct or indirect targets of an assignment. In this sense,
       -- a variable that is to receive a value in a PARSE, ARG, USE ARG, etc.,
       -- instruction is an indirect target of an assignment.
+      --
       -- We leave special variables alone too.
+      --
       When token < .ALL.VAR_SYMBOLS Then Do
         If parseVarContext Then Do
           Call Out token~source "With"
@@ -333,7 +338,7 @@ Exit saveRC
         Else If \token~isAssigned, -
           WordPos(token~value, .Special) == 0, -
           WordPos(currentInstruction, "PROCEDURE") == 0 Then
-          Call Out prefix'('namespace':Default('source'))'
+          Call Out prefix'('namespace':Default('source',Digits()))'
         Else
           Call Out prefix||token~source
       End

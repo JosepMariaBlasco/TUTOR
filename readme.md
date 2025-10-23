@@ -17,7 +17,7 @@ The net-oo-rexx package can be downloaded at
 
 ---
 
-Version 0.6a, 20250325, 20250510 refresh.
+Version 0.6a, 20250325, 20251023 refresh.
 
 ```
 /******************************************************************************
@@ -105,6 +105,9 @@ the Rexx Preprocessor for Unicode, under Jean Louis Faucher's ooRexxShell
 
 ## \[Cumulative change log since release 0.6a\]
 
++ 20251023 - Improve the REPL loop of the rxutry utility so that it is more accurate (but see
+  <https://github.com/JosepMariaBlasco/TUTOR/issues/7> and
+  <https://github.com/jlfaucher/executor/blob/master/sandbox/jlf/_changes.md#6numeric-digits-propagate>.
 + 20250512 - Add "publications" to Documentation page too, restructure publications directory.
 + 20250510 - Add a "publications" section to the main readme.md page.
 + 20250405 - Add references to net-oo-rexx and to ooRexxShell in the

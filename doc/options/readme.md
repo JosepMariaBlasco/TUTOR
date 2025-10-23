@@ -43,10 +43,12 @@ __Implementation notes:__
 RXU translates an unsuffixed string ``"string"`` to the following expression:
 
 ```rexx {unicode}
-(!DS("string"))
+(U:Default("string"))
 ```
 
-!DS is a helper routine defined in ``Unicode.cls``; DS stands for Default String. !DS implements the current OPTIONS DEFAULTSTRING setting.
+`Default` is a helper routine defined in `Unicode.cls`, and `U` is a
+suitable namespace for `Unicode.cls`. The `Default` routine implements
+the current `OPTIONS DEFAULTSTRING` setting.
 
 ## OPTIONS COERCIONS
 
