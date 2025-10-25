@@ -55,6 +55,8 @@
  *    <tr><tr>     <td>JMB <td>20251012<td>Fix https://github.com/JosepMariaBlasco/TUTOR/issues/7 (thanks, Jean Louis!)
  *    <tr><tr>     <td>JMB <td>20251022<td>Remove references to !DS.
  *    <tr><tr>     <td>JMB <td>20251022<td>Implement a better fix for issue 7 above.
+ *    <tr><tr>     <td>JMB <td>20251025<td>Final fix for issue 7 above, using the new ::OPTIONS NUMERIC INHERIT (thanks,
+ *                                         Jean Louis and Rony!
  *  </table>
  */
 
@@ -128,15 +130,14 @@ Call "properties/normalization.cls"
  */
 
 ::Routine DEFAULT Public
-  Use Strict Arg string, ...
-  Use        Arg       , digits
+  Use Strict Arg string
   If  string~isA(.Bytes ) Then Return string
   If \string~isA(.String) Then Return string
   Select Case Upper(.Unicode.DefaultString)
-    When "BYTES"      Then Return Bytes(string, digits)
-    When "CODEPOINTS" Then Return Codepoints(string, digits)
-    When "GRAPHEMES"  Then Return Graphemes(string, digits)
-    When "TEXT"       Then Return Text(string, digits)
+    When "BYTES"      Then Return Bytes(string)
+    When "CODEPOINTS" Then Return Codepoints(string)
+    When "GRAPHEMES"  Then Return Graphemes(string)
+    When "TEXT"       Then Return Text(string)
     When "NONE",""    Then Return String
     Otherwise              Return String -- Should not happen
   End
@@ -224,14 +225,12 @@ Properties:
   End
 
 ::Routine BYTES Public
-  Use Strict Arg string, ...
-  Use        Arg       , digits
-  return .Bytes~new(string, digits)
+  Use Strict Arg string
+  return .Bytes~new(string)
 
 ::Routine CODEPOINTS Public
-  Use Strict Arg string, ...
-  Use        Arg       , digits
-  Return .Codepoints~new(string, digits)
+  Use Strict Arg string
+  Return .Codepoints~new(string)
 
 ::Routine C2U Public
   Use Strict Arg string, format=""
@@ -246,14 +245,12 @@ Properties:
   Return .Encoding[encoding]~encode(string, errorHandling)
 
 ::Routine GRAPHEMES Public
-  Use Strict Arg string, ...
-  Use        Arg       , digits
-  Return .Graphemes~new(string, digits)
+  Use Strict Arg string
+  Return .Graphemes~new(string)
 
 ::Routine TEXT Public
-  Use Strict Arg string, ...
-  Use        Arg       , digits
-  Return .Text~new(string, digits)
+  Use Strict Arg string
+  Return .Text~new(string)
 
 ::Routine U2C Public
   Use Strict Arg string
@@ -342,11 +339,7 @@ Return string~upper(n, length)
 
 ::Class "Bytes" SubClass String Public
 
-::Attribute digits GET
-
 ::Method init
-  Expose digits
-  Use Arg digits
 
 -- Please refer to https://rexx.epbcn.com/TUTOR/doc/classes.md
 -- for documentation details
@@ -443,23 +436,6 @@ UTF8: Procedure
     Otherwise            Return X2C(B2X("11110"SubStr(b,4,3) "10"SubStr(b,7,6) "10"SubStr(b,13,6) "10"Right(b,6)))
   End
 
--- Try to overcome the fact that Rexx doesn't propagate NUMERIC settings to
--- external routines.
-
-::Routine digits2 Private
-  Use Arg lhs, rhs
-  -- In some cases, we may be operating with a ooRexx string
-  If lhs~hasMethod(digits) Then d1 = lhs~digits
-  Else                          d1 = "CHAR"
-  If rhs~hasMethod(digits) Then d2 = rhs~digits
-  Else                          d2 = "CHAR"
-  Select Case DataType(d1) DataType(d2)
-    When "NUM CHAR" Then Return d1
-    When "CHAR NUM" Then Return d2
-    When "NUM NUM"  Then return Max(d1,d2)
-    Otherwise Return ""
-  End
-
 --------------------------------------------------------------------------------
 -- Implementation of automatic implicit coercions (OPTIONS COERCIONS)         --
 --------------------------------------------------------------------------------
@@ -514,52 +490,38 @@ UTF8: Procedure
 ::Method "*"
   Use Strict Arg string
   class = self~coerceTo(string,"a multiplication")
-  digits = digits2(self,string)
-  If digits \== "" Then Numeric Digits digits
   Return class~new(self~"*":.String(string))
 
 ::Method "/"
   Use Strict Arg string
   class = self~coerceTo(string,"a division")
-  digits = digits2(self,string)
-  If digits \== "" Then Numeric Digits digits
   Return class~new(self~"/":.String(string))
 
 ::Method "%"
   Use Strict Arg string
   class = self~coerceTo(string,"a division")
-  digits = digits2(self,string)
-  If digits \== "" Then Numeric Digits digits
   Return class~new(self~"%":.String(string))
 
 ::Method "//"
   Use Strict Arg string
   class = self~coerceTo(string,"a remainder")
-  digits = digits2(self,string)
-  If digits \== "" Then Numeric Digits digits
   Return class~new(self~"//":.String(string))
 
 ::Method "**"
   Use Strict Arg string
   class = self~coerceTo(string,"a power")
-  digits = digits2(self,string)
-  If digits \== "" Then Numeric Digits digits
   Return class~new(self~"**":.String(string))
 
 ::Method "+"
   If Arg() == 0 Then Return self
   Use Strict Arg string
   class = self~coerceTo(string,"an addition")
-  digits = digits2(self,string)
-  If digits \== "" Then Numeric Digits digits
   Return class~new(self~"+":.String(string))
 
 ::Method "-"
   If Arg() == 0 Then Return self~class~new(0) - self
   Use Strict Arg string
   class = self~coerceTo(string,"a subtraction")
-  digits = digits2(self,string)
-  If digits \== "" Then Numeric Digits digits
   Return class~new(self~"-":.String(string))
 
 ::Method "&"
@@ -793,12 +755,8 @@ Return Default(1)
 
 ::Class "Codepoints" SubClass Bytes Public
 
-::Attribute digits GET
-
 ::Method init
-  Expose digits utf32 isNFC isNFD isNFKC isNFKD bits
-
-  Use Arg digits
+  Expose utf32 isNFC isNFD isNFKC isNFKD bits
 
   isNFC  = -1 -- Don't know
   isNFD  = -1 -- Don't know
@@ -973,8 +931,7 @@ Return class~new(left~"=":.String(right))
 ::Method init
   Expose graphemes
 
-  Use Arg digits
-  self~init:super(digits)
+  self~init:super
   graphemes = .Unicode.Grapheme_Cluster_Break~codepointsToGraphemes( self~C2U, "UTF8" )
 
 ::Method "[]"
@@ -1010,14 +967,11 @@ Return class~new(left~"=":.String(right))
 
 ::Class "Text" SubClass Graphemes Public
 
---::Attribute digits GET
-
 -- Autonormalize to NFC
 ::Method new Class
-  Use Strict Arg string, ...
-  Use        Arg       , digits
+  Use Strict Arg string
   string = Unicode(string, "toNFC")
-  this   = self~new:super(string, digits)
+  this   = self~new:super(string)
   --this~init
   Return this
 
@@ -1036,3 +990,4 @@ Return class~new(left~"=":.String(right))
 ::Requires "utf8.cls"
 ::Requires "stream.cls"
 ::Requires "encoding.cls"
+::Options Numeric Inherit

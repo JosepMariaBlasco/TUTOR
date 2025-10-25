@@ -302,25 +302,25 @@ Exit saveRC
       -- editor).
       --
       When token < .EL.UNICODE_STRING Then
-        Call Out prefix'('namespace':Bytes("'ChangeStr('"',token~value,'""',Digits())'"))'
+        Call Out prefix'('namespace':Bytes("'ChangeStr('"',token~value,'""')'"))'
 
       -- The four new Unicode string types
       When token < .EL.TEXT_STRING Then
-        Call Out prefix'('namespace':Text('nosuffix',Digits()))'
+        Call Out prefix'('namespace':Text('nosuffix'))'
       When token < .EL.GRAPHEMES_STRING Then
-        Call Out prefix'('namespace':Graphemes('nosuffix',Digits()))'
+        Call Out prefix'('namespace':Graphemes('nosuffix'))'
       When token < .EL.CODEPOINTS_STRING Then
-        Call Out prefix'('namespace':Codepoints('nosuffix',Digits()))'
+        Call Out prefix'('namespace':Codepoints('nosuffix'))'
       When token < .EL.BYTES_STRING Then
-        Call Out prefix'('namespace':Bytes('nosuffix',Digits()))'
+        Call Out prefix'('namespace':Bytes('nosuffix'))'
 
       -- Hexadecimal and binary strings are low-level, hence BYTES strings
       When token < (.EL.HEX_STRING || .EL.BINARY_STRING) Then
-        Call Out prefix'('namespace':Bytes('source',Digits()))'
+        Call Out prefix'('namespace':Bytes('source'))'
 
       -- Standard strings, numbers and pure constant symbols.
       When token < .ALL.DEFAULT_STRING Then
-        Call Out prefix'('namespace':Default('source',Digits()))'
+        Call Out prefix'('namespace':Default('source'))'
 
       --
       -- We apply the default string method only to variables which are
@@ -338,7 +338,7 @@ Exit saveRC
         Else If \token~isAssigned, -
           WordPos(token~value, .Special) == 0, -
           WordPos(currentInstruction, "PROCEDURE") == 0 Then
-          Call Out prefix'('namespace':Default('source',Digits()))'
+          Call Out prefix'('namespace':Default('source'))'
         Else
           Call Out prefix||token~source
       End
