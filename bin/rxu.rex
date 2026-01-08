@@ -238,8 +238,8 @@ Exit saveRC
   tokenNo = 0
   parseVarContext = 0 -- PARSE VAR found -> change to PARSE VALUE var WITH
   Do token Over tokens
-    If \token~isIgnorable Then tokenNo += 1
-    Parse Value token~from token~to With startLine . endLine .
+    If \token~ignorable Then tokenNo += 1
+    Parse Value token~from token~to With startLine startCol endLine endCol
     Do While lastLine < startLine
       Call Say ""
       lastLine += 1
@@ -250,7 +250,9 @@ Exit saveRC
     Else prefix = ""
 
     source = token~source
-    nosuffix = Left( source, Length(source) - 1)
+    If Length(source) < 1
+      Then nosuffix = ""
+      Else nosuffix = Left( source, Length(source) - 1)
 
     -- Since we are substituting tokens on a token-by-token basis, we
     -- will enclose substitutions between parenthesis, because determining

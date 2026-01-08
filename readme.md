@@ -17,7 +17,7 @@ The net-oo-rexx package can be downloaded at
 
 ---
 
-Version 0.6a, 20250325, 20251025 refresh.
+Version 0.6a, 20250325, 20260108 refresh.
 
 **NOTE**: This version needs ooRexx version 5.2.0 beta release
 r13038 or higher to run, as it makes use of the new `::OPTIONS
@@ -109,7 +109,7 @@ the Rexx Preprocessor for Unicode, under Jean Louis Faucher's ooRexxShell
 
 ## \[Cumulative change log since release 0.6a\]
 
-+ 20251025 - Completely fix the rxutry utility thanks for the new `::OPTIONS NUMERIC INHERIT`
++ 20251025 - Completely fix the rxutry utility thanks to the new `::OPTIONS NUMERIC INHERIT`
   instruction.
 + 20251023 - Improve the REPL loop of the rxutry utility so that it is more accurate (but see
   <https://github.com/JosepMariaBlasco/TUTOR/issues/7> and
