@@ -17,7 +17,7 @@ The net-oo-rexx package can be downloaded at
 
 ---
 
-Version 0.6a, 20250325, 20260108 refresh.
+Version 0.6a, 20250325, 20260228 refresh.
 
 **NOTE**: This version needs ooRexx version 5.2.0 beta release
 r13038 or higher to run, as it makes use of the new `::OPTIONS

@@ -8,6 +8,7 @@
 -- Open Object Rexx Version 5.1.0 r12691.
 --
 -- First release, TUTOR 0.5, 20240204.
+-- Fix emoji not showing under Windows when CHCP is not 65001. 20260228.
 --
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -88,6 +89,11 @@ end
 
 Unicode.Setup:                                 /* This whole routine by JMB */
   hand     = "F0 9F 91 89"X
+  If .RexxInfo~platform~startsWith("Windows") Then Do
+    Address COMMAND "CHCP" With Output Stem O.
+    Parse Var O.1 ":" codepage .
+    If codepage \== 65001 Then hand = "->"
+  End
   path = Value("PATH",,"ENVIRONMENT")
   sep = .File~pathSeparator
   uFile = .File~searchPath("Unicode.cls","."sep||path)
@@ -153,7 +159,7 @@ clear:
 
 intro:                                         /* Display brief             */
   say version                                  /*   introductory            */
-  say hand''procrx' lets you',                 /*   about rxutry and  *JMB* */
+  say hand procrx' lets you',                  /*   about rxutry and  *JMB* */
     'interactively try Unicode-REXX',          /*   remarks for       *JMB* */
     'statements.'                              /*   interactive mode.       */
   say '    Each string is executed when you hit Enter.'
