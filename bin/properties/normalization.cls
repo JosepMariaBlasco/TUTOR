@@ -208,9 +208,9 @@ Return aCode
 
     -- p. 136 "D107 Starter: Any code point (assigned or not) with combining class of zero (ccc = 0)".
     --
-    -- Have to use .Unicode instead of Unicode because the loading order of our packages doesn't make
+    -- Have to use .Tutor.Unicode instead of Unicode because the loading order of our packages doesn't make
     -- the Unicode public routine known to this package.
-    Do i = i To lutf32 By 4 Until .Unicode[starter,"Property","ccc"] == 0
+    Do i = i To lutf32 By 4 Until .Tutor.Unicode[starter,"Property","ccc"] == 0
       starter = utf32[i,4]
     End
 
@@ -264,7 +264,7 @@ Return aCode
         Iterate StarterLoop
       End
 
-      newCCC = .Unicode[last,"Property", "ccc"]
+      newCCC = .Tutor.Unicode[last,"Property", "ccc"]
       If 0 < newCCC Then Do
         If newCCC < maxCCC      Then Iterate StarterLoop -- Look for next starter
         Else If newCCC = maxCCC Then Do -- This one is blocked, but maybe next one is not

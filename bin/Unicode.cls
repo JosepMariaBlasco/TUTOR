@@ -81,7 +81,7 @@ If .local~Unicode.DefaultString~isNil Then
 If .local~Unicode.Coercions~isNil Then
   .local~Unicode.Coercions = "Promote"
 
-.local~Unicode = .routines~Unicode
+.local~Tutor.Unicode = .routines~Unicode
 
 Call "utilities/MultiStageTable.cls"
 Call "utilities/PersistentStringTable.cls"
