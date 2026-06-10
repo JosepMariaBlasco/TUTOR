@@ -19,7 +19,8 @@
 /* 20250114    0.6  Complete rewrite for the 0.6 version. First version to    */
 /*                  use the Rexx Parser.                                      */
 /* 20250323    0.6a Add support for Jean Louis Faucher's ooRexxShell          */
-/* 20251022         Implement a temporary fix for isuse no. 7                 */
+/* 20251022         Implement a temporary fix for issue no. 7                 */
+/* 20260610         Implement a fix for issue no. 8                           */
 /*                                                                            */
 /******************************************************************************/
 
@@ -145,11 +146,11 @@
   End
 
 --------------------------------------------------------------------------------
--- Close and re-open outfile (avoid hangs from previous runs)                 --
+-- Close and re-open outfile (avoids hangs from previous runs)                --
 --------------------------------------------------------------------------------
 
-  Call Stream outFile,"c","close"
-  Call Stream outFile,"c","open write replace"
+  Call Stream outFile, "C", "Close"
+  Call Stream outFile, "C", "Open Write Replace"
 
 --------------------------------------------------------------------------------
 -- Translate the file                                                         --
@@ -237,12 +238,22 @@ Exit saveRC
   optionsInstruction = 0
   tokenNo = 0
   parseVarContext = 0 -- PARSE VAR found -> change to PARSE VALUE var WITH
+  VariableReferenceContext = .False
+
   Do token Over tokens
     If \token~ignorable Then tokenNo += 1
     Parse Value token~from token~to With startLine startCol endLine endCol
     Do While lastLine < startLine
       Call Say ""
       lastLine += 1
+    End
+
+    -- Copy items as-is up to and including the referenced symbol
+    If VariableReferenceContext Then Do
+      If token < .ALL.REFERENCED_SYMBOLS Then
+        VariableReferenceContext = .False
+      Call Out token~source
+      Iterate
     End
 
     prev = token~prev
@@ -382,6 +393,12 @@ Exit saveRC
         currentInstruction = ""
         tokenNo = 0
         If token~from \== token~to Then Call Out ";"
+      End
+
+      -- Variable reference terms have to be passed as-is
+      When token < .ALL.OPS.REFERENCE Then Do
+        Call Out token~source
+        VariableReferenceContext = .True
       End
 
       -- We do not print inserted tokens
