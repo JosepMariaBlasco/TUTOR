@@ -27,6 +27,7 @@
 
 ## Older releases
 
+-  [Release notes for version 0.6a, 20250323](0.6a-release-notes.md)<br>
 - [Release notes for version 0.6, 20250215](0.6-release-notes.md)
 - [Release notes for version 0.5, 20240307](0.5-release-notes.md)
 - [Release notes for version 0.4a, 20231002](0.4a-release-notes.md)

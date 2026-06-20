@@ -57,6 +57,7 @@
  *    <tr><tr>     <td>JMB <td>20251022<td>Implement a better fix for issue 7 above.
  *    <tr><tr>     <td>JMB <td>20251025<td>Final fix for issue 7 above, using the new ::OPTIONS NUMERIC INHERIT (thanks,
  *                                         Jean Louis and Rony!
+ *    <tr><td>00.7 <td>JMB <td>20260617<td>Add support for RexxUnicodeServices
  *  </table>
  */
 
@@ -92,6 +93,10 @@ Call "properties/gcb.cls"
 Call "properties/name.cls"
 Call "properties/normalization.cls"
 
+If .RexxUnicodeServices~isA(.Class) Then Do
+  Call "properties/UTF8Proc.cls"
+  Call "properties/ICU.cls"
+End
 
 /**
  *
@@ -149,13 +154,14 @@ Call "properties/normalization.cls"
   Use Arg , option
   option = Upper( option )
   Select
-    When option == "PROPERTY"    Then Signal Properties
-    When option == "ISNFD"       Then Do
+    When option == "PROPERTY"         Then Signal Properties
+    When option == "ISNFD"            Then Do
       Use Strict Arg string, option
-      If \string~isA(.Codepoints) Then string = Codepoints(string)
+      If \string~isA(.Codepoints) Then
+        string = Codepoints(string)
       Return string~isNFD
     End
-    When option == "ISNFC"       Then Do
+    When option == "ISNFC"            Then Do
       Use Strict Arg string, option
       If \string~isA(.Codepoints) Then string = Codepoints(string)
       Return string~isNFC
@@ -347,7 +353,8 @@ Return string~upper(n, length)
 ::Method C2U
   Use Strict Arg format=""
 
-  utf32 = UTF8(self,"UTF-8","UTF32","Syntax")
+  If .RexxUnicodeServices~isA(.Class) Then utf32 = self~C2UViaUTF8Proc
+  Else                                     utf32 = UTF8(self,"UTF-8","UTF32","Syntax")
 
   uFormat = Upper(format)
   If uFormat == "UTF32" Then Return utf32
@@ -375,6 +382,28 @@ Names:
     res ||= " ("P2N(codes[i])")"
   End
   Return Strip(res,"L")
+
+-- Decode strict UTF-8 to a big-endian UTF-32 buffer (4 bytes/codepoint) by
+-- driving utf8DecodeCodepoint as an iterator: each call returns the code
+-- point and yields, via out-params, the byte width consumed (advance) and, on
+-- an ill-formed sequence, an error code/message. A return of -1 signals an
+-- error; we re-raise the SAME Syntax 23.900 the FSM raises, so the "Syntax"
+-- error-handling contract of C2U is preserved verbatim regardless of path.
+::Method C2UViaUTF8Proc Private
+  bytes  = self~makeString
+  length = Length(bytes)
+  buffer = .MutableBuffer~new
+  pos    = 1
+  Do While pos <= length
+    cp = .RexxUnicodeServices~utf8DecodeCodepoint(bytes, pos, >width, >errCode, >errMsg)
+    If cp == -1 Then Do
+      errorSequence = bytes[pos]
+      Raise Syntax 23.900 Additional("Invalid UTF-8 sequence in position" pos "of string: '"C2X(errorSequence)"'X ("errMsg")")
+    End
+    buffer~append( X2C(Right(D2X(cp), 8, 0)) )
+    pos = pos + width
+  End
+  Return buffer~string
 
 ::Method STRINGTYPE
   If Arg() == 0 Then Return "BYTES"
@@ -932,7 +961,47 @@ Return class~new(left~"=":.String(right))
   Expose graphemes
 
   self~init:super
-  graphemes = .Unicode.Grapheme_Cluster_Break~codepointsToGraphemes( self~C2U, "UTF8" )
+
+  If .RexxUnicodeServices~isA(.Class) Then
+    graphemes = self~graphemesViaUTF8Proc
+  Else
+    graphemes = .Unicode.Grapheme_Cluster_Break~codepointsToGraphemes( self~C2U, "UTF8" )
+
+-- Build the grapheme array (UTF-8 substrings, one per cluster) using utf8proc's
+-- graphemeBreak primitive, walking the codepoints from C2U. graphemeBreak takes
+-- (cp1, cp2, state) and returns 1 at a cluster boundary; the state element
+-- carries the cross-codepoint context (regional-indicator pairing, emoji ZWJ
+-- sequences) and MUST be threaded across calls, so we reuse one array. See
+-- createIndexers in RexxUnicodeServices for the model.
+::Method graphemesViaUTF8Proc Private
+  Use Strict Arg
+
+  graphemes = .Array~new
+  codes = self~C2U~makeArray(" ")   -- hex codepoints, e.g. "0061 1F1EA ..."
+  n = codes~items
+  If n == 0 Then Return graphemes
+
+  services = .RexxUnicodeServices
+  args     = .Array~of(-1, -1, 0)  -- cp1, cp2, state; reused every iteration
+
+  prevCp  = X2D(codes[1])
+  current = services~utf8EncodeCodepoint(prevCp, .MutableBuffer~new, >sz)~string
+  Do i = 2 To n
+    cp = X2D(codes[i])
+    bytes = services~utf8EncodeCodepoint(cp, .MutableBuffer~new, >sz)~string
+    args[1] = prevCp
+    args[2] = cp
+    If services~graphemeBreak(args) Then Do  -- boundary: close current cluster
+      graphemes~append(current)
+      current = bytes
+    End
+    Else
+      current ||= bytes
+    prevCp = cp
+  End
+  graphemes~append(current)
+
+  Return graphemes
 
 ::Method "[]"
   Expose graphemes

@@ -17,7 +17,7 @@ The net-oo-rexx package can be downloaded at
 
 ---
 
-Version 0.6a, 20250325, 20260610 refresh.
+Version 0.7, 20260620.
 
 **NOTE**: This version needs ooRexx version 5.2.0 beta release
 r13038 or higher to run, as it makes use of the new `::OPTIONS
@@ -95,11 +95,11 @@ or experiment interactively with the `rxutry` utility, or with ooRexxShell.
   Presented to the
   [35th International Rexx Language Symposium -- Brisbane, Australia and online](https://www.rexxla.org/events/schedule.rsp?year=2024).
 
-## Release notes for version 0.6a, 20250215
+## Release notes for version 0.7, 20260620
 
-Version 0.6a includes some small changes to allow running RXU,
-the Rexx Preprocessor for Unicode, under Jean Louis Faucher's ooRexxShell
-(thanks to Jean Louis for suggesting the changes).
+Version 0.7 includes experimental support for uft8proc and ICU.
+It is automatically activated when using the experimental
+Executor versions that include support for uft8proc and ICU.
 
 ## Components of TUTOR which can be used independently
 
@@ -107,20 +107,11 @@ the Rexx Preprocessor for Unicode, under Jean Louis Faucher's ooRexxShell
 
 ---
 
-## \[Cumulative change log since release 0.6a\]
-
-+ 20251025 - Completely fix the rxutry utility thanks to the new `::OPTIONS NUMERIC INHERIT`
-  instruction.
-+ 20251023 - Improve the REPL loop of the rxutry utility so that it is more accurate (but see
-  <https://github.com/JosepMariaBlasco/TUTOR/issues/7> and
-  <https://github.com/jlfaucher/executor/blob/master/sandbox/jlf/_changes.md#6numeric-digits-propagate>.
-+ 20250512 - Add "publications" to Documentation page too, restructure publications directory.
-+ 20250510 - Add a "publications" section to the main readme.md page.
-+ 20250405 - Add references to net-oo-rexx and to ooRexxShell in the
-  appropriate places.
+## \[Cumulative change log since release 0.7\]
 
 ---
 
+[Release notes for version 0.7, 20260620](doc/0.7-release-notes.md)<br>
 [Release notes for version 0.6a, 20250323](doc/0.6a-release-notes.md)<br>
 [Release notes for version 0.6, 20250215](doc/0.6-release-notes.md)<br>
 [Release notes for version 0.5, 20240307](doc/0.5-release-notes.md)<br>

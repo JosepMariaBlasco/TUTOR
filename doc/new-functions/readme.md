@@ -210,6 +210,9 @@ _Function_ can be one of:
 * __toUppercase__: returns _toUppercase(X)_, as defined in rule R1 of section "Default Case Conversion" of [_The Unicode Standard, Version 15.0 – Core Specification_](https://www.unicode.org/versions/Unicode15.0.0/UnicodeStandard-15.0.pdf): "Map each character C in X to _Uppercase_Mapping(C)_". Broadly speaking, _Uppercase_Mapping(C)_ implements the _Simple_Uppercase_Mapping_ property, as defined in the ``UnicodeData.txt`` file of the Unicode Character Database (UCD), but a number of exceptions, defined in the ``SpecialCasing.txt`` file of the UCD have to be applied. Additionally, the Iota-subscript, ``"0345"X``, receives a special treatment.
 * __toNFC__: returns _string_ normalized to the NFC format.
 * __toNFD__: returns _string_ normalized to the NFD format.
+* __toNFKC__: returns _string_ normalized to the NFKC format (Beta Unicode Rexx only).
+* __toNFKD__: returns _string_ normalized to the NFKD format (Beta Unicode Rexx only).
+* __toCasefold__: returns _string_ transformed using Unicode Default Case Folding, as defined in section 3.13, "Default Case Algorithms", of _The Unicode Standard_. Case folding maps a string to a form suitable for caseless matching: for example, both ``"Straße"`` and ``"STRASSE"`` fold to ``"strasse"`` (note that ``"ß"`` folds to ``"ss"``, unlike lowercasing). The result is returned in the same string type as the argument (Beta Unicode Rexx only).
 
 __Examples__:
 
@@ -219,6 +222,7 @@ UNICODE("Café","isNFD")                           -- 0 (Since "Café" normalize
 UNICODE("Cafe" || "301"U,"isNFD")                 -- 1
 UNICODE("Café",toUppercase)                       -- "CAFÉ"
 UNICODE("ὈΔΥΣΣΕΎΣ"T,toLowercase)                  -- "ὀδυσσεύς" (note the difference between medial and final sigmas)
+UNICODE("Straße",toCasefold)                      -- "strasse" (ß folds to ss; matches casefold of "STRASSE")
 ```
 
 ## UNICODE ("Property" form)
@@ -231,6 +235,10 @@ The string _name_ must be one of:
 
 * __Alphabetic__: returns a boolean.
 * __Alpha__: an alias for __Alphabetic__.
+* __bc__: an alias for __Bidi_Class__.
+* __Bidi_Class__: returns the short alias of the Bidi_Class (bidirectional category) of the codepoint, as a one- to three-letter value (``L``, ``R``, ``AL``, ``EN``, ``BN``, ``ON``, etc.) _(Beta Unicode Rexx only)_.
+* __Bidi_M__: an alias for __Bidi_Mirrored__.
+* __Bidi_Mirrored__: returns a boolean _(Beta Unicode Rexx only)_.
 * __Canonical_Combining_Class__: returns an integer between 0 and 254.
 * __Canonical_Decomposition_Mapping__: returns one or two normalized hex codepoints _\[Non-standard property: this corresponds to the Decomposition_Mapping column (number 6, 1-based, in UnicodeData.txt),
   when the mapping is not a compatibility mapping (i.e., it does not start with a "&lt;" character)\]_
@@ -249,7 +257,13 @@ The string _name_ must be one of:
 * __CWL__: an alias for __Changes_When_Lowercased__.
 * __CWT__: an alias for __Changes_When_Titlecased__.
 * __CWU__: an alias for __Changes_When_Uppercased__.
+* __Decomposition_Type__: returns the long-form value name of the Decomposition_Type property (``Font``, ``No_Break``, ``Initial``, ``Medial``, ``Final``, ``Isolated``, ``Circle``, ``Super``, ``Sub``, ``Vertical``, ``Wide``, ``Narrow``, ``Small``, ``Square``, ``Fraction`` or ``Compat`` for the sixteen compatibility decompositions; ``Canonical`` for a canonical decomposition; and ``None`` for a codepoint with no decomposition). Note that ``Canonical`` is the conventional value name (alias ``Can``) reported here: the UCD formally leaves the Decomposition_Type field empty for canonical decompositions _(Beta Unicode Rexx only)_.
+* __Default_Ignorable_Code_Point__: returns a boolean. Note that this is distinct from __Case_Ignorable__ _(Beta Unicode Rexx only)_.
+* __DI__: an alias for __Default_Ignorable_Code_Point__.
+* __dt__: an alias for __Decomposition_Type__ _(Beta Unicode Rexx only)_.
 * __Full_Composition_Exclusion__: returns a boolean.
+* __gc__: an alias for __General_Category__.
+* __General_Category__: returns a two-character value describing the character category.
 * __Lowercase__: returns a boolean.
 * __Lower__: an alias for __Lowercase__.
 * __Math__: returns a boolean.
@@ -272,12 +286,18 @@ The string _name_ must be one of:
 * __Other_Uppercase__: returns a boolean.
 * __SD__: an alias for __Soft_Dotted__.
 * __Simple_Lowercase_Mapping__: returns the lowercase version of the argument _code_, or _code_ itself when the character has no explicit lowercase mapping. This corresponds to the (1-based) column number 14 of UnicodeData-txt.
+* __Simple_Titlecase_Mapping__: returns the titlecase version of the argument _code_, or _code_ itself when the character has no explicit titlecase mapping. This corresponds to the (1-based) column number 15 of UnicodeData-txt. Note that titlecase can differ from uppercase: for example, ``"01C4"U`` (``"DŽ"``) has a titlecase mapping of ``"01C5"U`` (``"Dž"``), but an uppercase mapping of ``"01C4"U`` _(Beta Unicode Rexx only)_.
 * __Simple_Uppercase_Mapping__: returns the uppercase version of the argument _code_, or _code_ itself when the character has no explicit uppercase mapping. This corresponds to the (1-based) column number 13 of UnicodeData-txt.
 * __slc__: an alias for __Simple_Lowercase_Mapping__.
+* __stc__: an alias for __Simple_Titlecase_Mapping__.
 * __Soft_Dotted__: returns a boolean.
 * __suc__: an alias for __Simple_Uppercase_Mapping__.
 * __Uppercase__: returns a boolean.
 * __Upper__: an alias for __Uppercase__.
+* __utf8proc_Char_Width__: returns an integer (0, 1 or 2), the number of display columns occupied by the codepoint. _\[Non-standard property: this is not a UCD property, but the character-width metric computed by utf8proc (roughly East-Asian-Width-based); the ``utf8proc_`` prefix marks its origin\]_ _(Beta Unicode Rexx only)_.
+* __utf8proc_codepointBoundClass__: returns an integer, the raw utf8proc grapheme-cluster boundary class (``utf8proc_boundclass_t``). _\[Non-standard property: this is __not__ the UCD Grapheme_Cluster_Break property. utf8proc uses its own numbering, and folds into a single enumeration what the UCD splits between Grapheme_Cluster_Break and Indic_Conjunct_Break (the GB9c aksara/virama classes), so there is no faithful name-to-name UCD mapping; the bare enumeration is exposed under its full native name to signal whose taxonomy it is. The UCD-faithful per-codepoint break property lives in the table layer\]_ _(Beta Unicode Rexx only)_.
+* __utf8proc_codepointControlBoundary__: returns a boolean, utf8proc's predicate for "is this a control that forces a grapheme cluster boundary", used internally for the UAX #29 rules GB4/GB5. _\[Non-standard property: empirically this is General_Category in ``{Cc, Cf, Zl, Zp}`` minus the joiners ``ZWNJ`` (``U+200C``) and ``ZWJ`` (``U+200D``), which utf8proc excludes because their role in segmentation is to join, not to break. It is a collapsed view of the ``utf8proc_codepointBoundClass`` taxonomy, exposed raw under its full native name for the same reason as its companion above\]_ _(Beta Unicode Rexx only)_.
+* __utf8proc_Decomposition_Type__: returns the raw utf8proc decomposition-type enumeration, an integer between 0 and 16. _\[Non-standard property: this is __not__ the UCD Decomposition_Type property. The values 1 to 16 correspond to the sixteen compatibility decomposition types, but the value 0 cannot distinguish a canonical decomposition from no decomposition at all (utf8proc reports 0 for both). Use __Decomposition_Type__ for the UCD-faithful value that recovers this distinction\]_ _(Beta Unicode Rexx only)_.
 
 ### Examples
 
@@ -308,6 +328,20 @@ UNICODE(41, Property, Simple_Lowercase_Mapping)             -- "0061"
 UNICODE(61, Property, Simple_Uppercase_Mapping)             -- "0041"
 UNICODE(3F3, Property, Soft_Dotted)                         -- 1
 UNICODE(102, Property, Uppercase)                           -- 1
+UNICODE(5D0, Property, Bidi_Class)                          -- "R" ("א", Hebrew letter alef)
+UNICODE(28, Property, Bidi_Mirrored)                        -- 1 ("(", Left parenthesis)
+UNICODE(200B, Property, Default_Ignorable_Code_Point)       -- 1 ("200B"U, Zero width space)
+UNICODE(1C4, Property, Simple_Titlecase_Mapping)            -- "01C5" ("DŽ" titlecases to "Dž", not "DŽ")
+UNICODE(4E00, Property, utf8proc_Char_Width)                -- 2 (a wide CJK ideograph)
+UNICODE(C7, Property, Decomposition_Type)                   -- "Canonical" ("Ç", Latin capital letter C with cedilla)
+UNICODE(BC, Property, Decomposition_Type)                   -- "Fraction" ("¼", Vulgar fraction one quarter)
+UNICODE(A0, Property, Decomposition_Type)                   -- "No_Break" ("A0"U, No-break space)
+UNICODE(41, Property, Decomposition_Type)                   -- "None" ("A", no decomposition)
+UNICODE(C7, Property, utf8proc_Decomposition_Type)          -- 0 (raw enum fuses Canonical with None)
+UNICODE(BC, Property, utf8proc_Decomposition_Type)          -- 15 (the raw compatibility enum for Fraction)
+UNICODE(0A, Property, utf8proc_codepointBoundClass)         -- 3 ("0A"U, Line feed)
+UNICODE(0A, Property, utf8proc_codepointControlBoundary)    -- 1 ("0A"U, Line feed)
+UNICODE(200D, Property, utf8proc_codepointControlBoundary)  -- 0 ("200D"U, Zero width joiner: a joiner, not a break)
 ```
 
 ## UTF8
@@ -315,14 +349,6 @@ UNICODE(102, Property, Uppercase)                           -- 1
 ![Diagram for the UTF8 BIF](../img/BIF_UTF8.svg) \
 
 __Note:__ Although this routine is part of TUTOR, The Unicode Tools Of Rexx, it can also be used separately, as it has no dependencies on the rest of components of TUTOR.
-
-```
-   ╭───────╮  ┌────────┐  ╭───╮                                                                  ╭───╮
-▸▸─┤ UTF8( ├──┤ string ├──┤ , ├─┬────────────┬─┬──────────────────┬─┬──────────────────────────┬─┤ ) ├─▸◂
-   ╰───────╯  └────────┘  ╰───╯ │ ┌────────┐ │ │ ╭───╮ ┌────────┐ │ │ ╭───╮ ┌────────────────┐ │ ╰───╯
-                                └─┤ format ├─┘ └─┤ , ├─┤ target ├─┘ └─┤ , ├─┤ error_handling ├─┘
-                                  └────────┘     ╰───╯ └────────┘     ╰───╯ └────────────────┘
-```
 
 Tests whether _string_ contains well-formed UTF-8 (this is the default when _format_ has not been specified), or is a well-formed string in the _format_ encoding. Optionally, it decodes it to a certain set of _target_ encodings.
 

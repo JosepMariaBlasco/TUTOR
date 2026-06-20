@@ -30,6 +30,8 @@
  *  00.4b JMB 20231005 Move docs to components/properties.md
  *                     Move individual property files to components/properties/
  *                     Rename to properties.cls
+ *  00.7  JMB 20260617 Add RegisterPreferredProperties method
+ *        JMB 20260617 Add RegisterPreferredFunctions method
  *
  */
 
@@ -73,6 +75,19 @@
     propertyRegistry[ name ] = property
   End
 
+::Method RegisterPreferredProperties Class
+  Expose propertyHandler propertyRegistry
+
+  Use Strict Arg propertyList, handler
+
+  propertyList = Upper( propertyList )
+
+  Do property Over propertyList~makeArray(" ")
+    name = LooseMatching( property )
+    propertyHandler[  name ] = handler
+    propertyRegistry[ name ] = property
+  End
+
 ::Method "[]" Class
   Expose propertyHandler propertyRegistry
 
@@ -102,6 +117,15 @@
   Do function Over Upper(functionList)~makeArray(" ")
     If functionRegistry~hasIndex(function) Then
       self~SyntaxError("Function '"function"' already registered")
+    functionRegistry[ function ] = handler
+  End
+
+::Method RegisterPreferredFunctions Class
+  Expose functionRegistry
+
+  Use Strict Arg functionList, handler
+
+  Do function Over Upper(functionList)~makeArray(" ")
     functionRegistry[ function ] = handler
   End
 

@@ -17,9 +17,9 @@
 /*  (Lowercase Letter), not a codified enumeration integer.                   */
 /*                                                                            */
 /*  The class includes also services to handle algorithically computable      */
-/*  Unicode names, for example Hangul syllabes or CJK ideographs, and         */
-/*  also labels for codes that do not have a name, like control characters,   */
-/*  surrogates, reserved codepoints, etc.                                     */
+/*  Unicode names, for example Hangul or CJK ideographs, and also labels      */
+/*  for codes that do not have a name, like control characters, surrogates,   */
+/*  reserved codepoints, etc.                                                 */
 /*                                                                            */
 /*  Version history                                                           */
 /*  ===============                                                           */
@@ -31,6 +31,8 @@
 /*  00.1c JMB 20230718 Move property classes to the "property" subdir         */
 /*                     Fix some bugs, add consistency check for names         */
 /*  00.2  JMB 20230725 Rename classfile to 'gc.cls'                           */
+/*  00.7  JMB 20260617 Use unassigned instead of reserved to align with ICU   */
+/*        JMB 20260617 Register General_Category (gc) as a public property    */
 /*                                                                            */
 /******************************************************************************/
 
@@ -48,8 +50,8 @@
 
 ::Class Unicode.General_Category Public SubClass Unicode.Property
 
-::Constant Variables   "Lu Ll Lt Lm Lo Lo_CJK_Compatibility_Ideograph Lo_CJK_Unified_Ideograph Lo_Hangul_Syllabe Lo_Khitan_Small_Script Lo_Nushu_Character Lo_Tangut_Component Lo_Tangut_Ideograph Mn Mc Me Nd Nl No Pc Pd Ps Pe Pi Pf Po Sm Sc Sk So Zs Zl Zp Cc Cf Cs Co Cn"
---                      01 02 03 04 05 06 07                          08                       09                0A                     0B                 0C                  0D                  0E 0F 10 11 12 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25
+::Constant Variables   "Lu Ll Lt Lm Lo Lo_CJK_Compatibility_Ideograph Lo_CJK_Unified_Ideograph Lo_Hangul_Syllable Lo_Khitan_Small_Script Lo_Nushu_Character Lo_Tangut_Component Lo_Tangut_Ideograph Mn Mc Me Nd Nl No Pc Pd Ps Pe Pi Pf Po Sm Sc Sk So Zs Zl Zp Cc Cf Cs Co Cn"
+--                      01 02 03 04 05 06 07                          08                       09                 0A                     0B                 0C                  0D                  0E 0F 10 11 12 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25
 ::Constant BinaryFile  "gc.bin"
 
 ::Attribute Lo_CJK_Compatibility_Ideograph Class Get
@@ -59,6 +61,13 @@
 ::Method "[]" Class
   Use Strict Arg code
   Return self~nameOf[ self~hexValueOfPropertyAt( code ) ]
+
+::Method gc               Class
+  Forward Message "General_Category"
+::Method General_Category Class
+  Use Strict Arg code
+  If code~startsWith("00"X) Then code = C2X(code)
+  Return self[code]
 
 ::Method hexValueOfPropertyAt Class
   Use Local -- Should be "Expose BinaryString (variables)", but it is slow
@@ -130,6 +139,8 @@
 
   self~nameOf = nameOf.
 
+  super~registerProperties( "General_Category gc", self )
+
   If .Unicode.Buildtime \== 1 Then Do
     super~loadPersistent( super~BinFile.Qualify( self~binaryFile ) )
     offset = super~getPersistent("UnicodeData.gc.Table1")
@@ -144,7 +155,7 @@
   Select Case self~hexValueOfPropertyAt(code)
     When Lo_CJK_Compatibility_Ideograph Then Return "CJK COMPATIBILITY IDEOGRAPH-"code
     When Lo_CJK_Unified_Ideograph       Then Return "CJK UNIFIED IDEOGRAPH-"code
-    When Lo_Hangul_Syllabe              Then Return "HANGUL SYLLABE" Hangul_Syllabe_Name(code)
+    When Lo_Hangul_Syllable             Then Return "HANGUL SYLLABLE" Hangul_Syllable_Name(code)
     When Lo_Khitan_Small_Script         Then Return "KHITAN SMALL SCRIPT CHARACTER-"code
     When Lo_Nushu_Character             Then Return "NUSHU CHARACTER-"code
     When Lo_Tangut_Component            Then Return "TANGUT COMPONENT-"Right(X2D(code) - X2D(18800)+1,3,0)
@@ -158,13 +169,13 @@
       If n >= 64976, n <= 65007         Then -- code in U+FDD0..U+FDEF
                                              Return "<noncharacter-"code">"
       If n > 1114111                    Then Return "" -- Out of range
-      Return "<reserved-"code">"
+      Return "<unassigned-"code">"
     End
     When Cs                             Then Return "<surrogate-"code">"
     Otherwise                                Return ""
   End
 
-Hangul_Syllabe_Code2LVT: Procedure
+Hangul_Syllable_Code2LVT: Procedure
   Use Strict Arg code
   n = X2D(code)
   -- See http://gernot-katzers-spice-pages.com/var/korean_hangul_unicode.html
@@ -174,9 +185,9 @@ Hangul_Syllabe_Code2LVT: Procedure
   lead  = 1 + t
   Return lead vowel tail
 
-Hangul_Syllabe_Name: Procedure
+Hangul_Syllable_Name: Procedure
   Use Strict Arg code
-  Parse Value Hangul_Syllabe_Code2LVT(code) With lead vowel tail
+  Parse Value Hangul_Syllable_Code2LVT(code) With lead vowel tail
   lead  = ChangeStr("_",Word("G GG N D DD R M B BB S SS _ J JJ C K T P H",lead),"")
   vowel = Word("A AE YA YAE EO E YEO YE O WA WAE OE YO U WEO WE WI YU EU YI I", vowel)
   If tail == 0 Then tail = ""
@@ -208,16 +219,16 @@ Hangul_Syllabe_Name: Procedure
     Return d2x(number + 6272 - 1)
   End
 
-  start = "HANGULSYLLABE"
+  start = "HANGULSYLLABLE"
   If \name~startsWith(start) Then Return ""
-  syllabeName = SubStr(name,Length(start)+1)
+  syllableName = SubStr(name,Length(start)+1)
 
-  Return Hangul_Syllabe_Code(syllabeName)
+  Return Hangul_Syllable_Code(syllableName)
 
 Label:
   Parse Var name "<"token">"extra
   If extra \== "" Then Return ""
-  Do word Over "CONTROL PRIVATEUSE RESERVED SURROGATE NONCHARACTER"~makeArray(" ")
+  Do word Over "CONTROL PRIVATEUSE UNASSIGNED SURROGATE NONCHARACTER"~makeArray(" ")
     If token~startsWith(word) Then Do
       code = SubStr(token,length(word)+1)
       Return CheckValid()  -- (code, word)
@@ -293,12 +304,12 @@ CheckValid:
       Else If temp <  X2D(100000) Then Return ""
       Else If temp <= X2D(10FFFD) Then Return code
       Else                             Return ""
-    When "RESERVED"                    Then Do
-      -- The list of reserved characters is very large
+    When "UNASSIGNED"                  Then Do
+      -- The list of unassigned (reserved) characters is very large
       code = Upper(code)
       If \(self~hexValueOfPropertyAt(code) == Cn)
                                   Then Return ""
-      -- Noncharacters are not reserved
+      -- Noncharacters are not unassigned
       If      temp <  X2D(  FDD0) Then Return code
       Else If temp <= X2D(  FDEF) Then Return ""
       Else Do
@@ -324,11 +335,11 @@ CheckValid:
   End
 Return code
 
-Hangul_Syllabe_Code:
+Hangul_Syllable_Code:
   -- See http://gernot-katzers-spice-pages.com/var/korean_hangul_unicode.html
-  Use Strict Arg syllabe
-  s1 = syllabe[1]
-  s2 = syllabe[1,2]
+  Use Strict Arg syllable
+  s1 = syllable[1]
+  s2 = syllable[1,2]
   leadW = 2
   Select Case s2
     When "GG" Then lead =  2
@@ -357,9 +368,9 @@ Hangul_Syllabe_Code:
           leadW = 0
       End
   End
-  s1 = syllabe[1+leadW]
-  s2 = syllabe[1+leadW,2]
-  s3 = syllabe[1+leadW,3]
+  s1 = syllable[1+leadW]
+  s2 = syllable[1+leadW,2]
+  s3 = syllable[1+leadW,3]
   vowelW = 3
   Select Case s3
     When "YAE" Then vowel = 4
@@ -393,7 +404,7 @@ Hangul_Syllabe_Code:
           End
       End
   End
-  rest = SubStr(syllabe,1+leadW+vowelW)
+  rest = SubStr(syllable,1+leadW+vowelW)
   Select Case rest
     When ""   Then tail =  0
     When "G"  Then tail =  1
