@@ -82,8 +82,8 @@
   sep = .File~separator
   bin ||= sep
 
-  Call (bin"rxunicode.cls")            -- defines .RexxUnicode + registration host
-  Call (bin"ICU4ooRexx.cls")           -- defines .ICU4ooRexx, self-registers
+ .context~package~loadPackage(bin"rxunicode.cls")  -- defines .RexxUnicode + registration host
+ .context~package~loadPackage(bin"ICU4ooRexx.cls") -- defines .ICU4ooRexx, self-registers
 
   Return self~ICURegistered
 

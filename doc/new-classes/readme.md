@@ -10,7 +10,7 @@
  ******************************************************************************/
 ```
 
-## Introduction
+##   Introduction
 
 The Rexx Preprocessor for Unicode (RXU) implements a set of Rexx extensions that allow programmers to write Unicode-enabled Rexx programs.
 
@@ -154,9 +154,9 @@ C2X also returns the same value.
 __Examples:__
 
 ```rexx {unicode}
-C2X("👨"T)                              -- "F09F91A8"
-C2X("👨"P)                              -- "F09F91A8"
-C2X("👨"B)                              -- "F09F91A8"
+C2X("👨"T)                             -- "F09F91A8"
+C2X("👨"G)                             -- "F09F91A8"
+C2X("👨"P)                             -- "F09F91A8"
 C2X("(Man)"U)                            -- "F09F91A8"
 ```
 
