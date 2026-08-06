@@ -752,9 +752,9 @@ Return Default(1)
   Return self~subStr(self~length - length + 1)
 
 ::Method SubStr
-  .Validate~positiveWholeNumber( "n" , Arg(1) )
-  Use Strict Arg n, length = (self~length - n + 1), pad = " "
-  .Validate~classType( "pad" , pad , .String )
+ .Validate~positiveWholeNumber( "n" , Arg(1) )
+  Use Strict Arg n, length = (Max(self~length - n + 1,0)), pad = " "
+ .Validate~classType( "pad" , pad , .String )
   If pad~class \== self~class Then pad = self~class~new(pad)
   If pad~length > 1 Then Raise Syntax 40.023 Array("SUBSTR",3,pad)
   If \self~isA(.Text), \self~isA(.Graphemes), \self~isA(.Codepoints) Then Return Bytes(self~subStr:.String(n,length,pad))
