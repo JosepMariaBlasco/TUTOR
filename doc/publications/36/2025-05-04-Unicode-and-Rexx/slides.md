@@ -432,7 +432,7 @@ the Rexx Parser. After installing net-oo-rexx,
 you will enjoy immediate access to all the packages,
 without having to individually install every one of them separately.
 
-<pre class="dark"><b>D:\Dropbox\net-oo-rexx-packages&gt;oorexxshell
+<pre class="dark"><b>D:\Dropbox\net-oo-rexx&gt;oorexxshell
 <span style="color:#14a10c">loadPackage OK for extension/stringChunk.cls
 (...)</span>
 <span style="color:#3a74f5">Unicode-REXX (TUTOR) loaded
@@ -440,7 +440,7 @@ without having to individually install every one of them separately.
     Options Coercions     is Promote</span>
 <span style="color:#14a10c">REXX-ooRexx_5.1.0(MT)_64-bit 6.05 20 Feb 2025
 Input queue name: S00000000000015ECQ000001809C06EC70</span><span style="color:#f9f1a5">
-D:\Dropbox\net-oo-rexx-packages</span>
+D:\Dropbox\net-oo-rexx</span>
 ooRexx[CMD]&gt;
 </b></pre>
 
@@ -489,4 +489,4 @@ Executor can be downloaded at:
 
 The net-oo-rexx bundle can be downloaded at:
 
-- <https://wi.wu.ac.at/rgf/rexx/tmp/net-oo-rexx-packages/>
+- <https://github.com/RexxLA/net-oo-rexx/>

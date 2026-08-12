@@ -13,11 +13,11 @@ uses the (more limited) highlighting provided by GitHub.
 TUTOR is also distributed as part of **net-oo-rexx**,
 a software bundle curated by Rony Flatscher.
 The net-oo-rexx package can be downloaded at
-<https://wi.wu.ac.at/rgf/rexx/tmp/net-oo-rexx-packages/>.
+<https://github.com/RexxLA/net-oo-rexx/>.
 
 ---
 
-Version 0.7, 20260806 refresh.
+Version 0.7, 20260812 refresh.
 
 **NOTE**: This version needs ooRexx version 5.2.0 beta release
 r13038 or higher to run, as it makes use of the new `::OPTIONS
@@ -56,7 +56,7 @@ download and install the Rexx Parser
 and also run `setenv` in the parser installation directory.
 
 You may prefer to use the net-oo-rexx bundle, available at
-<https://wi.wu.ac.at/rgf/rexx/tmp/net-oo-rexx-packages/>,
+<https://github.com/RexxLA/net-oo-rexx/>,
 which includes a copy of both TUTOR and the Rexx Package.
 In that case, please follow the installation instructions
 present in that package. You will then be able to use
